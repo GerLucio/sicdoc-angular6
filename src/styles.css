@@ -1,0 +1,99 @@
+/* You can add global styles to this file, and also import other style files */
+
+/*TEMAS
+          deeppurple-amber.css
+          indigo-pink.css
+          pink-bluegrey.css
+          purple-green.css
+*/
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+.example-icon {
+    padding: 0 14px;
+  }
+  
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+
+  .example-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .example-is-mobile .example-toolbar {
+    position: fixed;
+    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+    z-index: 2;
+  }
+  
+  h1.example-app-name {
+    margin-left: 8px;
+  }
+  
+  .example-sidenav-container {
+    /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+       causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+    flex: 1;
+  }
+
+  .example-card {
+    max-width: 400px;
+  }
+
+  .card-formulario{
+    width: 100%;
+    height: 100%;
+  }
+  
+  .example-header-image {
+    background-image: url('https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png');
+    background-size: cover;
+  }
+
+  .example-form {
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+
+  .contenedor{
+    background-color: rgb(238, 238, 238);
+  } 
+
+  .padre {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .derecha{
+    float: right;
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+/* Structure */
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.scroll{
+  overflow-y: 
+  scroll;
+  height: 30rem;
+}
+.caja{
+  border: 1px solid #ccc;
+}

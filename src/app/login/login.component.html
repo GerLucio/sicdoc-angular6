@@ -1,0 +1,30 @@
+<div class="example-container">
+<div class="outer">
+  <div class="middle">
+    <div class="inner">
+      <img class="logo" width="234px" height="148px" src="../../assets/img/logo_sicdoc_2.png">
+      <mat-card class="example-card center">
+        <mat-card-content>
+          <h1>Bienvenido</h1>
+          <p>
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="Correo" [formControl]="email" autofocus="" required>
+              <mat-icon matSuffix>alternate_email</mat-icon>
+              <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="Contraseña" [type]="hide ? 'password' : 'text'" [(ngModel)]="usuario.password" minlength="8"
+                required>
+              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </mat-form-field>
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button *ngIf="!getErrorMessage() && usuario.password" mat-raised-button color="primary" (click)="login()">LOGIN</button>
+          <button *ngIf="getErrorMessage() || !usuario.password" mat-raised-button disabled>Iniciar</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
+</div>

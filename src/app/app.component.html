@@ -1,0 +1,153 @@
+<div class="example-container">
+    <mat-toolbar color="primary" class="example-toolbar">
+        <button mat-icon-button (click)="snav.toggle()" (mouseover)="validaLogin()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <h1 class="example-app-name">Sistema Interno de Control de Documentos</h1>
+        <span class="example-spacer"></span>
+        <img height="85%" src="../assets/img/logo_upev_3.png">
+    </mat-toolbar>
+
+    <mat-sidenav-container class="example-sidenav-container">
+        <mat-sidenav #snav [mode]="login ? 'over' : 'side'">
+
+            <mat-card *ngIf="login" class="example-card user-data">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image"></div>
+                    <mat-card-title>
+                        <h2>{{usuario.nombre | uppercase}}</h2>
+                    </mat-card-title>
+                    <mat-card-subtitle>
+                        <h5>{{usuario.rol}}</h5>
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <h4>{{usuario.departamento}}</h4>
+                    <mat-chip-list>
+                        <mat-chip color="primary" (click)="salir()" (click)="snav.close()" selected>SALIR</mat-chip>
+                    </mat-chip-list>
+
+                </mat-card-content>
+            </mat-card>
+
+            <mat-accordion *ngIf="login">
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <mat-icon>search</mat-icon> Búsqueda
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Búsqueda de documentos</a>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <mat-icon>folder</mat-icon>Administración de documentos
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Administración Documentos SGC</a>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Administración PC y PO</a>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Consulta PC y PO</a>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Revisión y Codificación</a>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Administración Documentos de Trabajo</a>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Consulta Documentos de Trabajo</a>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <mat-icon>history</mat-icon> Historial
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Registro de Cambios</a>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Cambio Revisión Vigente</a>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <mat-icon>account_box</mat-icon> Cuentas de usuario
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list>
+                        <mat-list-item>
+                            <a mat-button routerLink="/admin_usuarios" (click)="snav.close()">Altas y bajas</a>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Cambio Contraseña</a>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <mat-icon>settings</mat-icon> Administración del sistema
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Administración Departamento</a>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Administración Subdirección</a>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Administración de Procesos</a>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Administración Roles de Usuario</a>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Administración Tipos de Documento</a>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-expansion-panel>
+
+            </mat-accordion>
+
+        </mat-sidenav>
+
+        <mat-sidenav-content class="contenedor">
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+    
+</div>
