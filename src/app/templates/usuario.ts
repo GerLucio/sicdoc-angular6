@@ -8,6 +8,7 @@ export class Usuario {
       public password?: string,
       public departamento?: string,
       public rol?: string,
+      public id_rol?: number,
       public estado?: string
     ) { }
   }

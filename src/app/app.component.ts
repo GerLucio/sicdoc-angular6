@@ -15,16 +15,7 @@ export class AppComponent implements OnInit {
   usuario = new Usuario();
 
   constructor(private router: Router, public snackBar: MatSnackBar) {
-    this.login = JSON.parse(localStorage.getItem('Loggedin'));
-    if (this.login) {
-      this.setUsuario = JSON.parse(localStorage.getItem('usuario'));
-      this.usuario.id_usuario = this.setUsuario.ID_USUARIO;
-      this.usuario.nombre = this.setUsuario.NOMBRE;
-      this.usuario.puesto = this.setUsuario.PUESTO;
-      this.usuario.correo = this.setUsuario.CORREO;
-      this.usuario.departamento = this.setUsuario.DEPARTAMENTO;
-      this.usuario.rol = this.setUsuario.ROL;
-    }
+    this.validaLogin();
   }
 
   ngOnInit() {
@@ -47,6 +38,7 @@ export class AppComponent implements OnInit {
       this.usuario.correo = this.setUsuario.CORREO;
       this.usuario.departamento = this.setUsuario.DEPARTAMENTO;
       this.usuario.rol = this.setUsuario.ROL;
+      this.usuario.id_rol = this.setUsuario.ID_ROL;
     }
   }
 

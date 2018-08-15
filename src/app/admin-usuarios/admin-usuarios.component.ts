@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { Usuario } from "../templates/usuario";
@@ -6,8 +6,8 @@ import { Departamento } from "../templates/departamento";
 import { FormControl, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Servidor } from "../templates/servidor";
-import { MatTableDataSource } from '@angular/material';
-import { ConfirmationDialog } from "../confirmation-dialog";
+import { MatTableDataSource} from '@angular/material';
+import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 
@@ -35,17 +35,10 @@ export class AdminUsuariosComponent implements OnInit {
 
 
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
-    this.login = JSON.parse(localStorage.getItem('Loggedin'));
-    if (this.login) {
-      this.setUsuario = JSON.parse(localStorage.getItem('usuario'));
-      this.usuario.id_usuario = this.setUsuario.ID_USUARIO;
-      this.usuario.nombre = this.setUsuario.NOMBRE;
-      this.usuario.puesto = this.setUsuario.PUESTO;
-      this.usuario.correo = this.setUsuario.CORREO;
-      this.usuario.departamento = this.setUsuario.DEPARTAMENTO;
-      this.usuario.rol = this.setUsuario.ROL;
-    }
+    this.validaLogin();
+    this.validaPermisos();
   }
+
 
   ngOnInit() {
     this.obtenDepartamentos();
@@ -76,8 +69,27 @@ export class AdminUsuariosComponent implements OnInit {
 
   getErrorMessage() {
     return this.email.hasError('required') ? 'El correo es obligatorio' :
-      this.email.hasError('email') ? 'Correo no válido' :
-        '';
+      this.email.hasError('email') ? 'Correo no válido' : '';
+  }
+
+  validaPermisos(){
+    if(this.usuario.id_rol > 2){
+      this.router.navigate(['/inicio']);
+    }
+  }
+
+  validaLogin() {
+    this.login = JSON.parse(localStorage.getItem('Loggedin'));
+    if (this.login) {
+      this.setUsuario = JSON.parse(localStorage.getItem('usuario'));
+      this.usuario.id_usuario = this.setUsuario.ID_USUARIO;
+      this.usuario.nombre = this.setUsuario.NOMBRE;
+      this.usuario.puesto = this.setUsuario.PUESTO;
+      this.usuario.correo = this.setUsuario.CORREO;
+      this.usuario.departamento = this.setUsuario.DEPARTAMENTO;
+      this.usuario.rol = this.setUsuario.ROL;
+      this.usuario.id_rol = this.setUsuario.ID_ROL;
+    }
   }
 
   eliminaUsuario(id) {
@@ -93,7 +105,7 @@ export class AdminUsuariosComponent implements OnInit {
           this.openSnackBar('ERROR', res['Error']);
         }
         else {
-          this.openSnackBar('Exito', 'Usuario Eliminado correctamente');
+          this.openSnackBar('ÉXITO', 'Usuario Eliminado correctamente');
           this.obtenUsuarios();
         }
       });
@@ -115,7 +127,7 @@ export class AdminUsuariosComponent implements OnInit {
             this.openSnackBar('ERROR', res['Error']);
           }
           else {
-            this.openSnackBar('Exito', 'Usuario Creado correctamente');
+            this.openSnackBar('ÉXITO', 'Usuario Creado correctamente');
             this.obtenUsuarios();
           }
         });

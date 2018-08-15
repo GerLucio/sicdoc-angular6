@@ -59,10 +59,6 @@
   .example-form {
     width: 100%;
   }
-  
-  .example-full-width {
-    width: 100%;
-  }
 
   .contenedor{
     background-color: rgb(238, 238, 238);
@@ -96,4 +92,8 @@ table {
 }
 .caja{
   border: 1px solid #ccc;
+}
+
+.media{
+  width: 50%;
 }

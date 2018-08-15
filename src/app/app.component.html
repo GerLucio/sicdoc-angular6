@@ -15,7 +15,16 @@
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
                     <mat-card-title>
-                        <h2>{{usuario.nombre | uppercase}}</h2>
+                        <span [matMenuTriggerFor]="menu">
+                            <h2>{{usuario.nombre | uppercase}}
+                                <mat-icon>keyboard_arrow_down</mat-icon>
+                            </h2>
+                        </span>
+
+                        <mat-menu #menu="matMenu" xPosition="before">
+                            <button mat-menu-item (click)="snav.close()" routerLink="/admin_contrasenas">Cambiar Contraseña</button>
+                            <button mat-menu-item (click)="salir()" (click)="snav.close()">Salir</button>
+                        </mat-menu>
                     </mat-card-title>
                     <mat-card-subtitle>
                         <h5>{{usuario.rol}}</h5>
@@ -23,9 +32,6 @@
                 </mat-card-header>
                 <mat-card-content>
                     <h4>{{usuario.departamento}}</h4>
-                    <mat-chip-list>
-                        <mat-chip color="primary" (click)="salir()" (click)="snav.close()" selected>SALIR</mat-chip>
-                    </mat-chip-list>
 
                 </mat-card-content>
             </mat-card>
@@ -45,18 +51,18 @@
                     </mat-list>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel>
+                <mat-expansion-panel *ngIf="usuario.id_rol  > 1 && usuario.id_rol < 5">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <mat-icon>folder</mat-icon>Administración de documentos
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <mat-list>
-                        <mat-list-item>
+                        <mat-list-item *ngIf="usuario.id_rol == 2">
                             <a mat-button routerLink="/" (click)="snav.close()">Administración Documentos SGC</a>
                         </mat-list-item>
                         <mat-divider></mat-divider>
-                        <mat-list-item>
+                        <mat-list-item *ngIf="usuario.id_rol == 2 || usuario.id_rol == 3">
                             <a mat-button routerLink="/" (click)="snav.close()">Administración PC y PO</a>
                         </mat-list-item>
                         <mat-divider></mat-divider>
@@ -64,11 +70,11 @@
                             <a mat-button routerLink="/" (click)="snav.close()">Consulta PC y PO</a>
                         </mat-list-item>
                         <mat-divider></mat-divider>
-                        <mat-list-item>
+                        <mat-list-item *ngIf="usuario.id_rol  == 2">
                             <a mat-button routerLink="/" (click)="snav.close()">Revisión y Codificación</a>
                         </mat-list-item>
                         <mat-divider></mat-divider>
-                        <mat-list-item>
+                        <mat-list-item *ngIf="usuario.id_rol == 2 || usuario.id_rol == 3">
                             <a mat-button routerLink="/" (click)="snav.close()">Administración Documentos de Trabajo</a>
                         </mat-list-item>
                         <mat-divider></mat-divider>
@@ -78,7 +84,7 @@
                     </mat-list>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel>
+                <mat-expansion-panel *ngIf="usuario.id_rol  == 2">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <mat-icon>history</mat-icon> Historial
@@ -95,7 +101,7 @@
                     </mat-list>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel>
+                <mat-expansion-panel *ngIf="usuario.id_rol  < 3">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <mat-icon>account_box</mat-icon> Cuentas de usuario
@@ -107,12 +113,12 @@
                         </mat-list-item>
                         <mat-divider></mat-divider>
                         <mat-list-item>
-                            <a mat-button routerLink="/" (click)="snav.close()">Cambio Contraseña</a>
+                            <a mat-button routerLink="/admin_contrasenas" (click)="snav.close()">Cambio Contraseña</a>
                         </mat-list-item>
                     </mat-list>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel>
+                <mat-expansion-panel *ngIf="usuario.id_rol  == 1">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <mat-icon>settings</mat-icon> Administración del sistema
@@ -149,5 +155,5 @@
             <router-outlet></router-outlet>
         </mat-sidenav-content>
     </mat-sidenav-container>
-    
+
 </div>

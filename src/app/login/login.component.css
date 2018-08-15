@@ -23,6 +23,7 @@
   }
 
   .fondo_login{
-   /* background-image: url("../../assets/img/head.png");*/
-   background-color: gainsboro;
+   background-image: url("../../assets/img/fondo.jpg");
+   background-size: cover;
+   /*background-color: gainsboro;*/
   }
