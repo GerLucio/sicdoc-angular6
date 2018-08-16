@@ -1,3 +1,86 @@
-<p>
-  admin-contrasenas works!
-</p>
+<div class="padre">
+
+  <mat-grid-list cols="6" gutterSize="1rem" rowHeight="40rem">
+
+    <mat-grid-tile class="caja" colspan="6">
+      <mat-card class="card-formulario">
+        <mat-card-header>
+          <mat-card-title>
+            <h3>Cambio de contraseña</h3>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-chip-list *ngIf="usuario.id_estado == 2">
+            <mat-chip color="warn" selected>¡Tu cuenta está comprometida!</mat-chip>
+            Actualmente estás usando una contraseña temporal. Es necesario que definas una contraseña nueva.
+          </mat-chip-list>
+
+
+          <mat-vertical-stepper linear="true" #stepper>
+            <mat-step [stepControl]="passwordForm">
+              <form [formGroup]="passwordForm">
+                <ng-template matStepLabel>Ingresa tu contraseña actual</ng-template>
+                <mat-form-field appearance="outline">
+                  <input matInput formControlName="pass_valida" placeholder="Contraseña" [type]="hide ? 'password' : 'text'" minlength="8"
+                    required>
+                  <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                  <mat-error>
+                    La contraseña debe tener al menos 8 caracteres
+                  </mat-error>
+                </mat-form-field>
+                <div>
+                  <button mat-raised-button color="accent" matStepperNext>Siguiente</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="passwordForm1">
+              <form [formGroup]="passwordForm1">
+                <ng-template matStepLabel>Ingresa tu nueva contraseña</ng-template>
+                <mat-form-field appearance="outline">
+                  <input matInput formControlName="pass1_valida" placeholder="Contraseña" [type]="hide ? 'password' : 'text'" minlength="8"
+                    required>
+                  <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                  <mat-error>
+                    La contraseña debe tener al menos 8 caracteres
+                  </mat-error>
+                </mat-form-field>
+                <div>
+                  <button mat-raised-button matStepperPrevious>Atrás</button>
+                  <button mat-raised-button color="accent" matStepperNext>Siguiente</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="passwordForm2">
+              <form [formGroup]="passwordForm2">
+                <ng-template matStepLabel>Ingresa otra vez tu nueva contraseña</ng-template>
+                <mat-form-field appearance="outline">
+                  <input matInput formControlName="pass2_valida" placeholder="Contraseña" [type]="hide ? 'password' : 'text'" minlength="8"
+                    required>
+                  <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                  <mat-error>
+                    La contraseña debe tener al menos 8 caracteres
+                  </mat-error>
+                </mat-form-field>
+                <div>
+                  <button mat-raised-button matStepperPrevious>Atrás</button>
+                  <button *ngIf="passwordForm1.value.pass1_valida == passwordForm2.value.pass2_valida" mat-raised-button color="accent" matStepperNext>Siguiente</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step *ngIf="passwordForm1.value.pass1_valida == passwordForm2.value.pass2_valida">
+              <ng-template matStepLabel>¡Has Terminado!</ng-template>
+              <div>
+                <button mat-raised-button matStepperPrevious>Atrás</button>
+                <button mat-raised-button color="primary" (click)="cambiarPassword()" matStepperNext>TERMINAR</button>
+              </div>
+            </mat-step>
+          </mat-vertical-stepper>
+          <mat-error *ngIf="passwordForm1.value.pass1_valida != passwordForm2.value.pass2_valida" color="warn">Tu nueva contraseña no es igual en los dos campos</mat-error>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</div>

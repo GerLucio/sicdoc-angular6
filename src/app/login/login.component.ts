@@ -52,7 +52,10 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('usuario', JSON.stringify(res['usuario']));
           localStorage.setItem('Loggedin', 'true');
           this.Loggedin = true;
-          this.router.navigate(['/inicio']);
+          if(res['usuario']['ID_ESTADO'] == 2)
+            this.router.navigate(['/admin_contrasenas']);
+          else
+            this.router.navigate(['/inicio']);
         }
         else {
           this.openSnackBar('ERROR', res['Error']);

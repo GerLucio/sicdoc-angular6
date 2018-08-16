@@ -6,7 +6,7 @@ import { Departamento } from "../templates/departamento";
 import { FormControl, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Servidor } from "../templates/servidor";
-import { MatTableDataSource} from '@angular/material';
+import { MatTableDataSource } from '@angular/material';
 import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
 
@@ -31,7 +31,7 @@ export class AdminUsuariosComponent implements OnInit {
   total_usuarios: number;
   dataSource = new MatTableDataSource();
   servidor = new Servidor();
-  displayedColumns: string[] = ['NOMBRE', 'CORREO', 'PUESTO', 'DEPARTAMENTO', 'ROL', 'ELIMINAR'];
+  displayedColumns: string[] = ['NOMBRE', 'CORREO', 'PUESTO', 'DEPARTAMENTO', 'ROL', 'ESTADO', 'ADMINISTRACIÓN'];
 
 
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
@@ -46,7 +46,22 @@ export class AdminUsuariosComponent implements OnInit {
     this.obtenUsuarios();
   }
 
-  openConfirmationDialog(usuario) {
+  restablecerPassword(usuario) {
+    this.dialogRef = this.dialog.open(ConfirmationDialog, {
+      disableClose: false
+    });
+    this.dialogRef.componentInstance.confirmMessage = "Se le enviará una contraseña temporal a " + usuario.NOMBRE + 
+      " para que restablezca su contraseña, ¿Deseas continuar?";
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.restablecePass(usuario);
+      }
+      this.dialogRef = null;
+    });
+  }
+
+  eliminarDialogo(usuario) {
     this.dialogRef = this.dialog.open(ConfirmationDialog, {
       disableClose: false
     });
@@ -60,6 +75,7 @@ export class AdminUsuariosComponent implements OnInit {
     });
   }
 
+
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 5000,
@@ -72,8 +88,8 @@ export class AdminUsuariosComponent implements OnInit {
       this.email.hasError('email') ? 'Correo no válido' : '';
   }
 
-  validaPermisos(){
-    if(this.usuario.id_rol > 2){
+  validaPermisos() {
+    if (this.usuario.id_rol > 2) {
       this.router.navigate(['/inicio']);
     }
   }
@@ -89,6 +105,8 @@ export class AdminUsuariosComponent implements OnInit {
       this.usuario.departamento = this.setUsuario.DEPARTAMENTO;
       this.usuario.rol = this.setUsuario.ROL;
       this.usuario.id_rol = this.setUsuario.ID_ROL;
+      this.usuario.id_estado = this.setUsuario.ID_ESTADO;
+      this.usuario.estado = this.setUsuario.ESTADO;
     }
   }
 
@@ -111,6 +129,25 @@ export class AdminUsuariosComponent implements OnInit {
       });
   }
 
+  restablecePass(usuario){
+    let httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    });
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/restablecePassword.php', JSON.stringify({
+      usuario: usuario
+    }), {
+      }).subscribe(res => {
+        if (res['Error']) {
+          this.openSnackBar('ERROR', res['Error']);
+        }
+        else {
+          this.openSnackBar('ÉXITO', 'El usuario ha sido notificado del cambio de su contraseña');
+          this.obtenUsuarios();
+        }
+      });
+  }
+
   nuevoUsuario(nuevo_usuario) {
     this.nuevo_usuario.correo = this.email.value;
     if (nuevo_usuario.nombre && nuevo_usuario.apellido && nuevo_usuario.puesto &&
@@ -128,6 +165,12 @@ export class AdminUsuariosComponent implements OnInit {
           }
           else {
             this.openSnackBar('ÉXITO', 'Usuario Creado correctamente');
+            this.nuevo_usuario.nombre = null;
+            this.nuevo_usuario.apellido = null;
+            this.nuevo_usuario.puesto = null;
+            this.email.setValue(null);
+            this.nuevo_usuario.departamento = null;
+            this.nuevo_usuario.rol = null;
             this.obtenUsuarios();
           }
         });

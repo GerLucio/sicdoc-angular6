@@ -26,7 +26,8 @@ import {
   MatPaginatorModule,
   MatSortModule,
   MatTableModule,
-  MatDialogModule
+  MatDialogModule,
+  MatStepperModule
 } from "@angular/material";
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
@@ -72,6 +73,7 @@ import { AdminContrasenasComponent } from './admin-contrasenas/admin-contrasenas
     MatSortModule,
     MatTableModule,
     MatDialogModule,
+    MatStepperModule,
     AppRoutingModule
   ],
   providers: [AuthGuard],

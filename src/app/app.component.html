@@ -27,11 +27,11 @@
                         </mat-menu>
                     </mat-card-title>
                     <mat-card-subtitle>
-                        <h5>{{usuario.rol}}</h5>
+                        <h5>{{usuario.correo}}</h5>
                     </mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
-                    <h4>{{usuario.departamento}}</h4>
+                    <h4>{{usuario.rol}}</h4>
 
                 </mat-card-content>
             </mat-card>
@@ -109,11 +109,7 @@
                     </mat-expansion-panel-header>
                     <mat-list>
                         <mat-list-item>
-                            <a mat-button routerLink="/admin_usuarios" (click)="snav.close()">Altas y bajas</a>
-                        </mat-list-item>
-                        <mat-divider></mat-divider>
-                        <mat-list-item>
-                            <a mat-button routerLink="/admin_contrasenas" (click)="snav.close()">Cambio Contraseña</a>
+                            <a mat-button routerLink="/admin_usuarios" (click)="snav.close()">Administración de usuarios</a>
                         </mat-list-item>
                     </mat-list>
                 </mat-expansion-panel>
