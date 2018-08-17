@@ -20,8 +20,8 @@
           </p>
         </mat-card-content>
         <mat-card-actions>
-          <button *ngIf="!getErrorMessage() && usuario.password" mat-raised-button color="primary" (click)="login()">LOGIN</button>
-          <button *ngIf="getErrorMessage() || !usuario.password" mat-raised-button disabled>Iniciar</button>
+          <button *ngIf="!getErrorMessage() && usuario.password" mat-raised-button color="primary" (click)="login()">ACCEDER</button>
+          <button *ngIf="getErrorMessage() || !usuario.password" mat-raised-button disabled>ACCEDER</button>
         </mat-card-actions>
       </mat-card>
     </div>

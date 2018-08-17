@@ -71,10 +71,11 @@
               <ng-template matStepLabel>¡Has Terminado!</ng-template>
               <div>
                 <button mat-raised-button matStepperPrevious>Atrás</button>
-                <button mat-raised-button color="primary" (click)="cambiarPassword()" matStepperNext>TERMINAR</button>
+                <button mat-raised-button color="primary" (click)="cambiarPassword()" matStepperNext>FINALIZAR</button>
               </div>
             </mat-step>
           </mat-vertical-stepper>
+          
           <mat-error *ngIf="passwordForm1.value.pass1_valida != passwordForm2.value.pass2_valida" color="warn">Tu nueva contraseña no es igual en los dos campos</mat-error>
 
         </mat-card-content>

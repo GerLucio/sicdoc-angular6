@@ -19,6 +19,7 @@ export class AdminContrasenasComponent implements OnInit {
   login: boolean = false;
   hide: boolean = true;
   setUsuario: any;
+  servidor = new Servidor();
   usuario = new Usuario();
   passwordForm: FormGroup;
   passwordForm1: FormGroup;
@@ -56,8 +57,32 @@ export class AdminContrasenasComponent implements OnInit {
     }
   }
 
+
   cambiarPassword(){
     this.passwordForm1.value.pass_valida;
+    let httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    });
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/cambiaPassword.php', JSON.stringify({
+      usuario: this.usuario, new_pass: this.passwordForm1.value.pass1_valida, pass: this.passwordForm.value.pass_valida  
+    }), {
+      }).subscribe(res => {
+        if (res['Error']) {
+          this.openSnackBar('ERROR', res['Error']);
+        }
+        else {
+          localStorage.setItem('usuario', JSON.stringify(res['usuario']));
+          this.openSnackBar('ÉXITO', 'Tu contraseña se cambió correctamente');
+          setTimeout( () => { this.router.navigate(['/inicio']); }, 2000 );
+        }
+      });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 10000,
+    });
   }
 
 }
