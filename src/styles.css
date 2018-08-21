@@ -90,6 +90,13 @@ table {
   scroll;
   height: 30rem;
 }
+
+.scrollv{
+  overflow-y: 
+  scroll;
+  height: 43rem;
+}
+
 .caja{
   border: 1px solid #ccc;
 }

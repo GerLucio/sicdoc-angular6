@@ -1,14 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { Usuario } from "../templates/usuario";
 import { Departamento } from "../templates/departamento";
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Servidor } from "../templates/servidor";
-import { MatTableDataSource } from '@angular/material';
-import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
-import { MatDialog, MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-admin-contrasenas',

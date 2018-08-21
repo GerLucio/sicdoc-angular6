@@ -5,7 +5,8 @@ import { LoginComponent } from "./login/login.component";
 import { AdminUsuariosComponent } from "./admin-usuarios/admin-usuarios.component";
 import { InicioComponent } from "./inicio/inicio.component";
 import { AdminContrasenasComponent } from './admin-contrasenas/admin-contrasenas.component';
-
+import { AdminTiposDocsComponent } from './admin-tipos-docs/admin-tipos-docs.component';
+import { AdminSubdireccionComponent } from './admin-subdireccion/admin-subdireccion.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,18 @@ const routes: Routes = [
     path: 'admin_usuarios',
     component: AdminUsuariosComponent,
     data: { title: 'AdminUsuarios' },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin_tipos_docs',
+    component: AdminTiposDocsComponent,
+    data: { title: 'AdminTiposDocs' },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin_subdireccion',
+    component: AdminSubdireccionComponent,
+    data: { title: 'AdminSubdireccion' },
     canActivate: [AuthGuard]
   },
   {

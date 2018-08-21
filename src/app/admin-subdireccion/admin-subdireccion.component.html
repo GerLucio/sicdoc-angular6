@@ -1,0 +1,77 @@
+<div class="padre">
+
+  <mat-grid-list cols="6" gutterSize="3rem" rowHeight="23rem">
+
+    <mat-grid-tile class="caja" colspan="2" rowspan="1">
+      <mat-card class="card-formulario">
+        <mat-card-header>
+          <mat-card-title>
+            <h3>Nueva subdirección</h3>
+          </mat-card-title>
+          <mat-card-subtitle>Ingresa el nombre</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+
+          <form class="example-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Subdirección</mat-label>
+              <input matInput placeholder="Subdirección"  [(ngModel)]="nueva_sub.nombre" maxlength="64" name="subdireccion" required>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="nuevaSubdireccion()">ALTA</button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile class="caja" colspan="4" rowspan="2">
+      <mat-card class="card-formulario">
+        <mat-card-header>
+          <mat-card-title>
+            <h3>Subdirecciones activas</h3>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+          <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar en las {{ total_sub }} subdirecciones">
+          </mat-form-field>
+          <div [class]="total_sub > 11 ? 'scrollv': ''">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+              <ng-container matColumnDef="SUBDIRECCIÓN">
+                <th mat-header-cell *matHeaderCellDef> SUBDIRECCIÓN </th>
+                <td mat-cell *matCellDef="let subdireccion">
+                  <h4>{{subdireccion.NOMBRE}}</h4>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ADMINISTRACIÓN">
+                <th mat-header-cell *matHeaderCellDef> ADMINISTRACIÓN </th>
+                <td mat-cell *matCellDef="let tipo">
+                  <button mat-raised-button color="accent" [matMenuTriggerFor]="menuadmin">
+                    <mat-icon>settings</mat-icon>
+                    <span>Administrar</span>
+                  </button>
+                  <mat-menu #menuadmin="matMenu">
+                    <button mat-menu-item (click)="eliminarDialogo(tipo)">
+                      <mat-icon>delete</mat-icon>
+                      <span>Eliminar</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+
+
+        </mat-card-content>
+      </mat-card>
+
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</div>

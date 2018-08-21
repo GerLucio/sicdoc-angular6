@@ -50,7 +50,7 @@ export class AdminUsuariosComponent implements OnInit {
     this.dialogRef = this.dialog.open(ConfirmationDialog, {
       disableClose: false
     });
-    this.dialogRef.componentInstance.confirmMessage = "Se le enviará una contraseña temporal a " + usuario.NOMBRE + 
+    this.dialogRef.componentInstance.confirmMessage = "Se le enviará una contraseña temporal a " + usuario.NOMBRE +
       " para que restablezca su contraseña, ¿Deseas continuar?";
 
     this.dialogRef.afterClosed().subscribe(result => {
@@ -129,7 +129,7 @@ export class AdminUsuariosComponent implements OnInit {
       });
   }
 
-  restablecePass(usuario){
+  restablecePass(usuario) {
     let httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -210,8 +210,13 @@ export class AdminUsuariosComponent implements OnInit {
     this.http.get(this.servidor.nombre + '/apps/sicdoc/obtenUsuariosActivos.php')
       .subscribe(res => {
         this.usuarios = res;
-        this.total_usuarios = this.usuarios.length;
-        this.dataSource = new MatTableDataSource(this.usuarios);
+        if (res) {
+          this.total_usuarios = this.usuarios.length;
+          this.dataSource = new MatTableDataSource(this.usuarios);
+        }
+        else {
+          this.dataSource = null;
+        }
       });
   }
 
