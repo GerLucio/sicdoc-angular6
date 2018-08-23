@@ -24,7 +24,8 @@ export class AppComponent implements OnInit {
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
-      duration: 5000,
+      duration: 1000,
+      verticalPosition: 'top'
     });
   }
 
@@ -34,6 +35,7 @@ export class AppComponent implements OnInit {
       this.setUsuario = JSON.parse(localStorage.getItem('usuario'));
       this.usuario.id_usuario = this.setUsuario.ID_USUARIO;
       this.usuario.nombre = this.setUsuario.NOMBRE;
+      this.usuario.apellido = this.setUsuario.APELLIDO;
       this.usuario.puesto = this.setUsuario.PUESTO;
       this.usuario.correo = this.setUsuario.CORREO;
       this.usuario.departamento = this.setUsuario.DEPARTAMENTO;

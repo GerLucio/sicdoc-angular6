@@ -26,10 +26,13 @@ export class AdminTiposDocsComponent implements OnInit {
   total_tipos: number;
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['TIPO', 'ADMINISTRACIÓN'];
+  ver_editar: boolean;
+  tipo_editar = new Tipo();
 
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
     this.validaLogin();
     this.validaPermisos();
+    this.ver_editar = false;
   }
 
   ngOnInit() {
@@ -49,6 +52,43 @@ export class AdminTiposDocsComponent implements OnInit {
       this.usuario.id_rol = this.setUsuario.ID_ROL;
       this.usuario.id_estado = this.setUsuario.ID_ESTADO;
       this.usuario.estado = this.setUsuario.ESTADO;
+    }
+  }
+
+  editarTipo(tipo){
+    this.tipo_editar.id_tipo = tipo.ID_TIPO;
+    this.tipo_editar.tipo = tipo.TIPO;
+    this.ver_editar = true;
+  }
+
+  cancelarEditar(){
+    this.tipo_editar.id_tipo = null;
+    this.tipo_editar.tipo = null;
+    this.ver_editar = false;
+  }
+
+  guardaEditarTipo(tipo_editar) {
+    if (tipo_editar.tipo) {
+      let httpHeaders = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
+      });
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/editaTipo.php', JSON.stringify({
+        tipo: this.tipo_editar
+      }), {
+        }).subscribe(res => {
+          if (res['Error']) {
+            this.openSnackBar('ERROR', res['Error']);
+          }
+          else {
+            this.openSnackBar('ÉXITO', res['Exito']);
+            this.obtenTipos();
+            this.cancelarEditar();
+          }
+        });
+    }
+    else {
+      this.openSnackBar("ERROR", "Debes llenar todos los campos");
     }
   }
 
@@ -79,6 +119,7 @@ export class AdminTiposDocsComponent implements OnInit {
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 10000,
+      verticalPosition: 'top'
     });
   }
 

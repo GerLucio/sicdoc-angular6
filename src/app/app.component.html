@@ -16,7 +16,7 @@
                     <div mat-card-avatar class="example-header-image"></div>
                     <mat-card-title>
                         <span [matMenuTriggerFor]="menu">
-                            <h2>{{usuario.nombre | uppercase}}
+                            <h2>{{usuario.nombre | uppercase}} {{usuario.apellido | uppercase}}
                                 <mat-icon>keyboard_arrow_down</mat-icon>
                             </h2>
                         </span>
@@ -122,7 +122,7 @@
                     </mat-expansion-panel-header>
                     <mat-list>
                         <mat-list-item>
-                            <a mat-button routerLink="/" (click)="snav.close()">Administración Departamento</a>
+                            <a mat-button routerLink="/admin_departamento" (click)="snav.close()">Administración Departamento</a>
                         </mat-list-item>
                         <mat-divider></mat-divider>
                         <mat-list-item>

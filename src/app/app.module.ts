@@ -37,6 +37,7 @@ import { ConfirmationDialog } from './confirmation-dialog/confirmation-dialog';
 import { AdminContrasenasComponent } from './admin-contrasenas/admin-contrasenas.component';
 import { AdminTiposDocsComponent } from './admin-tipos-docs/admin-tipos-docs.component';
 import { AdminSubdireccionComponent } from './admin-subdireccion/admin-subdireccion.component';
+import { AdminDepartamentoComponent } from './admin-departamento/admin-departamento.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { AdminSubdireccionComponent } from './admin-subdireccion/admin-subdirecc
     ConfirmationDialog,
     AdminContrasenasComponent,
     AdminTiposDocsComponent,
-    AdminSubdireccionComponent
+    AdminSubdireccionComponent,
+    AdminDepartamentoComponent
   ],
   imports: [
     BrowserModule,

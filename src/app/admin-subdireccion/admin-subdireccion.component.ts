@@ -27,10 +27,13 @@ export class AdminSubdireccionComponent implements OnInit {
   total_sub: number;
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['SUBDIRECCIÓN', 'ADMINISTRACIÓN'];
+  sub_editar = new Subdireccion;
+  ver_editar: boolean;
 
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
     this.validaLogin();
     this.validaPermisos();
+    this.ver_editar = false;
   }
 
   ngOnInit() {
@@ -59,6 +62,44 @@ export class AdminSubdireccionComponent implements OnInit {
     }
   }
 
+  editarSubdireccion(subdireccion){
+    this.sub_editar.id_subdireccion = subdireccion.ID_SUBDIRECCION;
+    this.sub_editar.nombre = subdireccion.NOMBRE;
+    this.ver_editar = true;
+  }
+
+  cancelarEditar(){
+    this.sub_editar.id_subdireccion = null;
+    this.sub_editar.nombre = null;
+    this.ver_editar = false;
+  }
+
+  guardaEditarSubdireccion(sub_editar) {
+    if (sub_editar.nombre) {
+      let httpHeaders = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
+      });
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/editaSubdireccion.php', JSON.stringify({
+        subdireccion: this.sub_editar
+      }), {
+        }).subscribe(res => {
+          if (res['Error']) {
+            this.openSnackBar('ERROR', res['Error']);
+          }
+          else {
+            this.openSnackBar('ÉXITO', res['Exito']);
+            this.obtenSubdirecciones();
+            this.cancelarEditar();
+          }
+        });
+    }
+    else {
+      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+    }
+  }
+   
+
   obtenSubdirecciones() {
     let httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -80,6 +121,7 @@ export class AdminSubdireccionComponent implements OnInit {
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 10000,
+      verticalPosition: 'top'
     });
   }
 

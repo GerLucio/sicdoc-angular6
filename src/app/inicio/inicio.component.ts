@@ -19,11 +19,12 @@ export class InicioComponent implements OnInit {
       this.setUsuario = JSON.parse(localStorage.getItem('usuario'));
       this.usuario.id_usuario = this.setUsuario.ID_USUARIO;
       this.usuario.nombre = this.setUsuario.NOMBRE;
+      this.usuario.apellido = this.setUsuario.APELLIDO;
       this.usuario.puesto = this.setUsuario.PUESTO;
       this.usuario.correo = this.setUsuario.CORREO;
       this.usuario.departamento = this.setUsuario.DEPARTAMENTO;
       this.usuario.rol = this.setUsuario.ROL;
-      this.openSnackBar('BIENVENIDO', this.usuario.nombre);
+      this.openSnackBar('BIENVENIDO', this.usuario.nombre+" "+this.usuario.apellido);
     }
    }
 
@@ -33,6 +34,7 @@ export class InicioComponent implements OnInit {
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 10000,
+      verticalPosition: 'top'
     });
   }
 

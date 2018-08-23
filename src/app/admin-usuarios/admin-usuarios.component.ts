@@ -19,12 +19,14 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 export class AdminUsuariosComponent implements OnInit {
 
   dialogRef: MatDialogRef<ConfirmationDialog>;
-
+  ver_editar: boolean;
   login: boolean = false;
   setUsuario: any;
   usuario = new Usuario();
   nuevo_usuario = new Usuario();
+  usuario_editar = new Usuario();
   email = new FormControl('', [Validators.required, Validators.email]);
+  email2 = new FormControl('', [Validators.required, Validators.email]);
   departamentos: any;
   roles: any;
   usuarios: any;
@@ -37,6 +39,7 @@ export class AdminUsuariosComponent implements OnInit {
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
     this.validaLogin();
     this.validaPermisos();
+    this.ver_editar = false;
   }
 
 
@@ -61,6 +64,55 @@ export class AdminUsuariosComponent implements OnInit {
     });
   }
 
+  editarUsuario(usuario){
+    this.usuario_editar.id_usuario = usuario.ID_USUARIO;
+    this.usuario_editar.nombre = usuario.NOMBRE;
+    this.usuario_editar.apellido = usuario.APELLIDO;
+    this.usuario_editar.puesto = usuario.PUESTO;
+    this.usuario_editar.id_departamento = usuario.ID_DEPARTAMENTO;
+    this.usuario_editar.id_rol = usuario.ID_ROL;
+    this.email2.setValue(usuario.CORREO);
+    this.ver_editar = true;
+  }
+
+  cancelarEditar(){
+    this.usuario_editar.id_usuario = null;
+    this.usuario_editar.nombre = null;
+    this.usuario_editar.apellido = null;
+    this.usuario_editar.puesto = null;
+    this.usuario_editar.id_departamento = null;
+    this.usuario_editar.id_rol = null;
+    this.email2.setValue(null);
+    this.ver_editar = false;
+  }
+
+  guardaEditarUsuario(usuario) {
+    this.usuario_editar.correo = this.email2.value;
+    if (usuario.nombre && usuario.apellido && usuario.puesto &&
+      !this.getErrorMessage2() && usuario.id_departamento && usuario.id_rol) {
+      let httpHeaders = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
+      });
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/editaUsuario.php', JSON.stringify({
+        usuario_editar: this.usuario_editar
+      }), {
+        }).subscribe(res => {
+          if (res['Error']) {
+            this.openSnackBar('ERROR', res['Error']);
+          }
+          else {
+            this.openSnackBar('ÉXITO', res['Exito']);
+            this.obtenUsuarios();
+            this.cancelarEditar();
+          }
+        });
+    }
+    else {
+      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+    }
+  }
+
   eliminarDialogo(usuario) {
     this.dialogRef = this.dialog.open(ConfirmationDialog, {
       disableClose: false
@@ -79,6 +131,7 @@ export class AdminUsuariosComponent implements OnInit {
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 10000,
+      verticalPosition: 'top'
     });
   }
 
@@ -86,6 +139,11 @@ export class AdminUsuariosComponent implements OnInit {
   getErrorMessage() {
     return this.email.hasError('required') ? 'El correo es obligatorio' :
       this.email.hasError('email') ? 'Correo no válido' : '';
+  }
+
+  getErrorMessage2() {
+    return this.email2.hasError('required') ? 'El correo es obligatorio' :
+      this.email2.hasError('email') ? 'Correo no válido' : '';
   }
 
   validaPermisos() {
@@ -100,6 +158,7 @@ export class AdminUsuariosComponent implements OnInit {
       this.setUsuario = JSON.parse(localStorage.getItem('usuario'));
       this.usuario.id_usuario = this.setUsuario.ID_USUARIO;
       this.usuario.nombre = this.setUsuario.NOMBRE;
+      this.usuario.apellido = this.setUsuario.APELLIDO;
       this.usuario.puesto = this.setUsuario.PUESTO;
       this.usuario.correo = this.setUsuario.CORREO;
       this.usuario.departamento = this.setUsuario.DEPARTAMENTO;
