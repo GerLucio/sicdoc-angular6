@@ -34,6 +34,7 @@ export class AdminUsuariosComponent implements OnInit {
   dataSource = new MatTableDataSource();
   servidor = new Servidor();
   displayedColumns: string[] = ['NOMBRE', 'CORREO', 'PUESTO', 'DEPARTAMENTO', 'ROL', 'ESTADO', 'ADMINISTRACIÓN'];
+  token: string;
 
 
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
@@ -95,7 +96,7 @@ export class AdminUsuariosComponent implements OnInit {
         'Cache-Control': 'no-cache'
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/editaUsuario.php', JSON.stringify({
-        usuario_editar: this.usuario_editar
+        usuario_editar: this.usuario_editar, tkn: this.token
       }), {
         }).subscribe(res => {
           if (res['Error']) {
@@ -166,26 +167,8 @@ export class AdminUsuariosComponent implements OnInit {
       this.usuario.id_rol = this.setUsuario.ID_ROL;
       this.usuario.id_estado = this.setUsuario.ID_ESTADO;
       this.usuario.estado = this.setUsuario.ESTADO;
+      this.token = JSON.parse(localStorage.getItem('tkn'));
     }
-  }
-
-  eliminaUsuario(id) {
-    let httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache'
-    });
-    this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaUsuario.php', JSON.stringify({
-      id_usuario: id
-    }), {
-      }).subscribe(res => {
-        if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
-        }
-        else {
-          this.openSnackBar('ÉXITO', 'Usuario Eliminado correctamente');
-          this.obtenUsuarios();
-        }
-      });
   }
 
   restablecePass(usuario) {
@@ -194,7 +177,7 @@ export class AdminUsuariosComponent implements OnInit {
       'Cache-Control': 'no-cache'
     });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/restablecePassword.php', JSON.stringify({
-      usuario: usuario
+      usuario: usuario, tkn: this.token
     }), {
       }).subscribe(res => {
         if (res['Error']) {
@@ -216,7 +199,7 @@ export class AdminUsuariosComponent implements OnInit {
         'Cache-Control': 'no-cache'
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoUsuario.php', JSON.stringify({
-        usuario: this.nuevo_usuario, url: this.servidor.url
+        usuario: this.nuevo_usuario, url: this.servidor.url, tkn: this.token
       }), {
         }).subscribe(res => {
           if (res['Error']) {
@@ -244,8 +227,10 @@ export class AdminUsuariosComponent implements OnInit {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
     });
-    this.http.get(this.servidor.nombre + '/apps/sicdoc/obtenDepartamentosActivos.php')
-      .subscribe(res => {
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenDepartamentosActivos.php', JSON.stringify({
+      tkn: this.token
+    }), {
+      }).subscribe(res => {
         this.departamentos = res;
       });
   }
@@ -255,8 +240,10 @@ export class AdminUsuariosComponent implements OnInit {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
     });
-    this.http.get(this.servidor.nombre + '/apps/sicdoc/obtenRolesActivos.php')
-      .subscribe(res => {
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenRolesActivos.php', JSON.stringify({
+      tkn: this.token
+    }), {
+      }).subscribe(res => {
         this.roles = res;
       });
   }
@@ -266,8 +253,10 @@ export class AdminUsuariosComponent implements OnInit {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
     });
-    this.http.get(this.servidor.nombre + '/apps/sicdoc/obtenUsuariosActivos.php')
-      .subscribe(res => {
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenUsuariosActivos.php', JSON.stringify({
+      tkn: this.token
+    }), {
+      }).subscribe(res => {
         this.usuarios = res;
         if (res) {
           this.total_usuarios = this.usuarios.length;
@@ -275,6 +264,25 @@ export class AdminUsuariosComponent implements OnInit {
         }
         else {
           this.dataSource = null;
+        }
+      });
+  }
+
+  eliminaUsuario(id) {
+    let httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    });
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaUsuario.php', JSON.stringify({
+      id_usuario: id, tkn: this.token
+    }), {
+      }).subscribe(res => {
+        if (res['Error']) {
+          this.openSnackBar('ERROR', res['Error']);
+        }
+        else {
+          this.openSnackBar('ÉXITO', 'Usuario Eliminado correctamente');
+          this.obtenUsuarios();
         }
       });
   }

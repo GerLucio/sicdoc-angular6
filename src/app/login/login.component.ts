@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit {
       }).subscribe(res => {
         if (!res['Error']) {
           localStorage.setItem('usuario', JSON.stringify(res['usuario']));
+          localStorage.setItem('tkn', JSON.stringify(res['tkn']));
           localStorage.setItem('Loggedin', 'true');
           this.Loggedin = true;
           if(res['usuario']['ID_ESTADO'] == 2)

@@ -29,6 +29,7 @@ export class AdminSubdireccionComponent implements OnInit {
   displayedColumns: string[] = ['SUBDIRECCIÓN', 'ADMINISTRACIÓN'];
   sub_editar = new Subdireccion;
   ver_editar: boolean;
+  token: string;
 
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
     this.validaLogin();
@@ -53,6 +54,7 @@ export class AdminSubdireccionComponent implements OnInit {
       this.usuario.id_rol = this.setUsuario.ID_ROL;
       this.usuario.id_estado = this.setUsuario.ID_ESTADO;
       this.usuario.estado = this.setUsuario.ESTADO;
+      this.token = JSON.parse(localStorage.getItem('tkn'));
     }
   }
 
@@ -81,7 +83,7 @@ export class AdminSubdireccionComponent implements OnInit {
         'Cache-Control': 'no-cache'
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/editaSubdireccion.php', JSON.stringify({
-        subdireccion: this.sub_editar
+        subdireccion: this.sub_editar, tkn: this.token
       }), {
         }).subscribe(res => {
           if (res['Error']) {
@@ -105,8 +107,10 @@ export class AdminSubdireccionComponent implements OnInit {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
     });
-    this.http.get(this.servidor.nombre + '/apps/sicdoc/obtenSubdirecciones.php')
-      .subscribe(res => {
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenSubdirecciones.php', JSON.stringify({
+      tkn: this.token
+    }), {
+      }).subscribe(res => {
         this.subdirecciones = res;
         if (res) {
           this.total_sub = this.subdirecciones.length;
@@ -145,7 +149,7 @@ export class AdminSubdireccionComponent implements OnInit {
       'Cache-Control': 'no-cache'
     });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaSubdireccion.php', JSON.stringify({
-      id_subdireccion: id
+      id_subdireccion: id, tkn: this.token
     }), {
       }).subscribe(res => {
         if (res['Error']) {
@@ -165,7 +169,7 @@ export class AdminSubdireccionComponent implements OnInit {
         'Cache-Control': 'no-cache'
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevaSubdireccion.php', JSON.stringify({
-        subdireccion: this.nueva_sub
+        subdireccion: this.nueva_sub, tkn: this.token
       }), {
         }).subscribe(res => {
           if (res['Error']) {

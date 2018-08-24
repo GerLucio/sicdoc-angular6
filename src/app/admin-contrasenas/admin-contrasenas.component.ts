@@ -21,6 +21,7 @@ export class AdminContrasenasComponent implements OnInit {
   passwordForm: FormGroup;
   passwordForm1: FormGroup;
   passwordForm2: FormGroup;
+  token: string;
 
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, private _formBuilder: FormBuilder) { 
     this.validaLogin();
@@ -51,6 +52,7 @@ export class AdminContrasenasComponent implements OnInit {
       this.usuario.id_rol = this.setUsuario.ID_ROL;
       this.usuario.id_estado = this.setUsuario.ID_ESTADO;
       this.usuario.estado = this.setUsuario.ESTADO;
+      this.token = JSON.parse(localStorage.getItem('tkn'));
     }
   }
 
@@ -62,7 +64,8 @@ export class AdminContrasenasComponent implements OnInit {
       'Cache-Control': 'no-cache'
     });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/cambiaPassword.php', JSON.stringify({
-      usuario: this.usuario, new_pass: this.passwordForm1.value.pass1_valida, pass: this.passwordForm.value.pass_valida  
+      usuario: this.usuario, new_pass: this.passwordForm1.value.pass1_valida, pass: this.passwordForm.value.pass_valida,
+      tkn: this.token  
     }), {
       }).subscribe(res => {
         if (res['Error']) {

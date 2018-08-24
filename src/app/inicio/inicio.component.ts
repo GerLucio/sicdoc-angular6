@@ -12,6 +12,7 @@ export class InicioComponent implements OnInit {
   login: boolean = false;
   setUsuario: any;
   usuario = new Usuario();
+  token: string;
 
   constructor(private router: Router, public snackBar: MatSnackBar) {
     this.login =  JSON.parse(localStorage.getItem('Loggedin'));
@@ -24,6 +25,7 @@ export class InicioComponent implements OnInit {
       this.usuario.correo = this.setUsuario.CORREO;
       this.usuario.departamento = this.setUsuario.DEPARTAMENTO;
       this.usuario.rol = this.setUsuario.ROL;
+      this.token = JSON.parse(localStorage.getItem('tkn'));
       this.openSnackBar('BIENVENIDO', this.usuario.nombre+" "+this.usuario.apellido);
     }
    }

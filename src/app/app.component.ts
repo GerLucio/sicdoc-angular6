@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { Usuario } from "./templates/usuario";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Servidor } from "./templates/servidor";
 
 @Component({
   selector: 'app-root',
@@ -13,8 +15,10 @@ export class AppComponent implements OnInit {
   login: boolean = false;
   setUsuario: any;
   usuario = new Usuario();
+  token: string;
+  servidor = new Servidor();
 
-  constructor(private router: Router, public snackBar: MatSnackBar) {
+  constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient) {
     this.validaLogin();
   }
 
@@ -41,12 +45,30 @@ export class AppComponent implements OnInit {
       this.usuario.departamento = this.setUsuario.DEPARTAMENTO;
       this.usuario.rol = this.setUsuario.ROL;
       this.usuario.id_rol = this.setUsuario.ID_ROL;
+      this.token = JSON.parse(localStorage.getItem('tkn'));
+      this.validaToken();
     }
+  }
+
+  validaToken() {
+    let httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    });
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/validaToken.php', JSON.stringify({
+      tkn: this.token
+    }), {
+      }).subscribe(res => {
+        if (res['Error']) {
+          this.salir();
+        }
+      });
   }
 
   salir() {
     localStorage.removeItem('Loggedin');
     localStorage.removeItem('usuario');
+    localStorage.removeItem('tkn');
     this.login = false;
     this.router.navigate(['/login']);
   }

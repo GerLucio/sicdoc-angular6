@@ -28,6 +28,7 @@ export class AdminTiposDocsComponent implements OnInit {
   displayedColumns: string[] = ['TIPO', 'ADMINISTRACIÓN'];
   ver_editar: boolean;
   tipo_editar = new Tipo();
+  token: string
 
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
     this.validaLogin();
@@ -52,6 +53,7 @@ export class AdminTiposDocsComponent implements OnInit {
       this.usuario.id_rol = this.setUsuario.ID_ROL;
       this.usuario.id_estado = this.setUsuario.ID_ESTADO;
       this.usuario.estado = this.setUsuario.ESTADO;
+      this.token = JSON.parse(localStorage.getItem('tkn'));
     }
   }
 
@@ -74,7 +76,7 @@ export class AdminTiposDocsComponent implements OnInit {
         'Cache-Control': 'no-cache'
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/editaTipo.php', JSON.stringify({
-        tipo: this.tipo_editar
+        tipo: this.tipo_editar, tkn: this.token
       }), {
         }).subscribe(res => {
           if (res['Error']) {
@@ -103,8 +105,10 @@ export class AdminTiposDocsComponent implements OnInit {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
     });
-    this.http.get(this.servidor.nombre + '/apps/sicdoc/obtenTipos.php')
-      .subscribe(res => {
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenTipos.php', JSON.stringify({
+      tkn: this.token
+    }), {
+      }).subscribe(res => {
         this.tipos = res;
         if (res) {
           this.total_tipos = this.tipos.length;
@@ -143,7 +147,7 @@ export class AdminTiposDocsComponent implements OnInit {
       'Cache-Control': 'no-cache'
     });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaTipo.php', JSON.stringify({
-      id_tipo: id
+      id_tipo: id, tkn: this.token
     }), {
       }).subscribe(res => {
         if (res['Error']) {
@@ -163,7 +167,7 @@ export class AdminTiposDocsComponent implements OnInit {
         'Cache-Control': 'no-cache'
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoTipo.php', JSON.stringify({
-        tipo: this.nuevo_tipo
+        tipo: this.nuevo_tipo, tkn: this.token
       }), {
         }).subscribe(res => {
           if (res['Error']) {
