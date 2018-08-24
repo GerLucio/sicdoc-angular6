@@ -89,6 +89,10 @@ export class AdminSubdireccionComponent implements OnInit {
           if (res['Error']) {
             this.openSnackBar('ERROR', res['Error']);
           }
+          else if (res['ErrorToken']) {
+            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+          }
           else {
             this.openSnackBar('ÉXITO', res['Exito']);
             this.obtenSubdirecciones();
@@ -112,6 +116,10 @@ export class AdminSubdireccionComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.subdirecciones = res;
+        if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+        }
         if (res) {
           this.total_sub = this.subdirecciones.length;
           this.dataSource = new MatTableDataSource(this.subdirecciones);
@@ -155,6 +163,10 @@ export class AdminSubdireccionComponent implements OnInit {
         if (res['Error']) {
           this.openSnackBar('ERROR', res['Error']);
         }
+        else if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+        }
         else {
           this.openSnackBar('ÉXITO', 'Subdirección eliminada correctamente');
           this.obtenSubdirecciones();
@@ -174,6 +186,10 @@ export class AdminSubdireccionComponent implements OnInit {
         }).subscribe(res => {
           if (res['Error']) {
             this.openSnackBar('ERROR', res['Error']);
+          }
+          else if (res['ErrorToken']) {
+            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
           }
           else {
             this.openSnackBar('ÉXITO', res['Exito']);

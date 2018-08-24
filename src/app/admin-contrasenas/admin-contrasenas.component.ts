@@ -71,6 +71,10 @@ export class AdminContrasenasComponent implements OnInit {
         if (res['Error']) {
           this.openSnackBar('ERROR', res['Error']);
         }
+        else if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+        }
         else {
           localStorage.setItem('usuario', JSON.stringify(res['usuario']));
           this.openSnackBar('ÉXITO', 'Tu contraseña se cambió correctamente');

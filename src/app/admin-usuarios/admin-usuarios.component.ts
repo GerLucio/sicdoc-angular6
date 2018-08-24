@@ -102,6 +102,10 @@ export class AdminUsuariosComponent implements OnInit {
           if (res['Error']) {
             this.openSnackBar('ERROR', res['Error']);
           }
+          else if (res['ErrorToken']) {
+            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+          }
           else {
             this.openSnackBar('ÉXITO', res['Exito']);
             this.obtenUsuarios();
@@ -183,6 +187,10 @@ export class AdminUsuariosComponent implements OnInit {
         if (res['Error']) {
           this.openSnackBar('ERROR', res['Error']);
         }
+        else if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+        }
         else {
           this.openSnackBar('ÉXITO', 'El usuario ha sido notificado del cambio de su contraseña');
           this.obtenUsuarios();
@@ -204,6 +212,10 @@ export class AdminUsuariosComponent implements OnInit {
         }).subscribe(res => {
           if (res['Error']) {
             this.openSnackBar('ERROR', res['Error']);
+          }
+          else if (res['ErrorToken']) {
+            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
           }
           else {
             this.openSnackBar('ÉXITO', 'Usuario Creado correctamente');
@@ -231,6 +243,10 @@ export class AdminUsuariosComponent implements OnInit {
       tkn: this.token
     }), {
       }).subscribe(res => {
+        if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+        }
         this.departamentos = res;
       });
   }
@@ -244,6 +260,10 @@ export class AdminUsuariosComponent implements OnInit {
       tkn: this.token
     }), {
       }).subscribe(res => {
+        if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+        }
         this.roles = res;
       });
   }
@@ -257,6 +277,10 @@ export class AdminUsuariosComponent implements OnInit {
       tkn: this.token
     }), {
       }).subscribe(res => {
+        if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+        }
         this.usuarios = res;
         if (res) {
           this.total_usuarios = this.usuarios.length;
@@ -279,6 +303,10 @@ export class AdminUsuariosComponent implements OnInit {
       }).subscribe(res => {
         if (res['Error']) {
           this.openSnackBar('ERROR', res['Error']);
+        }
+        else if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
         }
         else {
           this.openSnackBar('ÉXITO', 'Usuario Eliminado correctamente');

@@ -38,7 +38,7 @@ import { AdminContrasenasComponent } from './admin-contrasenas/admin-contrasenas
 import { AdminTiposDocsComponent } from './admin-tipos-docs/admin-tipos-docs.component';
 import { AdminSubdireccionComponent } from './admin-subdireccion/admin-subdireccion.component';
 import { AdminDepartamentoComponent } from './admin-departamento/admin-departamento.component';
-
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 @NgModule({
   declarations: [
@@ -80,6 +80,7 @@ import { AdminDepartamentoComponent } from './admin-departamento/admin-departame
     MatTableModule,
     MatDialogModule,
     MatStepperModule,
+    NgIdleKeepaliveModule.forRoot(),
     AppRoutingModule
   ],
   providers: [AuthGuard],

@@ -82,6 +82,10 @@ export class AdminTiposDocsComponent implements OnInit {
           if (res['Error']) {
             this.openSnackBar('ERROR', res['Error']);
           }
+          else if (res['ErrorToken']) {
+            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+          }
           else {
             this.openSnackBar('ÉXITO', res['Exito']);
             this.obtenTipos();
@@ -110,6 +114,10 @@ export class AdminTiposDocsComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.tipos = res;
+        if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+        }
         if (res) {
           this.total_tipos = this.tipos.length;
           this.dataSource = new MatTableDataSource(this.tipos);
@@ -153,6 +161,10 @@ export class AdminTiposDocsComponent implements OnInit {
         if (res['Error']) {
           this.openSnackBar('ERROR', res['Error']);
         }
+        else if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+        }
         else {
           this.openSnackBar('ÉXITO', 'Tipo eliminado correctamente');
           this.obtenTipos();
@@ -172,6 +184,10 @@ export class AdminTiposDocsComponent implements OnInit {
         }).subscribe(res => {
           if (res['Error']) {
             this.openSnackBar('ERROR', res['Error']);
+          }
+          else if (res['ErrorToken']) {
+            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
           }
           else {
             this.openSnackBar('ÉXITO', 'Tipo de documento creado correctamente');
