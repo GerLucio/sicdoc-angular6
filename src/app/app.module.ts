@@ -39,6 +39,7 @@ import { AdminTiposDocsComponent } from './admin-tipos-docs/admin-tipos-docs.com
 import { AdminSubdireccionComponent } from './admin-subdireccion/admin-subdireccion.component';
 import { AdminDepartamentoComponent } from './admin-departamento/admin-departamento.component';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { AdminProcesosComponent } from './admin-procesos/admin-procesos.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
     AdminContrasenasComponent,
     AdminTiposDocsComponent,
     AdminSubdireccionComponent,
-    AdminDepartamentoComponent
+    AdminDepartamentoComponent,
+    AdminProcesosComponent
   ],
   imports: [
     BrowserModule,

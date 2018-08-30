@@ -84,6 +84,9 @@ export class AdminUsuariosComponent implements OnInit {
     this.usuario_editar.id_departamento = null;
     this.usuario_editar.id_rol = null;
     this.email2.setValue(null);
+    this.obtenDepartamentos();
+    this.obtenRoles();
+    this.obtenUsuarios();
     this.ver_editar = false;
   }
 
@@ -108,7 +111,6 @@ export class AdminUsuariosComponent implements OnInit {
           }
           else {
             this.openSnackBar('ÉXITO', res['Exito']);
-            this.obtenUsuarios();
             this.cancelarEditar();
           }
         });
@@ -277,17 +279,17 @@ export class AdminUsuariosComponent implements OnInit {
       tkn: this.token
     }), {
       }).subscribe(res => {
-        if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
-        }
         this.usuarios = res;
-        if (res) {
+        if(!res){
+          this.dataSource = null;
+        }
+        else if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+        }
+        else if (res) {
           this.total_usuarios = this.usuarios.length;
           this.dataSource = new MatTableDataSource(this.usuarios);
-        }
-        else {
-          this.dataSource = null;
         }
       });
   }

@@ -2,33 +2,32 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { Usuario } from "../templates/usuario";
-import { Departamento } from "../templates/departamento";
+import { Proceso } from "../templates/proceso";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Servidor } from "../templates/servidor";
 import { MatTableDataSource } from '@angular/material';
 import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
 
+
 @Component({
-  selector: 'app-admin-departamento',
-  templateUrl: './admin-departamento.component.html',
-  styleUrls: ['./admin-departamento.component.css']
+  selector: 'app-admin-procesos',
+  templateUrl: './admin-procesos.component.html',
+  styleUrls: ['./admin-procesos.component.css']
 })
-export class AdminDepartamentoComponent implements OnInit {
+export class AdminProcesosComponent implements OnInit {
 
   dialogRef: MatDialogRef<ConfirmationDialog>;
   login: boolean = false;
   setUsuario: any;
   usuario = new Usuario();
   servidor = new Servidor();
-  subdirecciones: any;
-  usuarios: any;
-  usuarios_departamento: any = [];
-  nuevo_departamento = new Departamento();
-  total_departamentos: number;
+  procesos: any;
+  nuevo_proceso = new Proceso();
+  total_procesos: number;
   dataSource = new MatTableDataSource();
-  displayedColumns: string[] = ['DEPARTAMENTO', 'LIDER', 'SUBDIRECCIÓN', 'ADMINISTRACIÓN'];
-  departamento_editar = new Departamento;
+  displayedColumns: string[] = ['PROCESO', 'DEPARTAMENTO', 'ADMINISTRACIÓN'];
+  proceso_editar = new Proceso;
   ver_editar: boolean;
   departamentos: any;
   token: string;
@@ -40,9 +39,8 @@ export class AdminDepartamentoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.obtenSubdirecciones();
+    this.obtenProcesos();
     this.obtenDepartamentos();
-    this.obtenUsuarios();
   }
 
   validaLogin() {
@@ -68,63 +66,20 @@ export class AdminDepartamentoComponent implements OnInit {
     }
   }
 
-  editarDepartamento(departamento) {
-    this.departamento_editar.id_departamento = departamento.ID_DEPTO;
-    this.departamento_editar.nombre = departamento.NOMBRE;
-    this.departamento_editar.id_lider = departamento.ID_LIDER;
-    this.departamento_editar.id_subdireccion = departamento.ID_SUBDIRECCION;
+  editarProceso(proceso) {
+    this.proceso_editar.id_proceso = proceso.ID_PROCESO;
+    this.proceso_editar.nombre = proceso.NOMBRE;
+    this.proceso_editar.id_departamento = proceso.ID_DEPARTAMENTO
     this.ver_editar = true;
-    this.usuarios.forEach(usuario => {
-      if(usuario.ID_DEPARTAMENTO == departamento.ID_DEPTO){
-        this.usuarios_departamento.push(usuario);
-      }
-    });
   }
 
   cancelarEditar() {
-    this.departamento_editar.id_departamento = null;
-    this.departamento_editar.nombre = null;
-    this.departamento_editar.id_lider = null;
-    this.departamento_editar.id_subdireccion = null;
-    this.usuarios_departamento = [];
-    this.obtenSubdirecciones();
+    this.proceso_editar.id_proceso = null;
+    this.proceso_editar.nombre = null;
+    this.proceso_editar.id_departamento = null;
+    this.obtenProcesos();
     this.obtenDepartamentos();
-    this.obtenUsuarios();
     this.ver_editar = false;
-  }
-
-  obtenSubdirecciones() {
-    let httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache'
-    });
-    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenSubdirecciones.php', JSON.stringify({
-      tkn: this.token
-    }), {
-      }).subscribe(res => {
-        if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
-        }
-        this.subdirecciones = res;
-      });
-  }
-
-  obtenUsuarios() {
-    let httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache'
-    });
-    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenUsuariosActivos.php', JSON.stringify({
-      tkn: this.token
-    }), {
-      }).subscribe(res => {
-        if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
-        }
-        this.usuarios = res;
-      });
   }
 
   obtenDepartamentos() {
@@ -136,29 +91,22 @@ export class AdminDepartamentoComponent implements OnInit {
       tkn: this.token
     }), {
       }).subscribe(res => {
-        this.departamentos = res;
-        if (!res) {
-          this.dataSource = null;
-        }
-        else if (res['ErrorToken']) {
+        if (res['ErrorToken']) {
           this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
         }
-        else if (res) {
-          this.total_departamentos = this.departamentos.length;
-          this.dataSource = new MatTableDataSource(this.departamentos);
-        }
+        this.departamentos = res;
       });
   }
 
-  guardaEditarDepartamento(departamento_editar) {
-    if (departamento_editar.nombre && departamento_editar.id_lider && departamento_editar.id_subdireccion) {
+  guardaEditarProceso(proceso_editar) {
+    if (proceso_editar.nombre && proceso_editar.id_departamento) {
       let httpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache'
       });
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/editaDepartamento.php', JSON.stringify({
-        departamento: this.departamento_editar, tkn: this.token
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/editaProceso.php', JSON.stringify({
+        proceso: this.proceso_editar, tkn: this.token
       }), {
         }).subscribe(res => {
           if (res['Error']) {
@@ -180,6 +128,30 @@ export class AdminDepartamentoComponent implements OnInit {
   }
 
 
+  obtenProcesos() {
+    let httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    });
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenProcesos.php', JSON.stringify({
+      tkn: this.token
+    }), {
+      }).subscribe(res => {
+        this.procesos = res;
+        if(!res){
+          this.dataSource = null;
+        }
+        else if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+        }
+        else if (res) {
+          this.total_procesos = this.procesos.length;
+          this.dataSource = new MatTableDataSource(this.procesos);
+        }
+      });
+  }
+
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 10000,
@@ -187,27 +159,27 @@ export class AdminDepartamentoComponent implements OnInit {
     });
   }
 
-  eliminarDialogo(departamento) {
+  eliminarDialogo(proceso) {
     this.dialogRef = this.dialog.open(ConfirmationDialog, {
       disableClose: false
     });
-    this.dialogRef.componentInstance.confirmMessage = "¿Deseas eliminar el departamento " + departamento.NOMBRE + "?";
+    this.dialogRef.componentInstance.confirmMessage = "¿Deseas eliminar el proceso " + proceso.NOMBRE + "?";
 
     this.dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.eliminaDepartamento(departamento.ID_DEPTO);
+        this.eliminaProceso(proceso.ID_PROCESO);
       }
       this.dialogRef = null;
     });
   }
 
-  eliminaDepartamento(id) {
+  eliminaProceso(id) {
     let httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
     });
-    this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaDepartamento.php', JSON.stringify({
-      id_departamento: id, tkn: this.token
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaProceso.php', JSON.stringify({
+      id_proceso: id, tkn: this.token
     }), {
       }).subscribe(res => {
         if (res['Error']) {
@@ -219,19 +191,19 @@ export class AdminDepartamentoComponent implements OnInit {
         }
         else {
           this.openSnackBar('ÉXITO', res['Exito']);
-          this.obtenDepartamentos();
+          this.obtenProcesos();
         }
       });
   }
 
-  nuevoDepartamento() {
-    if (this.nuevo_departamento.nombre && this.nuevo_departamento.id_subdireccion && this.nuevo_departamento.id_lider) {
+  nuevoProceso() {
+    if (this.nuevo_proceso.nombre && this.nuevo_proceso.id_departamento) {
       let httpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache'
       });
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoDepartamento.php', JSON.stringify({
-        departamento: this.nuevo_departamento, tkn: this.token
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoProceso.php', JSON.stringify({
+        proceso: this.nuevo_proceso, tkn: this.token
       }), {
         }).subscribe(res => {
           if (res['Error']) {
@@ -243,10 +215,9 @@ export class AdminDepartamentoComponent implements OnInit {
           }
           else {
             this.openSnackBar('ÉXITO', res['Exito']);
-            this.nuevo_departamento.nombre = null;
-            this.nuevo_departamento.id_subdireccion = null;
-            this.nuevo_departamento.id_lider = null;
-            this.obtenDepartamentos();
+            this.nuevo_proceso.nombre = null;
+            this.nuevo_proceso.id_departamento = null;
+            this.obtenProcesos();
           }
         });
     }

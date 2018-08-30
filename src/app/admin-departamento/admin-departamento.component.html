@@ -1,3 +1,135 @@
-<p>
-  admin-departamento works!
-</p>
+<div class="padre">
+
+  <mat-grid-list cols="6" gutterSize="3rem" rowHeight="23rem">
+
+    <mat-grid-tile class="caja" colspan="2" rowspan="2">
+      <mat-card class="card-formulario">
+        <mat-card-header>
+          <mat-card-title>
+            <h3>Nuevo Departamento</h3>
+          </mat-card-title>
+          <mat-card-subtitle>Llena todos los campos</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <form class="example-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Departamento</mat-label>
+              <input matInput placeholder="Departamento" [(ngModel)]="nuevo_departamento.nombre" maxlength="64" name="nombre" required>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Subdirección" [(ngModel)]="nuevo_departamento.id_subdireccion" name="id_subdireccion" required>
+                <mat-option *ngFor="let s of subdirecciones" [value]="s.ID_SUBDIRECCION">
+                  {{s.NOMBRE}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Lider de Departamento" [(ngModel)]="nuevo_departamento.id_lider" name="id_lider" required>
+                <mat-option *ngFor="let u of usuarios" [value]="u.ID_USUARIO">
+                  {{u.NOMBRE}} {{u.APELLIDO}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="nuevoDepartamento()">ALTA</button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile *ngIf="!ver_editar" class="caja" colspan="4" rowspan="2">
+      <mat-card class="card-formulario">
+        <mat-card-header>
+          <mat-card-title>
+            <h3>Departamentos activos</h3>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar en los {{ total_departamentos }} departamentos">
+          </mat-form-field>
+          <div [class]="total_departamentos > 11 ? 'scrollv': ''">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+              <ng-container matColumnDef="DEPARTAMENTO">
+                <th mat-header-cell *matHeaderCellDef> DEPARTAMENTO </th>
+                <td mat-cell *matCellDef="let departamento">
+                  <h4>{{departamento.NOMBRE}}</h4>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="LIDER">
+                <th mat-header-cell *matHeaderCellDef> LIDER </th>
+                <td mat-cell *matCellDef="let departamento">
+                  {{departamento.LIDER}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="SUBDIRECCIÓN">
+                <th mat-header-cell *matHeaderCellDef> SUBDIRECCIÓN </th>
+                <td mat-cell *matCellDef="let departamento">
+                  {{departamento.SUBDIRECCION}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="ADMINISTRACIÓN">
+                <th mat-header-cell *matHeaderCellDef> ADMINISTRACIÓN </th>
+                <td mat-cell *matCellDef="let departamento">
+                  <button mat-raised-button color="accent" [matMenuTriggerFor]="menuadmin">
+                    <mat-icon>settings</mat-icon>
+                    <span>Administrar</span>
+                  </button>
+                  <mat-menu #menuadmin="matMenu">
+                    <button mat-menu-item (click)="editarDepartamento(departamento)">
+                      <mat-icon>edit</mat-icon>
+                      <span>Editar</span>
+                    </button>
+                    <button mat-menu-item (click)="eliminarDialogo(departamento)">
+                      <mat-icon>delete</mat-icon>
+                      <span>Eliminar</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile *ngIf="ver_editar" class="caja" colspan="4" rowspan="2">
+      <mat-card class="card-formulario">
+        <mat-card-header>
+          <mat-card-title>
+            <h3>Editar Departamento</h3>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form class="example-form form_edita_60">
+            <mat-form-field appearance="outline">
+              <mat-label>Departamento</mat-label>
+              <input matInput placeholder="Departamento" [(ngModel)]="departamento_editar.nombre" maxlength="64" name="nombre" required>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Subdirección" [(ngModel)]="departamento_editar.id_subdireccion" name="id_subdireccion" required>
+                <mat-option *ngFor="let s of subdirecciones" [value]="s.ID_SUBDIRECCION">
+                  {{s.NOMBRE}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Lider de Departamento" [(ngModel)]="departamento_editar.id_lider" name="id_lider" required>
+                <mat-option *ngFor="let u of usuarios_departamento" [value]="u.ID_USUARIO">
+                  {{u.NOMBRE}} {{u.APELLIDO}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="derecha">
+              <button mat-button (click)="cancelarEditar()">CANCELAR</button>
+              <button mat-raised-button color="primary" (click)="guardaEditarDepartamento(departamento_editar)">MODIFICAR</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</div>

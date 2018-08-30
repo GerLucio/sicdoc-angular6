@@ -66,6 +66,7 @@ export class AdminTiposDocsComponent implements OnInit {
   cancelarEditar(){
     this.tipo_editar.id_tipo = null;
     this.tipo_editar.tipo = null;
+    this.obtenTipos();
     this.ver_editar = false;
   }
 
@@ -88,7 +89,6 @@ export class AdminTiposDocsComponent implements OnInit {
           }
           else {
             this.openSnackBar('ÉXITO', res['Exito']);
-            this.obtenTipos();
             this.cancelarEditar();
           }
         });
@@ -114,16 +114,16 @@ export class AdminTiposDocsComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.tipos = res;
-        if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+        if(!res){
+          this.dataSource = null;
         }
-        if (res) {
+        else if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+        }
+        else if (res) {
           this.total_tipos = this.tipos.length;
           this.dataSource = new MatTableDataSource(this.tipos);
-        }
-        else{
-          this.dataSource = null;
         }
       });
   }

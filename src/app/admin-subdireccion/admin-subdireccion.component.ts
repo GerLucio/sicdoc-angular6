@@ -73,6 +73,7 @@ export class AdminSubdireccionComponent implements OnInit {
   cancelarEditar(){
     this.sub_editar.id_subdireccion = null;
     this.sub_editar.nombre = null;
+    this.obtenSubdirecciones();
     this.ver_editar = false;
   }
 
@@ -95,7 +96,6 @@ export class AdminSubdireccionComponent implements OnInit {
           }
           else {
             this.openSnackBar('ÉXITO', res['Exito']);
-            this.obtenSubdirecciones();
             this.cancelarEditar();
           }
         });
@@ -116,16 +116,16 @@ export class AdminSubdireccionComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.subdirecciones = res;
-        if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+        if(!res){
+          this.dataSource = null;
         }
-        if (res) {
+        else if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+        }
+        else if (res) {
           this.total_sub = this.subdirecciones.length;
           this.dataSource = new MatTableDataSource(this.subdirecciones);
-        }
-        else{
-          this.dataSource = null;
         }
       });
   }
