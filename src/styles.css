@@ -8,6 +8,10 @@
 */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
+* {
+  font-family: 'Quicksand', sans-serif;
+}
+
 .example-icon {
     padding: 0 14px;
   }
@@ -26,10 +30,12 @@
     right: 0;
   }
   
-  .example-is-mobile .example-toolbar {
-    position: fixed;
+  .example-toolbar {
     /* Make sure the toolbar will stay on top of the content as it scrolls past. */
     z-index: 2;
+    -webkit-box-shadow: 0px 20px 20px -15px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 20px 20px -15px rgba(0,0,0,0.75);
+    box-shadow: 0px 20px 20px -15px rgba(0,0,0,0.75);
   }
   
   h1.example-app-name {
@@ -56,17 +62,14 @@
     background-size: cover;
   }
 
-  .example-form {
-    width: 100%;
-  }
-
   .contenedor{
     background-color: rgb(238, 238, 238);
   } 
 
   .padre {
-    margin: 1rem;
-    padding: 1rem;
+    margin: 0 7rem 0 7rem;
+    padding: 2rem;
+    font-family: 'Oxygen', sans-serif;
   }
 
   .derecha{
@@ -81,7 +84,6 @@ table {
 }
 
 .mat-form-field {
-  font-size: 12px;
   width: 100%;
 }
 

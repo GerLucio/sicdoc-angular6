@@ -1,30 +1,28 @@
 <div class="example-container fondo_login">
-<div class="outer">
-  <div class="middle">
-    <div class="inner">
-      <img class="logo" width="234px" height="148px" src="../../assets/img/logo_sicdoc_2.png">
-      <mat-card class="example-card center">
-        <mat-card-content>
-          <h1>Bienvenido</h1>
-          <p>
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <img class="logo" width="234px" height="148px" src="../../assets/img/logo_sicdoc_2.png">
+        <mat-card class="example-card">
+          <mat-card-content>
+            <h1 class="mat-h1">BIENVENIDO</h1>
             <mat-form-field appearance="outline">
               <input matInput placeholder="Correo" [formControl]="email" autofocus="" required>
-              <mat-icon matSuffix>alternate_email</mat-icon>
+              <mat-icon matPrefix>alternate_email</mat-icon>
               <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <input matInput placeholder="Contraseña" [type]="hide ? 'password' : 'text'" [(ngModel)]="usuario.password" minlength="8"
                 required>
-              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+              <mat-icon matPrefix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
             </mat-form-field>
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button *ngIf="!getErrorMessage() && usuario.password" mat-raised-button color="primary" (click)="login()">ACCEDER</button>
-          <button *ngIf="getErrorMessage() || !usuario.password" mat-raised-button disabled>ACCEDER</button>
-        </mat-card-actions>
-      </mat-card>
+          </mat-card-content>
+          <mat-card-actions>
+            <button class="mat-body-1" *ngIf="!getErrorMessage() && usuario.password" mat-raised-button color="primary" (click)="login()">ACCEDER</button>
+            <button *ngIf="getErrorMessage() || !usuario.password" mat-raised-button disabled>ACCEDER</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
     </div>
   </div>
-</div>
 </div>

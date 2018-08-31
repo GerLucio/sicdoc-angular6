@@ -50,7 +50,7 @@
           <mat-form-field>
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar en los {{ total_procesos }} procesos">
           </mat-form-field>
-          <div [class]="total_procesos > 8 ? 'scrollv': ''">
+          <div [class]="total_procesos > 7 ? 'scrollv': ''">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <ng-container matColumnDef="PROCESO">
                 <th mat-header-cell *matHeaderCellDef> PROCESO </th>

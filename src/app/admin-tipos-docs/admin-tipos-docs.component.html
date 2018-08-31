@@ -1,6 +1,6 @@
 <div class="padre">
 
-  <mat-grid-list cols="6" gutterSize="3rem" rowHeight="23rem">
+  <mat-grid-list cols="6" gutterSize="3rem" rowHeight="24rem">
 
     <mat-grid-tile class="caja" colspan="2" rowspan="1">
       <mat-card class="card-formulario">
@@ -33,7 +33,7 @@
           <mat-form-field>
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar en los {{ total_tipos }} tipos">
           </mat-form-field>
-          <div [class]="total_tipos > 11 ? 'scrollv': ''">
+          <div [class]="total_tipos > 10 ? 'scrollv': ''">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <ng-container matColumnDef="TIPO">
                 <th mat-header-cell *matHeaderCellDef> TIPO </th>

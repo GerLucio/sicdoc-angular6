@@ -5,12 +5,12 @@
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
-            <h3>Alta de usuarios</h3>
+            <h2>Alta de usuarios</h2>
           </mat-card-title>
           <mat-card-subtitle>Ingresa todos los datos</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <form class="example-form">
+          <form>
             <table cellspacing="10">
               <tr>
                 <td>
@@ -89,14 +89,14 @@
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
-            <h3>Usuarios activos</h3>
+            <h2>Usuarios activos</h2>
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <mat-form-field>
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Busca un usuario entre los {{ total_usuarios }} registrados">
           </mat-form-field>
-          <div [class]="total_usuarios > 8 ? 'scroll': ''">
+          <div [class]="total_usuarios > 7 ? 'scroll': ''">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <ng-container matColumnDef="NOMBRE">
                 <th mat-header-cell *matHeaderCellDef> NOMBRE </th>
@@ -159,7 +159,7 @@
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
-            <h3>Editar usuario</h3>
+            <h2>Editar usuario</h2>
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>

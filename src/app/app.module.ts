@@ -40,6 +40,7 @@ import { AdminSubdireccionComponent } from './admin-subdireccion/admin-subdirecc
 import { AdminDepartamentoComponent } from './admin-departamento/admin-departamento.component';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { AdminProcesosComponent } from './admin-procesos/admin-procesos.component';
+import { AdminRolesComponent } from './admin-roles/admin-roles.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { AdminProcesosComponent } from './admin-procesos/admin-procesos.componen
     AdminTiposDocsComponent,
     AdminSubdireccionComponent,
     AdminDepartamentoComponent,
-    AdminProcesosComponent
+    AdminProcesosComponent,
+    AdminRolesComponent
   ],
   imports: [
     BrowserModule,
