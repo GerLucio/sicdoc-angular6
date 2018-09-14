@@ -34,6 +34,7 @@ export class AdminRolesComponent implements OnInit {
     this.validaLogin();
     this.validaPermisos();
     this.ver_editar = false;
+    this.total_roles = 0;
   }
 
   ngOnInit() {
@@ -117,6 +118,7 @@ export class AdminRolesComponent implements OnInit {
         this.roles = res;
         if(!res){
           this.dataSource = null;
+          this.total_roles = 0;
         }
         else if (res['ErrorToken']) {
           this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');

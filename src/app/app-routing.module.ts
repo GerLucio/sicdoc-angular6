@@ -10,6 +10,8 @@ import { AdminSubdireccionComponent } from './admin-subdireccion/admin-subdirecc
 import { AdminDepartamentoComponent } from './admin-departamento/admin-departamento.component';
 import { AdminProcesosComponent } from "./admin-procesos/admin-procesos.component";
 import { AdminRolesComponent } from "./admin-roles/admin-roles.component";
+import { AdminDocsgenComponent } from "./admin-docsgen/admin-docsgen.component";
+import { AdminCodComponent } from "./admin-cod/admin-cod.component";
 
 const routes: Routes = [
   {
@@ -25,9 +27,21 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'admin_docsgen',
+    component: AdminDocsgenComponent,
+    data: { title: 'AdminDocsgen' },
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'admin_tipos_docs',
     component: AdminTiposDocsComponent,
     data: { title: 'AdminTiposDocs' },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin_cod',
+    component: AdminCodComponent,
+    data: { title: 'AdminCod' },
     canActivate: [AuthGuard]
   },
   {

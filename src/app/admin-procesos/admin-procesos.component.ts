@@ -36,6 +36,7 @@ export class AdminProcesosComponent implements OnInit {
     this.validaLogin();
     this.validaPermisos();
     this.ver_editar = false;
+    this.total_procesos = 0;
   }
 
   ngOnInit() {
@@ -140,6 +141,7 @@ export class AdminProcesosComponent implements OnInit {
         this.procesos = res;
         if(!res){
           this.dataSource = null;
+          this.total_procesos = 0;
         }
         else if (res['ErrorToken']) {
           this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');

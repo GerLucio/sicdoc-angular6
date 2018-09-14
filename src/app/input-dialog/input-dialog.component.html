@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Codificación de documentos</h2>
+<mat-dialog-content>
+  <p>{{confirmMessage}}</p>
+  <mat-form-field>
+    <textarea matInput [(ngModel)]="texto" placeholder="{{ tipo }}" ></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close()">CANCELAR</button>
+  <button mat-raised-button color="primary" (click)="dialogRef.close(texto)">CONFIRMAR</button>
+</mat-dialog-actions>

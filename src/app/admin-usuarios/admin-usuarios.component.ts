@@ -33,7 +33,7 @@ export class AdminUsuariosComponent implements OnInit {
   total_usuarios: number;
   dataSource = new MatTableDataSource();
   servidor = new Servidor();
-  displayedColumns: string[] = ['NOMBRE', 'CORREO', 'PUESTO', 'DEPARTAMENTO', 'ROL', 'ESTADO', 'ADMINISTRACIÓN'];
+  displayedColumns: string[] = ['NOMBRE', 'CORREO', 'DEPARTAMENTO', 'ROL', 'ESTADO', 'ADMINISTRACIÓN'];
   token: string;
 
 
@@ -41,6 +41,7 @@ export class AdminUsuariosComponent implements OnInit {
     this.validaLogin();
     this.validaPermisos();
     this.ver_editar = false;
+    this.total_usuarios = 0;
   }
 
 
@@ -282,6 +283,7 @@ export class AdminUsuariosComponent implements OnInit {
         this.usuarios = res;
         if(!res){
           this.dataSource = null;
+          this.total_usuarios = 0;
         }
         else if (res['ErrorToken']) {
           this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');

@@ -1,0 +1,61 @@
+<div class="padre">
+  <mat-grid-list cols="6" gutterSize="3rem" rowHeight="24rem">
+    <mat-grid-tile class="caja" colspan="6" rowspan="2">
+      <mat-card class="card-formulario">
+        <mat-card-header>
+          <mat-card-title>
+            <h2>Documentos por aprobar</h2>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field *ngIf="total_documentos">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Busca un documento entre los {{ total_documentos }} documentos">
+          </mat-form-field>
+          <div class="scroll-docs">
+            <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+              <ng-container matColumnDef="NOMBRE">
+                <mat-header-cell *matHeaderCellDef> NOMBRE </mat-header-cell>
+                <mat-cell *matCellDef="let documento">
+                  <h4>{{documento.NOMBRE}}<mat-chip *ngIf="!documento.OBSERVACION" color="warn" selected>Nuevo</mat-chip></h4>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="PROCESO">
+                <mat-header-cell *matHeaderCellDef> PROCESO </mat-header-cell>
+                <mat-cell *matCellDef="let documento">
+                  <h4>{{documento.PROCESO}}</h4>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="TIPO">
+                <mat-header-cell *matHeaderCellDef> TIPO </mat-header-cell>
+                <mat-cell *matCellDef="let documento">
+                  <h4>{{documento.TIPO}}</h4>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="FECHA_INICIO">
+                <mat-header-cell *matHeaderCellDef> FECHA ALTA </mat-header-cell>
+                <mat-cell *matCellDef="let documento">
+                  <h4>{{documento.FECHA_INICIO}}</h4>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="VER">
+                <mat-header-cell *matHeaderCellDef> VER ARCHIVO </mat-header-cell>
+                <mat-cell *matCellDef="let documento">
+                  <mat-icon color="accent"  (click)="ver_documento(documento)">remove_red_eye</mat-icon>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="ACCIONES">
+                <mat-header-cell *matHeaderCellDef> ACCIONES </mat-header-cell>
+                <mat-cell *matCellDef="let documento">
+                  <button mat-button (click)="inputDialogo(documento, 'declinar')">DECLINAR</button>
+                  <button mat-raised-button (click)="inputDialogo(documento, 'aprobar')" color="primary">APROBAR</button>
+                </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

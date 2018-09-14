@@ -30,7 +30,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <mat-form-field>
+          <mat-form-field *ngIf="total_roles">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar en los {{ total_roles }} roles">
           </mat-form-field>
           <div [class]="total_roles > 10 ? 'scrollv': ''">

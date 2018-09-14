@@ -37,6 +37,7 @@ export class AdminDepartamentoComponent implements OnInit {
     this.validaLogin();
     this.validaPermisos();
     this.ver_editar = false;
+    this.total_departamentos = 0;
   }
 
   ngOnInit() {
@@ -139,6 +140,7 @@ export class AdminDepartamentoComponent implements OnInit {
         this.departamentos = res;
         if (!res) {
           this.dataSource = null;
+          this.total_departamentos = 0;
         }
         else if (res['ErrorToken']) {
           this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');

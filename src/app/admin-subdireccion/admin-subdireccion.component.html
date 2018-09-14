@@ -30,7 +30,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <mat-form-field>
+          <mat-form-field *ngIf="total_sub">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar en las {{ total_sub }} subdirecciones">
           </mat-form-field>
           <div [class]="total_sub > 10 ? 'scrollv': ''">

@@ -1,0 +1,32 @@
+.mat-table {
+    overflow: auto;
+  }
+
+.mat-column-CODIGO{
+    flex: 0 0 10%;
+}
+
+.mat-column-NOMBRE{
+    flex: 0 0 30%;
+}
+
+.mat-column-PROCESO{
+    flex: 0 0 30%;
+}
+
+.mat-column-TIPO{
+    flex: 0 0 10%;
+}
+
+.mat-column-REVISIONES{
+    flex: 0 0 10%;
+}
+
+.mat-column-ADMINISTRACIÓN{
+    flex: 0 0 10%;
+}
+
+mat-header-cell, mat-cell {
+    display:flex;
+    justify-content: center;
+   }

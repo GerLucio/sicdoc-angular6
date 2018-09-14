@@ -35,6 +35,7 @@ export class AdminSubdireccionComponent implements OnInit {
     this.validaLogin();
     this.validaPermisos();
     this.ver_editar = false;
+    this.total_sub = 0;
   }
 
   ngOnInit() {
@@ -118,6 +119,7 @@ export class AdminSubdireccionComponent implements OnInit {
         this.subdirecciones = res;
         if(!res){
           this.dataSource = null;
+          this.total_sub = 0;
         }
         else if (res['ErrorToken']) {
           this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');

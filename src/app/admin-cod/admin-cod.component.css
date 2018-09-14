@@ -1,0 +1,32 @@
+.mat-table {
+    overflow: auto;
+  }
+
+.mat-column-NOMBRE{
+    flex: 0 0 25%;
+}
+
+.mat-column-PROCESO{
+    flex: 0 0 25%;
+}
+
+.mat-column-TIPO{
+    flex: 0 0 10%;
+}
+
+.mat-column-FECHA_INICIO{
+    flex: 0 0 10%;
+}
+
+.mat-column-VER{
+    flex: 0 0 10%;
+}
+
+.mat-column-ACCIONES{
+    flex: 0 0 15%;
+}
+
+mat-header-cell, mat-cell {
+    display:flex;
+    justify-content: center;
+   }    

@@ -41,6 +41,10 @@ import { AdminDepartamentoComponent } from './admin-departamento/admin-departame
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { AdminProcesosComponent } from './admin-procesos/admin-procesos.component';
 import { AdminRolesComponent } from './admin-roles/admin-roles.component';
+import { AdminDocsgenComponent } from './admin-docsgen/admin-docsgen.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { AdminCodComponent } from './admin-cod/admin-cod.component';
+import { InputDialogComponent } from './input-dialog/input-dialog.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +58,10 @@ import { AdminRolesComponent } from './admin-roles/admin-roles.component';
     AdminSubdireccionComponent,
     AdminDepartamentoComponent,
     AdminProcesosComponent,
-    AdminRolesComponent
+    AdminRolesComponent,
+    AdminDocsgenComponent,
+    AdminCodComponent,
+    InputDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -85,10 +92,11 @@ import { AdminRolesComponent } from './admin-roles/admin-roles.component';
     MatDialogModule,
     MatStepperModule,
     NgIdleKeepaliveModule.forRoot(),
+    PdfViewerModule,
     AppRoutingModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent],
-  entryComponents: [ConfirmationDialog]
+  entryComponents: [ConfirmationDialog, InputDialogComponent]
 })
 export class AppModule { }
