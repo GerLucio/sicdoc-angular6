@@ -1,0 +1,140 @@
+<div class="padre">
+
+    <mat-grid-list cols="6" gutterSize="3rem" rowHeight="24rem">
+  
+      <mat-grid-tile *ngIf="ver_nuevo" class="caja" colspan="6" rowspan="2">
+        <mat-card class="card-formulario">
+          <mat-card-header>
+            <mat-card-title>
+              <h2>Alta de Documentos Generales del Sistema de Gestión de la Calidad activos</h2>
+            </mat-card-title>
+            <mat-card-subtitle>Ingresa todos los datos</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <form class="form_edita_60">
+              <mat-form-field>
+                <input matInput placeholder="Nombre del documento" required [(ngModel)]="nuevo_documento.nombre" name="nombre" maxlength="128">
+              </mat-form-field>
+              <mat-form-field>
+                <mat-select placeholder="Proceso" [(ngModel)]="nuevo_documento.id_proceso" name="id_proceso" required>
+                  <mat-option *ngFor="let p of procesos" [value]="p.ID_PROCESO">
+                    {{p.NOMBRE}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-select placeholder="Tipo de Documento" [(ngModel)]="nuevo_documento.id_tipo" name="id_tipo" required>
+                  <mat-option *ngFor="let t of tipos" [value]="t.ID_TIPO">
+                    {{t.TIPO}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Ubicación del archivo" required [(ngModel)]="nuevo_documento.ubicacion" name="ubicacion" maxlength="512">
+              </mat-form-field>
+              <label for="archivo">Archivo </label>
+              <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)" accept=".xlsx,.xls,.doc,.docx,.pdf" required>
+              <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
+              <mat-icon *ngIf="archivo" color="accent" (click)="resetInputFile()">clear</mat-icon>
+              <div class="derecha">
+                <button mat-button (click)="cancelarNuevo()">CANCELAR</button>
+                <button mat-raised-button (click)="upload()" color="primary">ALTA</button>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+  
+      <!--<mat-grid-tile *ngIf="ver_archivo" class="caja" colspan="6" rowspan="2">
+        <mat-card class="card-formulario">
+          <mat-card-header>
+            <mat-card-title>
+              <h2>{{ doc_mostrar.nombre }}</h2>
+            </mat-card-title>
+            <mat-card-subtitle><button mat-button color="accent" (click)="ver_archivo = false">REGRESAR</button></mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content class="scroll-docs">
+            <pdf-viewer 
+            [src]="doc_mostrar.ruta" 
+            [render-text]="true" 
+            [show-all]="true" 
+            [autoresize] = "true"
+            [zoom]="0.7"
+            style="display: block;">
+          </pdf-viewer>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>-->
+  
+      <mat-grid-tile *ngIf="!ver_nuevo" class="caja" colspan="6" rowspan="2">
+        <mat-card class="card-formulario">
+          <mat-card-header>
+            <mat-card-title>
+              <h2>Documentos Generales del Sistema de Gestión de la Calidad activos</h2>
+            </mat-card-title>
+          </mat-card-header>
+          <div class="flotante">
+            <button mat-raised-button (click)="ver_nuevo = true" color="primary">NUEVO DOCUMENTO</button>
+          </div>
+          <mat-card-content>
+            <mat-form-field *ngIf="total_documentos">
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Busca un documento entre los {{ total_documentos }} registrados">
+            </mat-form-field>
+            <div class="scroll-docs">
+              <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <ng-container matColumnDef="CODIGO">
+                  <mat-header-cell *matHeaderCellDef> CÓDIGO </mat-header-cell>
+                  <mat-cell *matCellDef="let documento">
+                    <h4>{{documento.CODIGO}}</h4>
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="NOMBRE">
+                  <mat-header-cell *matHeaderCellDef> NOMBRE </mat-header-cell>
+                  <mat-cell *matCellDef="let documento">
+                    <h4>{{documento.NOMBRE}}</h4>
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="PROCESO">
+                  <mat-header-cell *matHeaderCellDef> PROCESO </mat-header-cell>
+                  <mat-cell *matCellDef="let documento">
+                    <h4>{{documento.PROCESO}}</h4>
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="TIPO">
+                  <mat-header-cell *matHeaderCellDef> TIPO </mat-header-cell>
+                  <mat-cell *matCellDef="let documento">
+                    <h4>{{documento.TIPO}}</h4>
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="REVISIONES">
+                  <mat-header-cell *matHeaderCellDef> REVISIONES </mat-header-cell>
+                  <mat-cell *matCellDef="let documento">
+                    <h4>{{documento.NUM_REVISIONES}}</h4>
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="ADMINISTRACIÓN">
+                  <mat-header-cell *matHeaderCellDef> ADMINISTRAR </mat-header-cell>
+                  <mat-cell *matCellDef="let documento">
+                    <mat-icon color="accent" [matMenuTriggerFor]="menuadmin">settings</mat-icon>
+                    <mat-menu #menuadmin="matMenu">
+                      <button id="btn_archivo" mat-menu-item (click)="ver_documento(documento)">
+                        <mat-icon>remove_red_eye</mat-icon>
+                        <span>Ver</span>
+                      </button>
+                      <button mat-menu-item (click)="eliminarDialogo(documento)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Eliminar</span>
+                      </button>
+                    </mat-menu>
+                  </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              </mat-table>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  
+  </div>

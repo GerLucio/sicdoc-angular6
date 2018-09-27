@@ -13,7 +13,7 @@
         <mat-card-content>
           <form class="form_edita_60">
             <mat-form-field>
-              <input matInput placeholder="Nombre del documento" required [(ngModel)]="nuevo_documento. nombre" name="nombre" maxlength="128">
+              <input matInput placeholder="Nombre del documento" required [(ngModel)]="nuevo_documento.nombre" name="nombre" maxlength="128">
             </mat-form-field>
             <mat-form-field>
               <input matInput placeholder="Código" required [(ngModel)]="nuevo_documento. codigo" name="codigo" maxlength="64">
@@ -33,7 +33,7 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Ubicación del archivo" required [(ngModel)]="nuevo_documento. ubicacion" name="ubicacion" maxlength="512">
+              <input matInput placeholder="Ubicación del archivo" required [(ngModel)]="nuevo_documento.ubicacion" name="ubicacion" maxlength="512">
             </mat-form-field>
             <label for="archivo">Archivo </label>
             <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)" accept=".xlsx,.xls,.doc,.docx,.pdf" required>

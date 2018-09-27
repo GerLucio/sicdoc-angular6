@@ -23,6 +23,7 @@ export class AdminDepartamentoComponent implements OnInit {
   servidor = new Servidor();
   subdirecciones: any;
   usuarios: any;
+  usuariosnolideres: any;
   usuarios_departamento: any = [];
   nuevo_departamento = new Departamento();
   total_departamentos: number;
@@ -44,6 +45,7 @@ export class AdminDepartamentoComponent implements OnInit {
     this.obtenSubdirecciones();
     this.obtenDepartamentos();
     this.obtenUsuarios();
+    this.obtenUsuariosNoLideres();
   }
 
   validaLogin() {
@@ -125,6 +127,26 @@ export class AdminDepartamentoComponent implements OnInit {
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         this.usuarios = res;
+      });
+  }
+
+  obtenUsuariosNoLideres() {
+    let httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    });
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenUsuariosNoLideres.php', JSON.stringify({
+      tkn: this.token
+    }), {
+      }).subscribe(res => {
+        this.usuariosnolideres = res;
+        if (!res) {
+          this.usuariosnolideres = null;
+        }
+        else if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+        }
       });
   }
 
@@ -249,6 +271,7 @@ export class AdminDepartamentoComponent implements OnInit {
             this.nuevo_departamento.id_subdireccion = null;
             this.nuevo_departamento.id_lider = null;
             this.obtenDepartamentos();
+            this.obtenUsuariosNoLideres();
           }
         });
     }

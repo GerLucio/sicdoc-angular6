@@ -45,6 +45,10 @@ import { AdminDocsgenComponent } from './admin-docsgen/admin-docsgen.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AdminCodComponent } from './admin-cod/admin-cod.component';
 import { InputDialogComponent } from './input-dialog/input-dialog.component';
+import { AdminUpdateDocsgenComponent } from './admin-update-docsgen/admin-update-docsgen.component';
+import { AdminPcPoComponent } from './admin-pc-po/admin-pc-po.component';
+import { AdminDocsPendientesComponent } from './admin-docs-pendientes/admin-docs-pendientes.component';
+import { AdminUpdateRevisionComponent } from './admin-update-revision/admin-update-revision.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +65,11 @@ import { InputDialogComponent } from './input-dialog/input-dialog.component';
     AdminRolesComponent,
     AdminDocsgenComponent,
     AdminCodComponent,
-    InputDialogComponent
+    InputDialogComponent,
+    AdminUpdateDocsgenComponent,
+    AdminPcPoComponent,
+    AdminDocsPendientesComponent,
+    AdminUpdateRevisionComponent
   ],
   imports: [
     BrowserModule,

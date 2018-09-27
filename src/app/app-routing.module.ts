@@ -11,7 +11,11 @@ import { AdminDepartamentoComponent } from './admin-departamento/admin-departame
 import { AdminProcesosComponent } from "./admin-procesos/admin-procesos.component";
 import { AdminRolesComponent } from "./admin-roles/admin-roles.component";
 import { AdminDocsgenComponent } from "./admin-docsgen/admin-docsgen.component";
+import { AdminUpdateDocsgenComponent } from "./admin-update-docsgen/admin-update-docsgen.component";
 import { AdminCodComponent } from "./admin-cod/admin-cod.component";
+import { AdminPcPoComponent } from './admin-pc-po/admin-pc-po.component';
+import { AdminDocsPendientesComponent } from './admin-docs-pendientes/admin-docs-pendientes.component';
+import { AdminUpdateRevisionComponent } from './admin-update-revision/admin-update-revision.component';
 
 const routes: Routes = [
   {
@@ -24,6 +28,24 @@ const routes: Routes = [
     path: 'admin_usuarios',
     component: AdminUsuariosComponent,
     data: { title: 'AdminUsuarios' },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin_update_revisiones',
+    component: AdminUpdateRevisionComponent,
+    data: { title: 'AdminUpdateRevision' },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin_pc_po',
+    component: AdminPcPoComponent,
+    data: { title: 'AdminPcPo' },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin_docs_pendientes',
+    component: AdminDocsPendientesComponent,
+    data: { title: 'AdminDocsPendientes' },
     canActivate: [AuthGuard]
   },
   {
@@ -42,6 +64,12 @@ const routes: Routes = [
     path: 'admin_cod',
     component: AdminCodComponent,
     data: { title: 'AdminCod' },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin_update_docsgen',
+    component: AdminUpdateDocsgenComponent,
+    data: { title: 'AdminUpdateDocsgen' },
     canActivate: [AuthGuard]
   },
   {

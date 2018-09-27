@@ -10,11 +10,11 @@ import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 @Component({
-  selector: 'app-admin-docsgen',
-  templateUrl: './admin-docsgen.component.html',
-  styleUrls: ['./admin-docsgen.component.css']
+  selector: 'app-admin-pc-po',
+  templateUrl: './admin-pc-po.component.html',
+  styleUrls: ['./admin-pc-po.component.css']
 })
-export class AdminDocsgenComponent implements OnInit {
+export class AdminPcPoComponent implements OnInit {
 
   @ViewChild('inputArchivo')
   inputArchivo: ElementRef;
@@ -49,8 +49,17 @@ export class AdminDocsgenComponent implements OnInit {
   }
 
   validaPermisos() {
-    if (this.usuario.id_rol != 2) {
+    if (this.usuario.id_rol != 2 && this.usuario.id_rol != 3) {
       this.router.navigate(['/inicio']);
+    }
+  }
+
+  onFileSelected(event) {
+    this.archivo = <File>event.target.files[0];
+    if (this.archivo.size > 2000000) {
+      this.inputArchivo.nativeElement.value = "";
+      this.resetInputFile();
+      this.openSnackBar('ERROR', 'El tamaño máximo de archivo son 2MB');
     }
   }
 
@@ -64,6 +73,7 @@ export class AdminDocsgenComponent implements OnInit {
       this.usuario.puesto = this.setUsuario.PUESTO;
       this.usuario.correo = this.setUsuario.CORREO;
       this.usuario.departamento = this.setUsuario.DEPARTAMENTO;
+      this.usuario.id_departamento = this.setUsuario.ID_DEPARTAMENTO;
       this.usuario.rol = this.setUsuario.ROL;
       this.usuario.id_rol = this.setUsuario.ID_ROL;
       this.usuario.id_estado = this.setUsuario.ID_ESTADO;
@@ -72,64 +82,15 @@ export class AdminDocsgenComponent implements OnInit {
     }
   }
 
-  onFileSelected(event) {
-    this.archivo = <File>event.target.files[0];
-    if (this.archivo.size > 2000000) {
-      this.inputArchivo.nativeElement.value = "";
-      this.resetInputFile();
-      this.openSnackBar('ERROR', 'El tamaño máximo de archivo son 2MB');
-    }
-  }
-
-  upload() {
-    if (this.nuevo_documento.nombre && this.nuevo_documento.codigo && this.nuevo_documento.id_proceso &&
-      this.nuevo_documento.id_tipo && this.nuevo_documento.ubicacion && this.archivo) {
-      const data = new FormData();
-      data.append('archivo', this.archivo, this.archivo.name);
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
-        .subscribe(res => {
-          if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
-          }
-          else if (res['Exito']) {
-            this.nuevoDocumento(res['nombre_generado']);
-          }
-        });
-    }
-    else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
-    }
-  }
-
-  resetInputFile() {
-    this.inputArchivo.nativeElement.value = "";
-    this.archivo = null;
-  }
-
-  nuevoDocumento(nombre_generado) {
-    this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoDocumentoSGC.php', JSON.stringify({
-      documento: this.nuevo_documento, url: this.servidor.url, tkn: this.token, nombre_archivo: nombre_generado,
-      responsable: this.usuario.id_usuario
-    }), {
-      }).subscribe(res => {
-        if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
-        }
-        else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
-        }
-        else {
-          this.openSnackBar('ÉXITO', res['Exito']);
-          this.cancelarNuevo();
-          this.obtenDocumentos();
-        }
-      });
+  ver_documento(documento) {
+    //window.open(this.servidor.nombre + '/apps/sicdoc/files/' + documento.RUTA,
+    window.open(this.servidor.nombre + '/apps/sicdoc/verArchivo.php?file=' + documento.RUTA,
+      "resizable=yes,scrollbars=no,status=no,toolbar=no,menubar=no,titlebar=no");
   }
 
   obtenDocumentos() {
-    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenDocumentosGenerales.php', JSON.stringify({
-      tkn: this.token
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenDocumentosDepto.php', JSON.stringify({
+      tkn: this.token, departamento: this.usuario.id_departamento
     }), {
       }).subscribe(res => {
         this.documentos = res;
@@ -148,15 +109,29 @@ export class AdminDocsgenComponent implements OnInit {
       });
   }
 
-  ver_documento(documento) {
-    //window.open(this.servidor.nombre + '/apps/sicdoc/files/' + documento.RUTA,
-    window.open(this.servidor.nombre + '/apps/sicdoc/verArchivo.php?file=' + documento.RUTA,
-      "resizable=yes,scrollbars=no,status=no,toolbar=no,menubar=no,titlebar=no");
+  upload() {
+    if (this.nuevo_documento.nombre && this.nuevo_documento.id_proceso &&
+      this.nuevo_documento.id_tipo && this.nuevo_documento.ubicacion && this.archivo) {
+      const data = new FormData();
+      data.append('archivo', this.archivo, this.archivo.name);
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+        .subscribe(res => {
+          if (res['Error']) {
+            this.openSnackBar('ERROR', res['Error']);
+          }
+          else if (res['Exito']) {
+            this.nuevoDocumento(res['nombre_generado']);
+          }
+        });
+    }
+    else {
+      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+    }
   }
 
   obtenProcesos() {
-    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenProcesosSGC.php', JSON.stringify({
-      tkn: this.token
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenProcesosDepto.php', JSON.stringify({
+      tkn: this.token, departamento: this.usuario.id_departamento
     }), {
       }).subscribe(res => {
         if (res['ErrorToken']) {
@@ -180,6 +155,48 @@ export class AdminDocsgenComponent implements OnInit {
       });
   }
 
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 10000,
+      verticalPosition: 'top'
+    });
+  }
+
+  cancelarNuevo() {
+    this.ver_nuevo = false;
+    this.resetInputFile();
+    this.nuevo_documento.nombre = null;
+    this.nuevo_documento.id_proceso = null;
+    this.nuevo_documento.id_tipo = null;
+    this.nuevo_documento.ubicacion = null;
+  }
+
+  resetInputFile() {
+    this.inputArchivo.nativeElement.value = "";
+    this.archivo = null;
+  }
+
+  nuevoDocumento(nombre_generado) {
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoDocumento.php', JSON.stringify({
+      documento: this.nuevo_documento, url: this.servidor.url, tkn: this.token, nombre_archivo: nombre_generado,
+      responsable: this.usuario.id_usuario
+    }), {
+      }).subscribe(res => {
+        if (res['Error']) {
+          this.openSnackBar('ERROR', res['Error']);
+        }
+        else if (res['ErrorToken']) {
+          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+        }
+        else {
+          this.openSnackBar('ÉXITO', res['Exito']);
+          this.cancelarNuevo();
+          this.obtenDocumentos();
+        }
+      });
+  }
+
   eliminarDialogo(documento) {
     this.dialogRef = this.dialog.open(ConfirmationDialog, {
       disableClose: false
@@ -195,7 +212,7 @@ export class AdminDocsgenComponent implements OnInit {
   }
 
   eliminaDocumento(id) {
-    this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaDocumento.php', JSON.stringify({
+    /*this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaDocumento.php', JSON.stringify({
       id_documento: id, tkn: this.token
     }), {
       }).subscribe(res => {
@@ -210,24 +227,7 @@ export class AdminDocsgenComponent implements OnInit {
           this.openSnackBar('ÉXITO', res['Exito']);
           this.obtenDocumentos();
         }
-      });
-  }
-
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 10000,
-      verticalPosition: 'top'
-    });
-  }
-
-  cancelarNuevo() {
-    this.ver_nuevo = false;
-    this.resetInputFile();
-    this.nuevo_documento.nombre = null;
-    this.nuevo_documento.codigo = null;
-    this.nuevo_documento.id_proceso = null;
-    this.nuevo_documento.id_tipo = null;
-    this.nuevo_documento.ubicacion = null;
+      });*/
   }
 
   applyFilter(filterValue: string) {
