@@ -1,3 +1,151 @@
-<p>
-  admin-update-revision works!
-</p>
+<div class="padre">
+  <mat-grid-list cols="6" gutterSize="3rem" rowHeight="24rem">
+
+    <mat-grid-tile *ngIf="ver_nuevo" class="caja" colspan="6" rowspan="2">
+      <mat-card class="card-formulario">
+        <mat-card-header>
+          <mat-card-title>
+            <h2>Nueva revisión de Documentos</h2>
+          </mat-card-title>
+          <mat-card-subtitle>Sube tu archivo</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <form class="form_edita_60">
+            <mat-form-field>
+              <mat-select placeholder="Documento" [(ngModel)]="nueva_revision.id_documento" name="id_documento"
+                required>
+                <mat-option *ngFor="let d of documentos_depto" [value]="d.ID_DOCUMENTO">
+                  {{d.NOMBRE}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-slide-toggle (change)="onChange($event)" class="example-margin" color="warn" checked="false">
+              ¿Cambió la ubicación del archivo?
+            </mat-slide-toggle>
+            <mat-form-field>
+              <input matInput [disabled]="input_ubicacion" placeholder="Ubicación del archivo" [(ngModel)]="nueva_ubicacion"
+                name="nueva_ubicacion" maxlength="512">
+            </mat-form-field>
+            <br><br><br>
+            <label for="archivo">Archivo </label>
+            <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)" accept=".xlsx,.xls,.doc,.docx,.pdf"
+              required>
+            <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
+            <mat-icon *ngIf="archivo" color="accent" (click)="resetInputFile()">clear</mat-icon>
+            <div class="derecha">
+              <button mat-button (click)="cancelarNuevo()">CANCELAR</button>
+              <button mat-raised-button (click)="upload()" color="primary">ALTA</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile *ngIf="!ver_nuevo && !ver_editar" class="caja" colspan="6" rowspan="2">
+      <mat-card class="card-formulario">
+        <mat-card-header>
+          <mat-card-title>
+            <h2>Revisiones pendientes por aprobar</h2>
+          </mat-card-title>
+        </mat-card-header>
+        <div class="flotante">
+          <button mat-raised-button (click)="ver_nuevo = true" color="primary">NUEVA REVISION</button>
+        </div>
+        <mat-card-content>
+          <mat-form-field *ngIf="total_documentos">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Busca un documento entre los {{ total_documentos }} documentos">
+          </mat-form-field>
+          <div class="scrollv">
+            <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+              <ng-container matColumnDef="NOMBRE">
+                <mat-header-cell *matHeaderCellDef> NOMBRE </mat-header-cell>
+                <mat-cell *matCellDef="let documento">
+                  <h4>{{documento.NOMBRE}}<mat-chip *ngIf="documento.OBSERVACION" color="accent" selected>Revisado</mat-chip>
+                    <mat-chip *ngIf="!documento.OBSERVACION" color="warn" selected>Pendiente</mat-chip>
+                  </h4>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="PROCESO">
+                <mat-header-cell *matHeaderCellDef> PROCESO </mat-header-cell>
+                <mat-cell *matCellDef="let documento">
+                  <h4>{{documento.PROCESO}}</h4>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="TIPO">
+                <mat-header-cell *matHeaderCellDef> TIPO </mat-header-cell>
+                <mat-cell *matCellDef="let documento">
+                  <h4>{{documento.TIPO}}</h4>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="FECHA_INICIO">
+                <mat-header-cell *matHeaderCellDef> FECHA REVISIÓN </mat-header-cell>
+                <mat-cell *matCellDef="let documento">
+                  <h4>{{documento.FECHA_INICIO}}</h4>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="VER">
+                <mat-header-cell *matHeaderCellDef> VER ARCHIVO </mat-header-cell>
+                <mat-cell *matCellDef="let documento">
+                  <mat-icon color="accent" (click)="ver_documento(documento)">remove_red_eye</mat-icon>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="ACCIONES">
+                <mat-header-cell *matHeaderCellDef> ACCIONES </mat-header-cell>
+                <mat-cell *matCellDef="let documento">
+                  <button [disabled]=" documento.OBSERVACION ? 'false': 'true'" mat-raised-button (click)="editarDocumento(documento)"
+                    color="primary">MODIFICAR</button>
+                </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile *ngIf="ver_editar" class="caja" colspan="6" rowspan="2">
+      <mat-card class="card-formulario">
+        <mat-card-header>
+          <mat-card-title>
+            <h2>Modifica revisión pendiente</h2>
+          </mat-card-title>
+          <mat-card-subtitle>Sube tu archivo</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <form class="form_edita_60">
+            <mat-form-field>
+              <mat-select disabled="true" placeholder="Documento" [(ngModel)]="editar_revision.id_documento" name="id_documento"
+                required>
+                <mat-option *ngFor="let d of documentos_depto" [value]="d.ID_DOCUMENTO">
+                  {{d.NOMBRE}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-slide-toggle (change)="onChange($event)" class="example-margin" color="warn" checked="false">
+              ¿Cambió la ubicación del archivo?
+            </mat-slide-toggle>
+            <mat-form-field>
+              <input matInput [disabled]="input_ubicacion" placeholder="Ubicación del archivo" [(ngModel)]="nueva_ubicacion"
+                name="nueva_ubicacion" maxlength="512">
+            </mat-form-field>
+            <br><br><br>
+            <label for="archivo">Archivo </label>
+            <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)" accept=".xlsx,.xls,.doc,.docx,.pdf"
+              required>
+            <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
+            <mat-icon *ngIf="archivo" color="accent" (click)="resetInputFile()">clear</mat-icon>
+            <div class="derecha">
+              <button mat-button (click)="cancelarEditar()">CANCELAR</button>
+              <button mat-raised-button (click)="upload2()" color="primary">ALTA</button>
+            </div>
+            <br><br><br><br><br><br>
+            El documento no fue aprobado por: <h3>{{editar_revision.observacion}}</h3>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</div>

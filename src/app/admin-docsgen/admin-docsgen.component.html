@@ -88,7 +88,7 @@
               <ng-container matColumnDef="CODIGO">
                 <mat-header-cell *matHeaderCellDef> CÓDIGO </mat-header-cell>
                 <mat-cell *matCellDef="let documento">
-                  <h4>{{documento.CODIGO}}</h4>
+                  <h4>{{documento.CODIGO}} / {{documento.ID_REVISION - 1}} </h4>
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="NOMBRE">

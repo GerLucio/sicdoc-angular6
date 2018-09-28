@@ -171,11 +171,14 @@ export class AdminDocsPendientesComponent implements OnInit {
       tkn: this.token, departamento: this.usuario.id_departamento
     }), {
       }).subscribe(res => {
-        if (res['ErrorToken']) {
+        this.procesos = res;
+        if(!res){
+          this.procesos = null;
+        }
+        else if (res['ErrorToken']) {
           this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
-        this.procesos = res;
       });
   }
 
