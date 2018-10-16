@@ -6,6 +6,7 @@ import { Departamento } from "../templates/departamento";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Servidor } from "../templates/servidor";
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-contrasenas',
@@ -69,16 +70,34 @@ export class AdminContrasenasComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
         }
         else {
           localStorage.setItem('usuario', JSON.stringify(res['usuario']));
-          this.openSnackBar('ÉXITO', 'Tu contraseña se cambió correctamente');
-          setTimeout( () => { this.router.navigate(['/inicio']); }, 2000 );
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: 'Tu contraseña se cambió correctamente',
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', 'Tu contraseña se cambió correctamente');
+          setTimeout( () => { this.router.navigate(['/inicio']); }, 3000 );
         }
       });
   }

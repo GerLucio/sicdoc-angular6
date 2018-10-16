@@ -1,8 +1,8 @@
 <div class="padre">
 
-  <mat-grid-list cols="6" gutterSize="1rem" rowHeight="12rem">
+  <mat-grid-list cols="6" gutterSize="1rem" rowHeight="80rem">
 
-    <mat-grid-tile class="caja" colspan="6" rowspan="1">
+    <mat-grid-tile *ngIf="ver_nuevo" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -12,45 +12,43 @@
         </mat-card-header>
         <mat-card-content>
           <form class="example-form">
-            <table cellspacing="10">
-              <tr>
-                <td>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Proceso</mat-label>
-                    <input matInput placeholder="Proceso" [(ngModel)]="nuevo_proceso.nombre" maxlength="128" name="proceso" required>
-                  </mat-form-field>
-                </td>
-                <td>
-                  <mat-form-field>
-                    <mat-select placeholder="Departamento" [(ngModel)]="nuevo_proceso.id_departamento" name="departamento" required>
-                      <mat-option *ngFor="let d of departamentos" [value]="d.ID_DEPTO">
-                        {{d.NOMBRE}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </td>
-                <td>
-                  <button mat-raised-button color="primary" (click)="nuevoProceso()">ALTA</button>
-                </td>
-              </tr>
-            </table>
+            <mat-form-field appearance="outline">
+              <mat-label>Proceso</mat-label>
+              <input matInput placeholder="Proceso" [(ngModel)]="nuevo_proceso.nombre" maxlength="128" name="proceso"
+                required>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Departamento" [(ngModel)]="nuevo_proceso.id_departamento" name="departamento"
+                required>
+                <mat-option *ngFor="let d of departamentos" [value]="d.ID_DEPTO">
+                  {{d.NOMBRE}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="derecha">
+              <button mat-button (click)="cancelarNuevo()">CANCELAR</button>
+              <button class="derecha" mat-raised-button color="primary" (click)="nuevoProceso()">ALTA</button>
+            </div>
           </form>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>
 
-    <mat-grid-tile *ngIf="!ver_editar" class="caja" colspan="6" rowspan="3">
+    <mat-grid-tile *ngIf="!ver_editar && !ver_nuevo" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
             <h3>Procesos activos</h3>
           </mat-card-title>
         </mat-card-header>
+        <div class="flotante">
+            <button mat-raised-button (click)="ver_nuevo = true" color="primary">NUEVO PROCESO</button>
+          </div>
         <mat-card-content>
           <mat-form-field *ngIf="total_procesos">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar en los {{ total_procesos }} procesos">
           </mat-form-field>
-          <div [class]="total_procesos > 7 ? 'scrollv': ''">
+          <div [class]="total_procesos > 11 ? 'scroll': ''">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <ng-container matColumnDef="PROCESO">
                 <th mat-header-cell *matHeaderCellDef> PROCESO </th>
@@ -91,7 +89,7 @@
       </mat-card>
     </mat-grid-tile>
 
-    <mat-grid-tile *ngIf="ver_editar" class="caja" colspan="6" rowspan="3">
+    <mat-grid-tile *ngIf="ver_editar" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -99,13 +97,15 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <form class="example-form form_edita_60">
+          <form class="example-form">
             <mat-form-field appearance="outline">
               <mat-label>Proceso</mat-label>
-              <input matInput placeholder="Proceso" [(ngModel)]="proceso_editar.nombre" maxlength="128" name="nombre" required>
+              <input matInput placeholder="Proceso" [(ngModel)]="proceso_editar.nombre" maxlength="128" name="nombre"
+                required>
             </mat-form-field>
             <mat-form-field>
-              <mat-select placeholder="Departamento" [(ngModel)]="proceso_editar.id_departamento" name="id_departamento" required>
+              <mat-select placeholder="Departamento" [(ngModel)]="proceso_editar.id_departamento" name="id_departamento"
+                required>
                 <mat-option *ngFor="let d of departamentos" [value]="d.ID_DEPTO">
                   {{d.NOMBRE}}
                 </mat-option>

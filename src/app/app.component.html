@@ -16,9 +16,9 @@
                     <div mat-card-avatar class="example-header-image"></div>
                     <mat-card-title>
                         <span [matMenuTriggerFor]="menu">
-                            <h2>{{usuario.nombre | uppercase}} {{usuario.apellido | uppercase}}
+                            <h4>{{usuario.nombre | uppercase}} {{usuario.apellido | uppercase}}
                                 <mat-icon>keyboard_arrow_down</mat-icon>
-                            </h2>
+                            </h4>
                         </span>
 
                         <mat-menu #menu="matMenu" xPosition="before">
@@ -32,7 +32,7 @@
                     </mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
-                    <h4>{{usuario.rol}}</h4>
+                    <h4>{{usuario.rol}}</h4>{{usuario.departamento}}
 
                 </mat-card-content>
             </mat-card>
@@ -47,7 +47,7 @@
                     </mat-expansion-panel-header>
                     <mat-list>
                         <mat-list-item>
-                            <a mat-button routerLink="/" (click)="snav.close()">Búsqueda de documentos</a>
+                            <a mat-button routerLink="/inicio" (click)="snav.close()">Búsqueda de documentos</a>
                         </mat-list-item>
                     </mat-list>
                 </mat-expansion-panel>
@@ -62,36 +62,39 @@
                         <mat-list-item *ngIf="usuario.id_rol == 2">
                             <a mat-button routerLink="/admin_docsgen" (click)="snav.close()">Administración Documentos
                                 SGC</a>
+                                <mat-divider></mat-divider>
                         </mat-list-item>
-                        <mat-divider></mat-divider>
-                        <mat-list-item *ngIf="usuario.id_rol == 2 || usuario.id_rol == 3">
-                            <a mat-button routerLink="/admin_pc_po" (click)="snav.close()">Administración Documentos
-                                Depto</a>
-                        </mat-list-item>
-                        <mat-divider></mat-divider>
-                        <mat-list-item *ngIf="usuario.id_rol == 2 || usuario.id_rol == 3">
-                            <a mat-button routerLink="/admin_docs_pendientes" (click)="snav.close()">Documentos Depto
-                                Pendientes</a>
-                        </mat-list-item>
-                        <mat-divider></mat-divider>
-                        <mat-list-item *ngIf="usuario.id_rol == 2 || usuario.id_rol == 3">
-                            <a mat-button routerLink="/admin_update_revisiones" (click)="snav.close()">Revisión de
-                                Documentos Depto</a>
-                        </mat-list-item>
-                        <mat-divider></mat-divider>
-                        <mat-list-item>
-                            <a mat-button routerLink="/" (click)="snav.close()">Consulta PC y PO</a>
-                        </mat-list-item>
-                        <mat-divider></mat-divider>
                         <mat-list-item *ngIf="usuario.id_rol  == 2">
                             <a mat-button routerLink="/admin_cod" (click)="snav.close()">Codificación Nuevos Documentos</a>
+                            <mat-divider></mat-divider>
                         </mat-list-item>
-                        <mat-divider></mat-divider>
                         <mat-list-item *ngIf="usuario.id_rol  == 2">
                             <a mat-button routerLink="/admin_update_docsgen" (click)="snav.close()">Revisión de
                                 Documentos</a>
+                                <mat-divider></mat-divider>
                         </mat-list-item>
-                        <mat-divider></mat-divider>
+                        <mat-list-item *ngIf="usuario.id_rol  == 2">
+                            <a mat-button routerLink="/admin_bajas_docs" (click)="snav.close()">Bajas Pendientes</a>
+                            <mat-divider></mat-divider>
+                        </mat-list-item>
+                        <mat-list-item *ngIf="usuario.id_rol == 2 || usuario.id_rol == 3">
+                            <a mat-button routerLink="/admin_pc_po" (click)="snav.close()">Administración Documentos</a>
+                            <mat-divider></mat-divider>
+                        </mat-list-item>
+                        <mat-list-item *ngIf="usuario.id_rol == 2 || usuario.id_rol == 3">
+                            <a mat-button routerLink="/admin_docs_pendientes" (click)="snav.close()">Documentos
+                                Pendientes Depto</a>
+                                <mat-divider></mat-divider>
+                        </mat-list-item>
+                        <mat-list-item *ngIf="usuario.id_rol == 2 || usuario.id_rol == 3">
+                            <a mat-button routerLink="/admin_update_revisiones" (click)="snav.close()">Revisión de
+                                Documentos Depto</a>
+                                <mat-divider></mat-divider>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <a mat-button routerLink="/" (click)="snav.close()">Consulta PC y PO</a>
+                            <mat-divider></mat-divider>
+                        </mat-list-item>
                         <mat-list-item>
                             <a mat-button routerLink="/" (click)="snav.close()">Consulta Documentos de Trabajo</a>
                         </mat-list-item>

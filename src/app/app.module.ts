@@ -27,7 +27,8 @@ import {
   MatSortModule,
   MatTableModule,
   MatDialogModule,
-  MatStepperModule
+  MatStepperModule,
+  MatButtonToggleModule
 } from "@angular/material";
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
@@ -42,13 +43,14 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { AdminProcesosComponent } from './admin-procesos/admin-procesos.component';
 import { AdminRolesComponent } from './admin-roles/admin-roles.component';
 import { AdminDocsgenComponent } from './admin-docsgen/admin-docsgen.component';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AdminCodComponent } from './admin-cod/admin-cod.component';
 import { InputDialogComponent } from './input-dialog/input-dialog.component';
 import { AdminUpdateDocsgenComponent } from './admin-update-docsgen/admin-update-docsgen.component';
 import { AdminPcPoComponent } from './admin-pc-po/admin-pc-po.component';
 import { AdminDocsPendientesComponent } from './admin-docs-pendientes/admin-docs-pendientes.component';
 import { AdminUpdateRevisionComponent } from './admin-update-revision/admin-update-revision.component';
+import { AdminBajasDocsComponent } from './admin-bajas-docs/admin-bajas-docs.component';
+
 
 @NgModule({
   declarations: [
@@ -69,7 +71,8 @@ import { AdminUpdateRevisionComponent } from './admin-update-revision/admin-upda
     AdminUpdateDocsgenComponent,
     AdminPcPoComponent,
     AdminDocsPendientesComponent,
-    AdminUpdateRevisionComponent
+    AdminUpdateRevisionComponent,
+    AdminBajasDocsComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +103,7 @@ import { AdminUpdateRevisionComponent } from './admin-update-revision/admin-upda
     MatDialogModule,
     MatStepperModule,
     NgIdleKeepaliveModule.forRoot(),
-    PdfViewerModule,
+    MatButtonToggleModule,
     AppRoutingModule
   ],
   providers: [AuthGuard],

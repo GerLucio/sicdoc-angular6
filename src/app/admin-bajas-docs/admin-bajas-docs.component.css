@@ -2,10 +2,6 @@
     overflow: auto;
   }
 
-.mat-column-CODIGO{
-    flex: 0 0 10%;
-}
-
 .mat-column-NOMBRE{
     flex: 0 0 25%;
 }
@@ -14,19 +10,23 @@
     flex: 0 0 25%;
 }
 
-.mat-column-DEPARTAMENTO{
-    flex: 0 0 20%;
-}
-
 .mat-column-TIPO{
-    flex: 0 0 15%;
+    flex: 0 0 10%;
 }
 
-.mat-column-ADMINISTRACIÓN{
-    flex: 0 0 5%;
+.mat-column-FECHA_INICIO{
+    flex: 0 0 10%;
+}
+
+.mat-column-VER{
+    flex: 0 0 10%;
+}
+
+.mat-column-ACCIONES{
+    flex: 0 0 15%;
 }
 
 mat-header-cell, mat-cell {
     display:flex;
     justify-content: center;
-   }
+   }    

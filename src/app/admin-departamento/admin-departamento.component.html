@@ -1,8 +1,8 @@
 <div class="padre">
 
-  <mat-grid-list cols="6" gutterSize="3rem" rowHeight="24rem">
+  <mat-grid-list cols="6" gutterSize="1rem" rowHeight="80rem">
 
-    <mat-grid-tile class="caja" colspan="2" rowspan="2">
+    <mat-grid-tile class="caja" colspan="2">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -24,7 +24,7 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <mat-select placeholder="Lider de Departamento" [(ngModel)]="nuevo_departamento.id_lider" name="id_lider" required>
+              <mat-select placeholder="Jefe de Departamento" [(ngModel)]="nuevo_departamento.id_lider" name="id_lider" required>
                 <mat-option *ngFor="let u of usuariosnolideres" [value]="u.ID_USUARIO">
                   {{u.NOMBRE}} {{u.APELLIDO}}
                 </mat-option>
@@ -36,7 +36,7 @@
       </mat-card>
     </mat-grid-tile>
 
-    <mat-grid-tile *ngIf="!ver_editar" class="caja" colspan="4" rowspan="2">
+    <mat-grid-tile *ngIf="!ver_editar" class="caja" colspan="4">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -47,7 +47,7 @@
           <mat-form-field *ngIf="total_departamentos">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar en los {{ total_departamentos }} departamentos">
           </mat-form-field>
-          <div [class]="total_departamentos > 10 ? 'scrollv': ''">
+          <div [class]="total_departamentos > 10 ? 'scroll': ''">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <ng-container matColumnDef="DEPARTAMENTO">
                 <th mat-header-cell *matHeaderCellDef> DEPARTAMENTO </th>
@@ -56,7 +56,7 @@
                 </td>
               </ng-container>
               <ng-container matColumnDef="LIDER">
-                <th mat-header-cell *matHeaderCellDef> LIDER </th>
+                <th mat-header-cell *matHeaderCellDef> JEFE </th>
                 <td mat-cell *matCellDef="let departamento">
                   {{departamento.LIDER}}
                 </td>
@@ -94,7 +94,7 @@
       </mat-card>
     </mat-grid-tile>
 
-    <mat-grid-tile *ngIf="ver_editar" class="caja" colspan="4" rowspan="2">
+    <mat-grid-tile *ngIf="ver_editar" class="caja" colspan="4">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -115,7 +115,7 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <mat-select placeholder="Lider de Departamento" [(ngModel)]="departamento_editar.id_lider" name="id_lider" required>
+              <mat-select placeholder="Jefe de Departamento" [(ngModel)]="departamento_editar.id_lider" name="id_lider" required>
                 <mat-option *ngFor="let u of usuarios_departamento" [value]="u.ID_USUARIO">
                   {{u.NOMBRE}} {{u.APELLIDO}}
                 </mat-option>

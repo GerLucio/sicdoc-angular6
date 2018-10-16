@@ -1,29 +1,24 @@
-.outer {
-    display: table;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-  }
-  
-  .middle {
-    display: table-cell;
-    vertical-align: middle;
-  }
-  
-  .inner {
-    margin-left: auto;
-    margin-right: auto;
-    width: 300px;
-    text-align: center;
-    /*whatever width you want*/
-  }
-
-  .logo{
-    padding: 15%;
-  }
 
   .fondo_login{
    background-image: url("../../assets/img/fondo.jpg");
    background-size: cover;
    /*background-color: gainsboro;*/
+  }
+
+  .main-div{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  img{
+    height: 28vh;
+    width: 54vh;
+  }
+
+  .center{
+    width: auto;
+    height: auto;
+    text-align: center;
+    margin: auto;
   }

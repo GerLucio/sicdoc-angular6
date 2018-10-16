@@ -1,8 +1,8 @@
 <div class="padre">
 
-  <mat-grid-list cols="6" gutterSize="3rem" rowHeight="24rem">
+  <mat-grid-list cols="6" gutterSize="1rem" rowHeight="80rem">
 
-    <mat-grid-tile class="caja" colspan="2" rowspan="1">
+    <mat-grid-tile class="caja" colspan="2">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -22,7 +22,7 @@
       </mat-card>
     </mat-grid-tile>
 
-    <mat-grid-tile *ngIf="!ver_editar" class="caja" colspan="4" rowspan="2">
+    <mat-grid-tile *ngIf="!ver_editar" class="caja" colspan="4">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -33,7 +33,7 @@
           <mat-form-field *ngIf="total_sub">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar en las {{ total_sub }} subdirecciones">
           </mat-form-field>
-          <div [class]="total_sub > 10 ? 'scrollv': ''">
+          <div [class]="total_sub > 11 ? 'scroll': ''">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <ng-container matColumnDef="SUBDIRECCIÓN">
                 <th mat-header-cell *matHeaderCellDef> SUBDIRECCIÓN </th>
@@ -68,7 +68,7 @@
       </mat-card>
     </mat-grid-tile>
 
-    <mat-grid-tile *ngIf="ver_editar" class="caja" colspan="4" rowspan="2">
+    <mat-grid-tile *ngIf="ver_editar" class="caja" colspan="4">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>

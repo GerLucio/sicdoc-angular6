@@ -16,6 +16,7 @@ import { AdminCodComponent } from "./admin-cod/admin-cod.component";
 import { AdminPcPoComponent } from './admin-pc-po/admin-pc-po.component';
 import { AdminDocsPendientesComponent } from './admin-docs-pendientes/admin-docs-pendientes.component';
 import { AdminUpdateRevisionComponent } from './admin-update-revision/admin-update-revision.component';
+import { AdminBajasDocsComponent } from './admin-bajas-docs/admin-bajas-docs.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,12 @@ const routes: Routes = [
     path: 'admin_usuarios',
     component: AdminUsuariosComponent,
     data: { title: 'AdminUsuarios' },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin_bajas_docs',
+    component: AdminBajasDocsComponent,
+    data: { title: 'AdminBajasDocs' },
     canActivate: [AuthGuard]
   },
   {

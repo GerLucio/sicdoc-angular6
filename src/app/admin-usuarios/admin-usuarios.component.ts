@@ -9,7 +9,7 @@ import { Servidor } from "../templates/servidor";
 import { MatTableDataSource } from '@angular/material';
 import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
-
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-usuarios',
@@ -20,6 +20,7 @@ export class AdminUsuariosComponent implements OnInit {
 
   dialogRef: MatDialogRef<ConfirmationDialog>;
   ver_editar: boolean;
+  ver_nuevo: boolean;
   login: boolean = false;
   setUsuario: any;
   usuario = new Usuario();
@@ -41,6 +42,7 @@ export class AdminUsuariosComponent implements OnInit {
     this.validaLogin();
     this.validaPermisos();
     this.ver_editar = false;
+    this.ver_nuevo = false;
     this.total_usuarios = 0;
   }
 
@@ -66,7 +68,7 @@ export class AdminUsuariosComponent implements OnInit {
     });
   }
 
-  editarUsuario(usuario){
+  editarUsuario(usuario) {
     this.usuario_editar.id_usuario = usuario.ID_USUARIO;
     this.usuario_editar.nombre = usuario.NOMBRE;
     this.usuario_editar.apellido = usuario.APELLIDO;
@@ -77,7 +79,7 @@ export class AdminUsuariosComponent implements OnInit {
     this.ver_editar = true;
   }
 
-  cancelarEditar(){
+  cancelarEditar() {
     this.usuario_editar.id_usuario = null;
     this.usuario_editar.nombre = null;
     this.usuario_editar.apellido = null;
@@ -104,20 +106,44 @@ export class AdminUsuariosComponent implements OnInit {
       }), {
         }).subscribe(res => {
           if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
+            //this.openSnackBar('ERROR', res['Error']);
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
           }
           else if (res['ErrorToken']) {
-            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-            setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+            swal({
+              type: 'error',
+              title: 'ERROR DE SESIÓN',
+              text: 'Vuelve a iniciar sesión',
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            setTimeout(() => { this.router.navigate(['/login']); }, 3000);
           }
           else {
-            this.openSnackBar('ÉXITO', res['Exito']);
+            swal({
+              type: 'success',
+              title: 'ÉXITO',
+              text: res['Exito'],
+              timer: 5000
+            });
+            //this.openSnackBar('ÉXITO', res['Exito']);
             this.cancelarEditar();
           }
         });
     }
     else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
     }
   }
 
@@ -188,14 +214,32 @@ export class AdminUsuariosComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else {
-          this.openSnackBar('ÉXITO', 'El usuario ha sido notificado del cambio de su contraseña');
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: 'El usuario ha sido notificado del cambio de su contraseña',
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', 'El usuario ha sido notificado del cambio de su contraseña');
           this.obtenUsuarios();
         }
       });
@@ -214,27 +258,54 @@ export class AdminUsuariosComponent implements OnInit {
       }), {
         }).subscribe(res => {
           if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['ErrorToken']) {
-            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-            setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+            swal({
+              type: 'error',
+              title: 'ERROR DE SESIÓN',
+              text: 'Vuelve a iniciar sesión',
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            setTimeout(() => { this.router.navigate(['/login']); }, 3000);
           }
           else {
-            this.openSnackBar('ÉXITO', 'Usuario Creado correctamente');
-            this.nuevo_usuario.nombre = null;
-            this.nuevo_usuario.apellido = null;
-            this.nuevo_usuario.puesto = null;
-            this.email.setValue(null);
-            this.nuevo_usuario.departamento = null;
-            this.nuevo_usuario.rol = null;
-            this.obtenUsuarios();
+            swal({
+              type: 'success',
+              title: 'ÉXITO',
+              text: 'Usuario creado correctamente',
+              timer: 2000
+            });
+            this.cancelarNuevo();
           }
         });
     }
     else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 2000
+      });
     }
+  }
+
+  cancelarNuevo() {
+    this.nuevo_usuario.nombre = null;
+    this.nuevo_usuario.apellido = null;
+    this.nuevo_usuario.puesto = null;
+    this.email.setValue(null);
+    this.nuevo_usuario.departamento = null;
+    this.nuevo_usuario.rol = null;
+    this.obtenUsuarios();
+    this.ver_nuevo = false;
   }
 
   obtenDepartamentos() {
@@ -247,8 +318,14 @@ export class AdminUsuariosComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         this.departamentos = res;
       });
@@ -264,8 +341,14 @@ export class AdminUsuariosComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         this.roles = res;
       });
@@ -281,12 +364,18 @@ export class AdminUsuariosComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.usuarios = res;
-        if(!res){
+        if (!res) {
           this.dataSource = null;
           this.total_usuarios = 0;
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else if (res) {
@@ -306,14 +395,32 @@ export class AdminUsuariosComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else {
-          this.openSnackBar('ÉXITO', 'Usuario Eliminado correctamente');
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: 'Usuario Eliminado correctamente',
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', 'Usuario Eliminado correctamente');
           this.obtenUsuarios();
         }
       });

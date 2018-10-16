@@ -8,7 +8,7 @@ import { Servidor } from "../templates/servidor";
 import { MatTableDataSource } from '@angular/material';
 import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
-
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-subdireccion',
@@ -89,20 +89,44 @@ export class AdminSubdireccionComponent implements OnInit {
       }), {
         }).subscribe(res => {
           if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['ErrorToken']) {
-            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            swal({
+              type: 'error',
+              title: 'ERROR DE SESIÓN',
+              text: 'Vuelve a iniciar sesión',
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
             setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
           }
           else {
-            this.openSnackBar('ÉXITO', res['Exito']);
+            swal({
+              type: 'success',
+              title: 'ÉXITO',
+              text: res['Exito'],
+              timer: 5000
+            });
+            //this.openSnackBar('ÉXITO', res['Exito']);
             this.cancelarEditar();
           }
         });
     }
     else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
     }
   }
    
@@ -122,7 +146,13 @@ export class AdminSubdireccionComponent implements OnInit {
           this.total_sub = 0;
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else if (res) {
@@ -163,14 +193,38 @@ export class AdminSubdireccionComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
         }
         else {
-          this.openSnackBar('ÉXITO', 'Subdirección eliminada correctamente');
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', 'Subdirección eliminada correctamente');
           this.obtenSubdirecciones();
         }
       });
@@ -187,21 +241,45 @@ export class AdminSubdireccionComponent implements OnInit {
       }), {
         }).subscribe(res => {
           if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['ErrorToken']) {
-            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            swal({
+              type: 'error',
+              title: 'ERROR DE SESIÓN',
+              text: 'Vuelve a iniciar eso te gusta y lo sabes',
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
             setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
           }
           else {
-            this.openSnackBar('ÉXITO', res['Exito']);
+            swal({
+              type: 'success',
+              title: 'ÉXITO',
+              text: res['Exito'],
+              timer: 5000
+            });
+           // this.openSnackBar('ÉXITO', res['Exito']);
             this.nueva_sub.nombre = null;
             this.obtenSubdirecciones();
           }
         });
     }
     else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
     }
   }
 

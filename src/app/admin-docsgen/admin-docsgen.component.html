@@ -1,22 +1,24 @@
 <div class="padre">
 
-  <mat-grid-list cols="6" gutterSize="3rem" rowHeight="24rem">
+  <mat-grid-list cols="6" gutterSize="1rem" rowHeight="80rem">
 
-    <mat-grid-tile *ngIf="ver_nuevo" class="caja" colspan="6" rowspan="2">
+    <mat-grid-tile *ngIf="ver_nuevo" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
-            <h2>Alta de Documentos Generales del Sistema de Gestión de la Calidad activos</h2>
+            <h2>Alta de Documentos Generales del Sistema de Gestión de la Calidad</h2>
           </mat-card-title>
           <mat-card-subtitle>Ingresa todos los datos</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <form class="form_edita_60">
+          <form>
             <mat-form-field>
-              <input matInput placeholder="Nombre del documento" required [(ngModel)]="nuevo_documento.nombre" name="nombre" maxlength="128">
+              <input matInput placeholder="Nombre del documento" required [(ngModel)]="nuevo_documento.nombre" name="nombre"
+                maxlength="128">
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Código" required [(ngModel)]="nuevo_documento. codigo" name="codigo" maxlength="64">
+              <input matInput placeholder="Código" required [(ngModel)]="nuevo_documento. codigo" name="codigo"
+                maxlength="64">
             </mat-form-field>
             <mat-form-field>
               <mat-select placeholder="Proceso" [(ngModel)]="nuevo_documento.id_proceso" name="id_proceso" required>
@@ -33,10 +35,12 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Ubicación del archivo" required [(ngModel)]="nuevo_documento.ubicacion" name="ubicacion" maxlength="512">
+              <input matInput placeholder="Ubicación, ejemplo: Directorio de archivos de la computadora / Carpeta 3 del cajón 4 del archivero de la oficina...."
+                required [(ngModel)]="nuevo_documento.ubicacion" name="ubicacion" maxlength="512">
             </mat-form-field>
             <label for="archivo">Archivo </label>
-            <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)" accept=".xlsx,.xls,.doc,.docx,.pdf" required>
+            <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)" accept=".xlsx,.xls,.doc,.docx,.pdf"
+              required>
             <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
             <mat-icon *ngIf="archivo" color="accent" (click)="resetInputFile()">clear</mat-icon>
             <div class="derecha">
@@ -48,28 +52,7 @@
       </mat-card>
     </mat-grid-tile>
 
-    <!--<mat-grid-tile *ngIf="ver_archivo" class="caja" colspan="6" rowspan="2">
-      <mat-card class="card-formulario">
-        <mat-card-header>
-          <mat-card-title>
-            <h2>{{ doc_mostrar.nombre }}</h2>
-          </mat-card-title>
-          <mat-card-subtitle><button mat-button color="accent" (click)="ver_archivo = false">REGRESAR</button></mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content class="scroll-docs">
-          <pdf-viewer 
-          [src]="doc_mostrar.ruta" 
-          [render-text]="true" 
-          [show-all]="true" 
-          [autoresize] = "true"
-          [zoom]="0.7"
-          style="display: block;">
-        </pdf-viewer>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>-->
-
-    <mat-grid-tile *ngIf="!ver_nuevo" class="caja" colspan="6" rowspan="2">
+    <mat-grid-tile *ngIf="!ver_nuevo" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -83,36 +66,36 @@
           <mat-form-field *ngIf="total_documentos">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Busca un documento entre los {{ total_documentos }} registrados">
           </mat-form-field>
-          <div class="scroll-docs">
+          <div [class]="total_documentos > 11 ? 'scroll': ''">
             <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <ng-container matColumnDef="CODIGO">
                 <mat-header-cell *matHeaderCellDef> CÓDIGO </mat-header-cell>
                 <mat-cell *matCellDef="let documento">
-                  <h4>{{documento.CODIGO}} / {{documento.ID_REVISION - 1}} </h4>
+                  <h4>{{documento.CODIGO}}/{{documento.NO_REVISION - 1}} </h4>
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="NOMBRE">
                 <mat-header-cell *matHeaderCellDef> NOMBRE </mat-header-cell>
                 <mat-cell *matCellDef="let documento">
-                  <h4>{{documento.NOMBRE}}</h4>
+                  {{documento.NOMBRE}}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="PROCESO">
                 <mat-header-cell *matHeaderCellDef> PROCESO </mat-header-cell>
                 <mat-cell *matCellDef="let documento">
-                  <h4>{{documento.PROCESO}}</h4>
+                  {{documento.PROCESO}}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="TIPO">
                 <mat-header-cell *matHeaderCellDef> TIPO </mat-header-cell>
                 <mat-cell *matCellDef="let documento">
-                  <h4>{{documento.TIPO}}</h4>
+                  {{documento.TIPO}}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="REVISIONES">
                 <mat-header-cell *matHeaderCellDef> REVISIONES </mat-header-cell>
                 <mat-cell *matCellDef="let documento">
-                  <h4>{{documento.NUM_REVISIONES}}</h4>
+                  {{documento.NUM_REVISIONES}}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="ADMINISTRACIÓN">

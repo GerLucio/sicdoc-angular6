@@ -1,6 +1,7 @@
 export class Revision {
     constructor(
       public id_revision?: number,
+      public no_revision?: number,
       public documento?: string,
       public id_documento?: number,
       public responsable?: string,

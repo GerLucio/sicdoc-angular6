@@ -8,7 +8,7 @@ import { Servidor } from "../templates/servidor";
 import { MatTableDataSource } from '@angular/material';
 import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
-
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-procesos',
@@ -29,6 +29,7 @@ export class AdminProcesosComponent implements OnInit {
   displayedColumns: string[] = ['PROCESO', 'DEPARTAMENTO', 'ADMINISTRACIÓN'];
   proceso_editar = new Proceso;
   ver_editar: boolean;
+  ver_nuevo: boolean;
   departamentos: any;
   token: string;
 
@@ -36,6 +37,7 @@ export class AdminProcesosComponent implements OnInit {
     this.validaLogin();
     this.validaPermisos();
     this.ver_editar = false;
+    this.ver_nuevo = false;
     this.total_procesos = 0;
   }
 
@@ -93,8 +95,14 @@ export class AdminProcesosComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         this.departamentos = res;
       });
@@ -111,20 +119,44 @@ export class AdminProcesosComponent implements OnInit {
       }), {
         }).subscribe(res => {
           if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['ErrorToken']) {
-            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            swal({
+              type: 'error',
+              title: 'ERROR DE SESIÓN',
+              text: 'Vuelve a iniciar sesión',
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
             setTimeout(() => { this.router.navigate(['/login']); }, 3000);
           }
           else {
-            this.openSnackBar('ÉXITO', res['Exito']);
+            swal({
+              type: 'success',
+              title: 'ÉXITO',
+              text: res['Exito'],
+              timer: 5000
+            });
+            //this.openSnackBar('ÉXITO', res['Exito']);
             this.cancelarEditar();
           }
         });
     }
     else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
     }
   }
 
@@ -139,12 +171,18 @@ export class AdminProcesosComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.procesos = res;
-        if(!res){
+        if (!res) {
           this.dataSource = null;
           this.total_procesos = 0;
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else if (res) {
@@ -185,14 +223,32 @@ export class AdminProcesosComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else {
-          this.openSnackBar('ÉXITO', res['Exito']);
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', res['Exito']);
           this.obtenProcesos();
         }
       });
@@ -209,23 +265,52 @@ export class AdminProcesosComponent implements OnInit {
       }), {
         }).subscribe(res => {
           if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['ErrorToken']) {
-            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            swal({
+              type: 'error',
+              title: 'ERROR DE SESIÓN',
+              text: 'Vuelve a iniciar sesión',
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
             setTimeout(() => { this.router.navigate(['/login']); }, 3000);
           }
           else {
-            this.openSnackBar('ÉXITO', res['Exito']);
-            this.nuevo_proceso.nombre = null;
-            this.nuevo_proceso.id_departamento = null;
-            this.obtenProcesos();
+            swal({
+              type: 'success',
+              title: 'ÉXITO',
+              text: res['Exito'],
+              timer: 5000
+            });
+            //this.openSnackBar('ÉXITO', res['Exito']);
+            this.cancelarNuevo(); 
           }
         });
     }
     else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
     }
+  }
+
+  cancelarNuevo() {
+    this.nuevo_proceso.nombre = null;
+    this.nuevo_proceso.id_departamento = null;
+    this.obtenProcesos();
+    this.ver_nuevo = false;
   }
 
   applyFilter(filterValue: string) {

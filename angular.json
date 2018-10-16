@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "baseHref" : "/sicdoc/",
             "outputPath": "dist/sicdoc",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -50,6 +51,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+            "baseHref" : "/sicdoc/",
             "browserTarget": "sicdoc:build"
           },
           "configurations": {

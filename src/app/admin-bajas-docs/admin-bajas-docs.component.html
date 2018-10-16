@@ -1,57 +1,13 @@
 <div class="padre">
   <mat-grid-list cols="6" gutterSize="1rem" rowHeight="80rem">
-    <mat-grid-tile *ngIf="ver_nuevo" class="caja" colspan="6">
+
+    <mat-grid-tile class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
-            <h2>Nueva revisión de Documentos Generales del SGC</h2>
-          </mat-card-title>
-          <mat-card-subtitle>Sube tu archivo</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <form>
-            <mat-form-field>
-              <mat-select placeholder="Documento" [(ngModel)]="nueva_revision.id_documento" name="id_documento"
-                required>
-                <mat-option *ngFor="let d of documentossgc" [value]="d.ID_DOCUMENTO">
-                  {{d.NOMBRE}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-slide-toggle (change)="onChange($event)" class="example-margin" color="warn" checked="false">
-              ¿Cambió la ubicación del archivo?
-            </mat-slide-toggle>
-            <mat-form-field>
-              <input matInput [disabled]="input_ubicacion" placeholder="Ubicación, ejemplo: Directorio de archivos de la computadora / Carpeta 3 del cajón 4 del archivero de la oficina...." 
-               [(ngModel)]="nueva_ubicacion"
-                name="nueva_ubicacion" maxlength="512">
-            </mat-form-field>
-            <br><br><br>
-            <label for="archivo">Archivo </label>
-            <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)" accept=".xlsx,.xls,.doc,.docx,.pdf"
-              required>
-            <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
-            <mat-icon *ngIf="archivo" color="accent" (click)="resetInputFile()">clear</mat-icon>
-            <div class="derecha">
-              <button mat-button (click)="cancelarNuevo()">CANCELAR</button>
-              <button mat-raised-button (click)="upload()" color="primary">ALTA</button>
-            </div>
-          </form>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-
-
-    <mat-grid-tile *ngIf="!ver_nuevo" class="caja" colspan="6">
-      <mat-card class="card-formulario">
-        <mat-card-header>
-          <mat-card-title>
-            <h2>Administración de Revisiones</h2>
+            <h2>Documentos pendientes por dar de baja</h2>
           </mat-card-title>
         </mat-card-header>
-        <div class="flotante">
-          <button mat-raised-button (click)="ver_nuevo = true" color="primary">NUEVA REVISION</button>
-        </div>
         <mat-card-content>
           <mat-form-field *ngIf="total_documentos">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Busca un documento entre los {{ total_documentos }} documentos">
@@ -103,5 +59,6 @@
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>
+
   </mat-grid-list>
 </div>

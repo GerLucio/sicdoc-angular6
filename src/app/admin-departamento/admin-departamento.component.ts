@@ -8,6 +8,7 @@ import { Servidor } from "../templates/servidor";
 import { MatTableDataSource } from '@angular/material';
 import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-departamento',
@@ -106,7 +107,13 @@ export class AdminDepartamentoComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         this.subdirecciones = res;
@@ -123,7 +130,13 @@ export class AdminDepartamentoComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         this.usuarios = res;
@@ -144,7 +157,13 @@ export class AdminDepartamentoComponent implements OnInit {
           this.usuariosnolideres = null;
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
       });
@@ -165,7 +184,13 @@ export class AdminDepartamentoComponent implements OnInit {
           this.total_departamentos = 0;
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else if (res) {
@@ -186,20 +211,44 @@ export class AdminDepartamentoComponent implements OnInit {
       }), {
         }).subscribe(res => {
           if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['ErrorToken']) {
-            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            swal({
+              type: 'error',
+              title: 'ERROR DE SESIÓN',
+              text: 'Vuelve a iniciar sesión',
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
             setTimeout(() => { this.router.navigate(['/login']); }, 3000);
           }
           else {
-            this.openSnackBar('ÉXITO', res['Exito']);
+            swal({
+              type: 'success',
+              title: 'ÉXITO',
+              text: res['Exito'],
+              timer: 5000
+            });
+            //this.openSnackBar('ÉXITO', res['Exito']);
             this.cancelarEditar();
           }
         });
     }
     else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
     }
   }
 
@@ -235,14 +284,32 @@ export class AdminDepartamentoComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else {
-          this.openSnackBar('ÉXITO', res['Exito']);
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', res['Exito']);
           this.obtenDepartamentos();
         }
       });
@@ -259,14 +326,32 @@ export class AdminDepartamentoComponent implements OnInit {
       }), {
         }).subscribe(res => {
           if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['ErrorToken']) {
-            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            swal({
+              type: 'error',
+              title: 'ERROR DE SESIÓN',
+              text: 'Vuelve a iniciar sesión',
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
             setTimeout(() => { this.router.navigate(['/login']); }, 3000);
           }
           else {
-            this.openSnackBar('ÉXITO', res['Exito']);
+            swal({
+              type: 'success',
+              title: 'ÉXITO',
+              text: res['Exito'],
+              timer: 5000
+            });
+            //this.openSnackBar('ÉXITO', res['Exito']);
             this.nuevo_departamento.nombre = null;
             this.nuevo_departamento.id_subdireccion = null;
             this.nuevo_departamento.id_lider = null;
@@ -276,7 +361,13 @@ export class AdminDepartamentoComponent implements OnInit {
         });
     }
     else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
     }
   }
 

@@ -10,6 +10,7 @@ import { InputDialogComponent } from "../input-dialog/input-dialog.component";
 import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Revision } from "../templates/revision";
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-update-docsgen',
@@ -97,7 +98,13 @@ export class AdminUpdateDocsgenComponent implements OnInit {
           this.total_documentos = 0;
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else if (res) {
@@ -117,7 +124,13 @@ export class AdminUpdateDocsgenComponent implements OnInit {
           this.documentossgc = null;
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
       });
@@ -158,14 +171,32 @@ export class AdminUpdateDocsgenComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else {
-          this.openSnackBar('ÉXITO', res['Exito']);
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', res['Exito']);
           this.obtenDocumentos();
         }
       });
@@ -182,7 +213,13 @@ export class AdminUpdateDocsgenComponent implements OnInit {
     if (this.archivo.size > 2000000) {
       this.inputArchivo.nativeElement.value = "";
       this.resetInputFile();
-      this.openSnackBar('ERROR', 'El tamaño máximo de archivo son 2MB');
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'El tamaño máximo de archivo son 2MB',
+        timer: 5000
+      });
+      //this.openSnackBar('ERROR', 'El tamaño máximo de archivo son 2MB');
     }
   }
 
@@ -195,7 +232,13 @@ export class AdminUpdateDocsgenComponent implements OnInit {
       this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
         .subscribe(res => {
           if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['Exito']) {
             this.nuevaRevision(res['nombre_generado']);
@@ -203,7 +246,13 @@ export class AdminUpdateDocsgenComponent implements OnInit {
         });
     }
     else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
     }
 
   }
@@ -216,14 +265,32 @@ export class AdminUpdateDocsgenComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else {
-          this.openSnackBar('ÉXITO', res['Exito']);
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', res['Exito']);
           this.cancelarNuevo();
         }
       });

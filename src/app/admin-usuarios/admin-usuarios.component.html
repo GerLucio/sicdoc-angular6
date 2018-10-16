@@ -1,7 +1,7 @@
 <div class="padre">
+  <mat-grid-list cols="6" gutterSize="1rem" rowHeight="80rem">
 
-  <mat-grid-list cols="6" gutterSize="1rem" rowHeight="12rem">
-    <mat-grid-tile class="caja" colspan="6" rowspan="1">
+    <mat-grid-tile *ngIf="ver_nuevo" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -10,57 +10,46 @@
           <mat-card-subtitle>Ingresa todos los datos</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <form>
-            <table cellspacing="10">
-              <tr>
-                <td>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Nombre(s)</mat-label>
-                    <input matInput placeholder="Nombre(s)" maxlength="64" [(ngModel)]="nuevo_usuario.nombre" name="nombre" required>
-                  </mat-form-field>
-                </td>
-                <td>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Apellidos</mat-label>
-                    <input matInput placeholder="Apellidos" maxlength="64" [(ngModel)]="nuevo_usuario.apellido" name="apellido" required>
-                  </mat-form-field>
-                </td>
-                <td>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Puesto</mat-label>
-                    <input matInput placeholder="Puesto" maxlength="64" [(ngModel)]="nuevo_usuario.puesto" name="puesto" required>
-                  </mat-form-field>
-                </td>
-                <td>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Correo</mat-label>
-                    <input matInput placeholder="Correo" maxlength="64" [formControl]="email" name="correo" required>
-                    <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
-                  </mat-form-field>
-                </td>
-                <td>
-                  <mat-form-field>
-                    <mat-select placeholder="Departamento" [(ngModel)]="nuevo_usuario.departamento" name="departamento" required>
-                      <mat-option *ngFor="let d of departamentos" [value]="d.ID_DEPTO">
-                        {{d.NOMBRE}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </td>
-                <td>
-                  <mat-form-field>
-                    <mat-select placeholder="Rol" [(ngModel)]="nuevo_usuario.rol" name="rol" required>
-                      <mat-option *ngFor="let r of roles" [value]="r.ID_ROL">
-                        {{r.ROL}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </td>
-                <td>
-                  <button class="derecha" mat-raised-button color="primary" (click)="nuevoUsuario(nuevo_usuario)">ALTA</button>
-                </td>
-              </tr>
-            </table>
+          <form class="example-form form_edita">
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre(s)</mat-label>
+              <input matInput placeholder="Nombre(s)" maxlength="64" [(ngModel)]="nuevo_usuario.nombre" name="nombre"
+                required>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Apellidos</mat-label>
+              <input matInput placeholder="Apellidos" maxlength="64" [(ngModel)]="nuevo_usuario.apellido" name="apellido"
+                required>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Puesto</mat-label>
+              <input matInput placeholder="Puesto" maxlength="64" [(ngModel)]="nuevo_usuario.puesto" name="puesto"
+                required>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Correo</mat-label>
+              <input matInput placeholder="Correo" maxlength="64" [formControl]="email" name="correo" required>
+              <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Departamento" [(ngModel)]="nuevo_usuario.departamento" name="departamento"
+                required>
+                <mat-option *ngFor="let d of departamentos" [value]="d.ID_DEPTO">
+                  {{d.NOMBRE}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Rol" [(ngModel)]="nuevo_usuario.rol" name="rol" required>
+                <mat-option *ngFor="let r of roles" [value]="r.ID_ROL">
+                  {{r.ROL}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="derecha">
+              <button mat-button (click)="cancelarNuevo()">CANCELAR</button>
+              <button class="derecha" mat-raised-button color="primary" (click)="nuevoUsuario(nuevo_usuario)">ALTA</button>
+            </div>
           </form>
         </mat-card-content>
       </mat-card>
@@ -85,18 +74,21 @@
 
     </mat-grid-tile>-->
 
-    <mat-grid-tile *ngIf="!ver_editar" class="caja" colspan="6" rowspan="3">
+    <mat-grid-tile *ngIf="!ver_editar && !ver_nuevo" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
             <h2>Usuarios activos</h2>
           </mat-card-title>
         </mat-card-header>
+        <div class="flotante">
+          <button mat-raised-button (click)="ver_nuevo = true" color="primary">NUEVO USUARIO</button>
+        </div>
         <mat-card-content>
           <mat-form-field *ngIf="total_usuarios">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Busca un usuario entre los {{ total_usuarios }} registrados">
           </mat-form-field>
-          <div [class]="total_usuarios > 7 ? 'scroll': ''">
+          <div [class]="total_usuarios > 11 ? 'scroll': ''">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <ng-container matColumnDef="NOMBRE">
                 <th mat-header-cell *matHeaderCellDef> NOMBRE </th>
@@ -123,9 +115,8 @@
               <ng-container matColumnDef="ADMINISTRACIÓN">
                 <th mat-header-cell *matHeaderCellDef> ADMINISTRACIÓN </th>
                 <td mat-cell *matCellDef="let usuario">
-                  <button mat-raised-button color="accent" [matMenuTriggerFor]="menuadmin">
-                    <mat-icon>settings</mat-icon>
-                    <span>Administrar</span>
+                  <button mat-button [matMenuTriggerFor]="menuadmin">
+                    <mat-icon color="accent">settings</mat-icon>
                   </button>
                   <mat-menu #menuadmin="matMenu">
                     <button mat-menu-item (click)="restablecerPassword(usuario)">
@@ -151,7 +142,7 @@
       </mat-card>
     </mat-grid-tile>
 
-    <mat-grid-tile *ngIf="ver_editar" class="caja" colspan="6" rowspan="3">
+    <mat-grid-tile *ngIf="ver_editar" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -167,11 +158,13 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Apellidos</mat-label>
-              <input matInput placeholder="Apellidos" maxlength="64" [(ngModel)]="usuario_editar.apellido" name="apellido" required>
+              <input matInput placeholder="Apellidos" maxlength="64" [(ngModel)]="usuario_editar.apellido" name="apellido"
+                required>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Puesto</mat-label>
-              <input matInput placeholder="Puesto" maxlength="64" [(ngModel)]="usuario_editar.puesto" name="puesto" required>
+              <input matInput placeholder="Puesto" maxlength="64" [(ngModel)]="usuario_editar.puesto" name="puesto"
+                required>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Correo</mat-label>
@@ -179,7 +172,8 @@
               <mat-error *ngIf="email2.invalid">{{getErrorMessage2()}}</mat-error>
             </mat-form-field>
             <mat-form-field>
-              <mat-select placeholder="Departamento" [(ngModel)]="usuario_editar.id_departamento" name="id_departamento" required>
+              <mat-select placeholder="Departamento" [(ngModel)]="usuario_editar.id_departamento" name="id_departamento"
+                required>
                 <mat-option *ngFor="let d of departamentos" [value]="d.ID_DEPTO">
                   {{d.NOMBRE}}
                 </mat-option>

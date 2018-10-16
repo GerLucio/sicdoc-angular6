@@ -8,6 +8,7 @@ import { Servidor } from "../templates/servidor";
 import { MatTableDataSource } from '@angular/material';
 import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-roles',
@@ -83,20 +84,44 @@ export class AdminRolesComponent implements OnInit {
       }), {
         }).subscribe(res => {
           if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['ErrorToken']) {
-            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            swal({
+              type: 'error',
+              title: 'ERROR DE SESIÓN',
+              text: 'Vuelve a iniciar sesión',
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
             setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
           }
           else {
-            this.openSnackBar('ÉXITO', res['Exito']);
+            swal({
+              type: 'success',
+              title: 'ÉXITO',
+              text: res['Exito'],
+              timer: 5000
+            });
+            //this.openSnackBar('ÉXITO', res['Exito']);
             this.cancelarEditar();
           }
         });
     }
     else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
     }
   }
 
@@ -121,7 +146,13 @@ export class AdminRolesComponent implements OnInit {
           this.total_roles = 0;
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else if (res) {
@@ -162,14 +193,32 @@ export class AdminRolesComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
         }
         else {
-          this.openSnackBar('ÉXITO', 'Rol de usuario eliminado correctamente');
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', 'Rol de usuario eliminado correctamente');
           this.obtenRoles();
         }
       });
@@ -186,21 +235,45 @@ export class AdminRolesComponent implements OnInit {
       }), {
         }).subscribe(res => {
           if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['ErrorToken']) {
-            this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+            swal({
+              type: 'error',
+              title: 'ERROR DE SESIÓN',
+              text: 'Vuelve a iniciar sesión',
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
             setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
           }
           else {
-            this.openSnackBar('ÉXITO', 'Rol de usuario creado correctamente');
+            swal({
+              type: 'success',
+              title: 'ÉXITO',
+              text: res['Exito'],
+              timer: 5000
+            });
+            //this.openSnackBar('ÉXITO', 'Rol de usuario creado correctamente');
             this.nuevo_rol.rol = null;
             this.obtenRoles();
           }
         });
     }
     else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
     }
   }
 

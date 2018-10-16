@@ -8,6 +8,7 @@ import { Servidor } from "../templates/servidor";
 import { MatTableDataSource } from '@angular/material';
 import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-pc-po',
@@ -30,7 +31,7 @@ export class AdminPcPoComponent implements OnInit {
   total_documentos: number;
   dataSource = new MatTableDataSource();
   servidor = new Servidor();
-  displayedColumns: string[] = ['CODIGO', 'NOMBRE', 'PROCESO', 'TIPO', 'REVISIONES', 'ADMINISTRACIÓN'];
+  displayedColumns: string[] = ['CODIGO', 'NOMBRE', 'PROCESO', 'DEPARTAMENTO', 'TIPO', 'ADMINISTRACIÓN'];
   token: string;
   ver_nuevo: boolean;
   archivo: File = null;
@@ -59,7 +60,13 @@ export class AdminPcPoComponent implements OnInit {
     if (this.archivo.size > 2000000) {
       this.inputArchivo.nativeElement.value = "";
       this.resetInputFile();
-      this.openSnackBar('ERROR', 'El tamaño máximo de archivo son 2MB');
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'El tamaño máximo de archivo son 2MB',
+        timer: 5000
+      });
+      //this.openSnackBar('ERROR', 'El tamaño máximo de archivo son 2MB');
     }
   }
 
@@ -90,7 +97,7 @@ export class AdminPcPoComponent implements OnInit {
 
   obtenDocumentos() {
     this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenDocumentosDepto.php', JSON.stringify({
-      tkn: this.token, departamento: this.usuario.id_departamento
+      tkn: this.token, departamento: this.usuario.id_departamento, depto: this.usuario.departamento, rol: this.usuario.id_rol
     }), {
       }).subscribe(res => {
         this.documentos = res;
@@ -99,7 +106,13 @@ export class AdminPcPoComponent implements OnInit {
           this.total_documentos = 0;
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else if (res) {
@@ -117,7 +130,13 @@ export class AdminPcPoComponent implements OnInit {
       this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
         .subscribe(res => {
           if (res['Error']) {
-            this.openSnackBar('ERROR', res['Error']);
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['Exito']) {
             this.nuevoDocumento(res['nombre_generado']);
@@ -125,13 +144,19 @@ export class AdminPcPoComponent implements OnInit {
         });
     }
     else {
-      this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
     }
   }
 
   obtenProcesos() {
     this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenProcesosDepto.php', JSON.stringify({
-      tkn: this.token, departamento: this.usuario.id_departamento
+      tkn: this.token, departamento: this.usuario.id_departamento, depto: this.usuario.departamento, rol: this.usuario.id_rol
     }), {
       }).subscribe(res => {
         this.procesos = res;
@@ -139,7 +164,13 @@ export class AdminPcPoComponent implements OnInit {
           this.procesos = null;
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
       });
@@ -150,11 +181,20 @@ export class AdminPcPoComponent implements OnInit {
       tkn: this.token
     }), {
       }).subscribe(res => {
-        if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+        this.tipos = res;
+        if(!res){
+          this.tipos = null;
+        }
+        else if (res['ErrorToken']) {
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
-        this.tipos = res;
       });
   }
 
@@ -186,14 +226,32 @@ export class AdminPcPoComponent implements OnInit {
     }), {
       }).subscribe(res => {
         if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else {
-          this.openSnackBar('ÉXITO', res['Exito']);
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', res['Exito']);
           this.cancelarNuevo();
           this.obtenDocumentos();
         }
@@ -215,22 +273,40 @@ export class AdminPcPoComponent implements OnInit {
   }
 
   eliminaDocumento(id) {
-    /*this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaDocumento.php', JSON.stringify({
-      id_documento: id, tkn: this.token
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaDocumento.php', JSON.stringify({
+      id_documento: id, tkn: this.token, depto: this.usuario.departamento, rol: this.usuario.id_rol
     }), {
       }).subscribe(res => {
         if (res['Error']) {
-          this.openSnackBar('ERROR', res['Error']);
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
         }
         else if (res['ErrorToken']) {
-          this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else {
-          this.openSnackBar('ÉXITO', res['Exito']);
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', res['Exito']);
           this.obtenDocumentos();
         }
-      });*/
+      });
   }
 
   applyFilter(filterValue: string) {

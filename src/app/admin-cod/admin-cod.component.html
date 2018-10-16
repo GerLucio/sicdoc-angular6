@@ -1,6 +1,6 @@
 <div class="padre">
-  <mat-grid-list cols="6" gutterSize="3rem" rowHeight="24rem">
-    <mat-grid-tile class="caja" colspan="6" rowspan="2">
+  <mat-grid-list cols="6" gutterSize="1rem" rowHeight="80rem">
+    <mat-grid-tile class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -11,7 +11,7 @@
           <mat-form-field *ngIf="total_documentos">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Busca un documento entre los {{ total_documentos }} documentos">
           </mat-form-field>
-          <div class="scroll-docs">
+          <div [class]="total_documentos > 11 ? 'scroll': ''">
             <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <ng-container matColumnDef="NOMBRE">
                 <mat-header-cell *matHeaderCellDef> NOMBRE </mat-header-cell>
@@ -22,19 +22,19 @@
               <ng-container matColumnDef="PROCESO">
                 <mat-header-cell *matHeaderCellDef> PROCESO </mat-header-cell>
                 <mat-cell *matCellDef="let documento">
-                  <h4>{{documento.PROCESO}}</h4>
+                  {{documento.PROCESO}}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="TIPO">
                 <mat-header-cell *matHeaderCellDef> TIPO </mat-header-cell>
                 <mat-cell *matCellDef="let documento">
-                  <h4>{{documento.TIPO}}</h4>
+                  {{documento.TIPO}}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="FECHA_INICIO">
                 <mat-header-cell *matHeaderCellDef> FECHA ALTA </mat-header-cell>
                 <mat-cell *matCellDef="let documento">
-                  <h4>{{documento.FECHA_INICIO}}</h4>
+                  {{documento.FECHA_INICIO}}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="VER">
