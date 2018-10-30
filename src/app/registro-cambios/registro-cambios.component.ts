@@ -141,7 +141,7 @@ export class RegistroCambiosComponent implements OnInit {
       if (result) {
         this.revisa(revision);
       }
-      else{
+      else {
         this.verRevisiones(this.documento_actual);
       }
       this.dialogRef = null;
