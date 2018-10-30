@@ -41,7 +41,7 @@ export class AdminDocsPendientesComponent implements OnInit {
   }
 
   validaPermisos() {
-    if (this.usuario.id_rol != 2 && this.usuario.id_rol != 3) {
+    if (this.usuario.id_rol != 1 && this.usuario.id_rol != 2) {
       this.router.navigate(['/inicio']);
     }
   }

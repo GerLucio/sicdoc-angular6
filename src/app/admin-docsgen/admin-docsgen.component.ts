@@ -50,7 +50,7 @@ export class AdminDocsgenComponent implements OnInit {
   }
 
   validaPermisos() {
-    if (this.usuario.id_rol != 2) {
+    if (this.usuario.id_rol != 1) {
       this.router.navigate(['/inicio']);
     }
   }
@@ -246,15 +246,15 @@ export class AdminDocsgenComponent implements OnInit {
 
     this.dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.eliminaDocumento(documento.ID_DOCUMENTO);
+        this.eliminaDocumento(documento);
       }
       this.dialogRef = null;
     });
   }
 
-  eliminaDocumento(id) {
+  eliminaDocumento(documento) {
     this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaDocumento.php', JSON.stringify({
-      id_documento: id, tkn: this.token, depto: this.usuario.departamento, rol: this.usuario.id_rol
+      documento: documento, tkn: this.token, depto: this.usuario.departamento, rol: this.usuario.id_rol
     }), {
       }).subscribe(res => {
         if (res['Error']) {

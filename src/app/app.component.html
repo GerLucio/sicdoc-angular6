@@ -52,56 +52,53 @@
                     </mat-list>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel *ngIf="usuario.id_rol  > 1 && usuario.id_rol < 5">
+                <mat-expansion-panel>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <mat-icon>folder</mat-icon>Administración de documentos
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <mat-list>
-                        <mat-list-item *ngIf="usuario.id_rol == 2">
+                        <mat-list-item *ngIf="usuario.id_rol == 1">
                             <a mat-button routerLink="/admin_docsgen" (click)="snav.close()">Administración Documentos
                                 SGC</a>
                                 <mat-divider></mat-divider>
                         </mat-list-item>
-                        <mat-list-item *ngIf="usuario.id_rol  == 2">
+                        <mat-list-item *ngIf="usuario.id_rol  == 1">
                             <a mat-button routerLink="/admin_cod" (click)="snav.close()">Codificación Nuevos Documentos</a>
                             <mat-divider></mat-divider>
                         </mat-list-item>
-                        <mat-list-item *ngIf="usuario.id_rol  == 2">
+                        <mat-list-item *ngIf="usuario.id_rol  == 1">
                             <a mat-button routerLink="/admin_update_docsgen" (click)="snav.close()">Revisión de
                                 Documentos</a>
                                 <mat-divider></mat-divider>
                         </mat-list-item>
-                        <mat-list-item *ngIf="usuario.id_rol  == 2">
+                        <mat-list-item *ngIf="usuario.id_rol  == 1">
                             <a mat-button routerLink="/admin_bajas_docs" (click)="snav.close()">Bajas Pendientes</a>
                             <mat-divider></mat-divider>
                         </mat-list-item>
-                        <mat-list-item *ngIf="usuario.id_rol == 2 || usuario.id_rol == 3">
+                        <mat-list-item *ngIf="usuario.id_rol == 1 || usuario.id_rol == 2">
                             <a mat-button routerLink="/admin_pc_po" (click)="snav.close()">Administración Documentos</a>
                             <mat-divider></mat-divider>
                         </mat-list-item>
-                        <mat-list-item *ngIf="usuario.id_rol == 2 || usuario.id_rol == 3">
+                        <mat-list-item *ngIf="usuario.id_rol == 1 || usuario.id_rol == 2">
                             <a mat-button routerLink="/admin_docs_pendientes" (click)="snav.close()">Documentos
                                 Pendientes Depto</a>
                                 <mat-divider></mat-divider>
                         </mat-list-item>
-                        <mat-list-item *ngIf="usuario.id_rol == 2 || usuario.id_rol == 3">
+                        <mat-list-item *ngIf="usuario.id_rol == 1 || usuario.id_rol == 2">
                             <a mat-button routerLink="/admin_update_revisiones" (click)="snav.close()">Revisión de
                                 Documentos Depto</a>
                                 <mat-divider></mat-divider>
                         </mat-list-item>
-                        <mat-list-item>
-                            <a mat-button routerLink="/" (click)="snav.close()">Consulta PC y PO</a>
+                        <mat-list-item *ngIf="usuario.id_rol >= 1 && usuario.id_rol <= 3">
+                            <a mat-button routerLink="/consulta_pc_po" (click)="snav.close()">Consulta PC y PO</a>
                             <mat-divider></mat-divider>
-                        </mat-list-item>
-                        <mat-list-item>
-                            <a mat-button routerLink="/" (click)="snav.close()">Consulta Documentos de Trabajo</a>
                         </mat-list-item>
                     </mat-list>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel *ngIf="usuario.id_rol  == 2">
+                <mat-expansion-panel *ngIf="usuario.id_rol  == 1">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <mat-icon>history</mat-icon> Historial
@@ -109,16 +106,12 @@
                     </mat-expansion-panel-header>
                     <mat-list>
                         <mat-list-item>
-                            <a mat-button routerLink="/" (click)="snav.close()">Registro de Cambios</a>
-                        </mat-list-item>
-                        <mat-divider></mat-divider>
-                        <mat-list-item>
-                            <a mat-button routerLink="/" (click)="snav.close()">Cambio Revisión Vigente</a>
+                            <a mat-button routerLink="/registro_cambios" (click)="snav.close()">Registro de Cambios</a>
                         </mat-list-item>
                     </mat-list>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel *ngIf="usuario.id_rol  < 3">
+                <mat-expansion-panel *ngIf="usuario.id_rol  == 1">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <mat-icon>account_circle</mat-icon> Cuentas de usuario

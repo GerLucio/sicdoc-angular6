@@ -34,7 +34,7 @@ export class AdminCodComponent implements OnInit {
   }
 
   validaPermisos() {
-    if (this.usuario.id_rol != 2) {
+    if (this.usuario.id_rol != 1) {
       this.router.navigate(['/inicio']);
     }
   }

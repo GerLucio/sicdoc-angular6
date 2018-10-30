@@ -17,6 +17,8 @@ import { AdminPcPoComponent } from './admin-pc-po/admin-pc-po.component';
 import { AdminDocsPendientesComponent } from './admin-docs-pendientes/admin-docs-pendientes.component';
 import { AdminUpdateRevisionComponent } from './admin-update-revision/admin-update-revision.component';
 import { AdminBajasDocsComponent } from './admin-bajas-docs/admin-bajas-docs.component';
+import { ConsultaPcPoComponent } from './consulta-pc-po/consulta-pc-po.component';
+import { RegistroCambiosComponent } from './registro-cambios/registro-cambios.component';
 
 const routes: Routes = [
   {
@@ -26,9 +28,21 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'registro_cambios',
+    component: RegistroCambiosComponent,
+    data: { title: 'RegistroCambios' },
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'admin_usuarios',
     component: AdminUsuariosComponent,
     data: { title: 'AdminUsuarios' },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'consulta_pc_po',
+    component: ConsultaPcPoComponent,
+    data: { title: 'ConsultaPcPo' },
     canActivate: [AuthGuard]
   },
   {

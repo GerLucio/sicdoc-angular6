@@ -14,23 +14,26 @@
           <form class="example-form">
             <mat-form-field appearance="outline">
               <mat-label>Departamento</mat-label>
-              <input matInput placeholder="Departamento" [(ngModel)]="nuevo_departamento.nombre" maxlength="64" name="nombre" required>
+              <input matInput placeholder="Departamento" [(ngModel)]="nuevo_departamento.nombre" maxlength="64" name="nombre"
+                required>
             </mat-form-field>
             <mat-form-field>
-              <mat-select placeholder="Subdirección" [(ngModel)]="nuevo_departamento.id_subdireccion" name="id_subdireccion" required>
+              <mat-select placeholder="Subdirección" [(ngModel)]="nuevo_departamento.id_subdireccion" name="id_subdireccion"
+                required>
                 <mat-option *ngFor="let s of subdirecciones" [value]="s.ID_SUBDIRECCION">
                   {{s.NOMBRE}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <mat-select placeholder="Jefe de Departamento" [(ngModel)]="nuevo_departamento.id_lider" name="id_lider" required>
+              <mat-select placeholder="Jefe de Departamento" [(ngModel)]="nuevo_departamento.id_lider" name="id_lider"
+                required>
                 <mat-option *ngFor="let u of usuariosnolideres" [value]="u.ID_USUARIO">
                   {{u.NOMBRE}} {{u.APELLIDO}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <button mat-raised-button color="primary" (click)="nuevoDepartamento()">ALTA</button>
+            <button mat-raised-button color="primary" (click)="nuevoDepartamento()">REGISTRAR</button>
           </form>
         </mat-card-content>
       </mat-card>
@@ -105,17 +108,20 @@
           <form class="example-form form_edita_60">
             <mat-form-field appearance="outline">
               <mat-label>Departamento</mat-label>
-              <input matInput placeholder="Departamento" [(ngModel)]="departamento_editar.nombre" maxlength="64" name="nombre" required>
+              <input matInput placeholder="Departamento" [(ngModel)]="departamento_editar.nombre" maxlength="64" name="nombre"
+                required>
             </mat-form-field>
             <mat-form-field>
-              <mat-select placeholder="Subdirección" [(ngModel)]="departamento_editar.id_subdireccion" name="id_subdireccion" required>
+              <mat-select placeholder="Subdirección" [(ngModel)]="departamento_editar.id_subdireccion" name="id_subdireccion"
+                required>
                 <mat-option *ngFor="let s of subdirecciones" [value]="s.ID_SUBDIRECCION">
                   {{s.NOMBRE}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <mat-select placeholder="Jefe de Departamento" [(ngModel)]="departamento_editar.id_lider" name="id_lider" required>
+              <mat-select placeholder="Jefe de Departamento" [(ngModel)]="departamento_editar.id_lider" name="id_lider"
+                required>
                 <mat-option *ngFor="let u of usuarios_departamento" [value]="u.ID_USUARIO">
                   {{u.NOMBRE}} {{u.APELLIDO}}
                 </mat-option>

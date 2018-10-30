@@ -28,7 +28,9 @@ import {
   MatTableModule,
   MatDialogModule,
   MatStepperModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
+  MatTreeModule,
+  MatCheckboxModule
 } from "@angular/material";
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
@@ -50,6 +52,8 @@ import { AdminPcPoComponent } from './admin-pc-po/admin-pc-po.component';
 import { AdminDocsPendientesComponent } from './admin-docs-pendientes/admin-docs-pendientes.component';
 import { AdminUpdateRevisionComponent } from './admin-update-revision/admin-update-revision.component';
 import { AdminBajasDocsComponent } from './admin-bajas-docs/admin-bajas-docs.component';
+import { ConsultaPcPoComponent } from './consulta-pc-po/consulta-pc-po.component';
+import { RegistroCambiosComponent } from './registro-cambios/registro-cambios.component';
 
 
 @NgModule({
@@ -72,7 +76,9 @@ import { AdminBajasDocsComponent } from './admin-bajas-docs/admin-bajas-docs.com
     AdminPcPoComponent,
     AdminDocsPendientesComponent,
     AdminUpdateRevisionComponent,
-    AdminBajasDocsComponent
+    AdminBajasDocsComponent,
+    ConsultaPcPoComponent,
+    RegistroCambiosComponent
   ],
   imports: [
     BrowserModule,
@@ -104,6 +110,8 @@ import { AdminBajasDocsComponent } from './admin-bajas-docs/admin-bajas-docs.com
     MatStepperModule,
     NgIdleKeepaliveModule.forRoot(),
     MatButtonToggleModule,
+    MatTreeModule,
+    MatCheckboxModule,
     AppRoutingModule
   ],
   providers: [AuthGuard],

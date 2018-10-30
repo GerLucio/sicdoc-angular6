@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {MatSnackBar} from '@angular/material';
 import { Usuario } from "../templates/usuario";
 import { Servidor } from "../templates/servidor";
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -60,7 +61,13 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/inicio']);
         }
         else {
-          this.openSnackBar('ERROR', res['Error']);
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
           this.Loggedin = false;
         }
       });

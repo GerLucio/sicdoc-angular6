@@ -15,10 +15,14 @@
 
 h2{
   font-size: 2em;
+  color: #3f51b5;
 }
 
 h4{
   font-size: 1.2em;
+}
+h3{
+  font-size: 1.7em;
 }
 h5{
   font-size: 1.2rem;
@@ -60,6 +64,7 @@ h5{
 
   .example-card {
     margin: auto;
+    margin-bottom: 3rem;
   }
 
   .card-formulario{
@@ -73,7 +78,7 @@ h5{
   }
 
   .contenedor{
-    background-color: rgb(238, 238, 238);
+    background-color: rgb(202, 202, 202);
   } 
 
   .padre {
@@ -83,7 +88,7 @@ h5{
     padding-bottom: 1.5rem;
     padding-left: 1.5rem;
     position: static;
-    
+    background-color: #ffffff;
   }
 
   .derecha{
@@ -116,7 +121,7 @@ table {
 .scroll-docs{
   overflow-y: 
   scroll;
-  height: 40rem;
+  height: 66rem;
 }
 
 .caja{
@@ -129,4 +134,8 @@ table {
 
 .form_edita_60{
   width: 60%;
+}
+
+.mat-card{
+  background-color: #f0f0f0;
 }

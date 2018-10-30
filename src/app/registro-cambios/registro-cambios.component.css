@@ -1,0 +1,49 @@
+.mat-table {
+    overflow: auto;
+  }
+.mat-column-CODIGO{
+    flex: 0 0 25%;
+}
+.mat-column-TIPO{
+    flex: 0 0 25%;
+}
+.mat-column-NOMBRE{
+    flex: 0 0 40%;
+}
+.mat-column-REVISIONES{
+    flex: 0 0 10%;
+}
+
+mat-header-cell, mat-cell {
+    display:flex;
+    justify-content: center;
+   }
+
+ul{
+    list-style-position: none;
+    padding-left: 0;
+}
+
+li{
+    margin: 1rem;
+}
+
+.mat-column-NO_REVISION{
+    flex: 0 0 15%;
+}
+.mat-column-FECHA_REVISION{
+    flex: 0 0 25%;
+}
+.mat-column-RESPONSABLE{
+    flex: 0 0 30%;
+}
+.mat-column-DESCARGA{
+    flex: 0 0 15%;
+}
+.mat-column-ADMINISTRA{
+    flex: 0 0 15%;
+}
+
+.example-card {
+    background-color: #ffffff;
+  }

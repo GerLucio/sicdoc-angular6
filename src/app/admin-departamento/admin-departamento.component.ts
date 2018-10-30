@@ -79,7 +79,7 @@ export class AdminDepartamentoComponent implements OnInit {
     this.departamento_editar.id_subdireccion = departamento.ID_SUBDIRECCION;
     this.ver_editar = true;
     this.usuarios.forEach(usuario => {
-      if(usuario.ID_DEPARTAMENTO == departamento.ID_DEPTO){
+      if (usuario.ID_DEPARTAMENTO == departamento.ID_DEPTO) {
         this.usuarios_departamento.push(usuario);
       }
     });

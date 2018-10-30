@@ -50,7 +50,6 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "baseHref" : "/sicdoc/",
             "browserTarget": "sicdoc:build"
           },
           "configurations": {

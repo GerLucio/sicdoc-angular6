@@ -36,6 +36,7 @@ export class AdminUsuariosComponent implements OnInit {
   servidor = new Servidor();
   displayedColumns: string[] = ['NOMBRE', 'CORREO', 'DEPARTAMENTO', 'ROL', 'ESTADO', 'ADMINISTRACIÓN'];
   token: string;
+  rol_actual: string;
 
 
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
@@ -74,6 +75,7 @@ export class AdminUsuariosComponent implements OnInit {
     this.usuario_editar.apellido = usuario.APELLIDO;
     this.usuario_editar.puesto = usuario.PUESTO;
     this.usuario_editar.id_departamento = usuario.ID_DEPARTAMENTO;
+    this.rol_actual = usuario.ID_ROL;
     this.usuario_editar.id_rol = usuario.ID_ROL;
     this.email2.setValue(usuario.CORREO);
     this.ver_editar = true;
@@ -93,48 +95,99 @@ export class AdminUsuariosComponent implements OnInit {
     this.ver_editar = false;
   }
 
+  editaCoordinadorDialogo(usuario) {
+    this.dialogRef = this.dialog.open(ConfirmationDialog, {
+      disableClose: false
+    });
+    this.dialogRef.componentInstance.confirmMessage = "Estás a punto de cambiar al Coordinador del SGC, ¿Realmente deseas realizar este cambio?";
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.http.post(this.servidor.nombre + '/apps/sicdoc/editaUsuarioSGC.php', JSON.stringify({
+          usuario_editar: this.usuario_editar, tkn: this.token
+        }), {
+          }).subscribe(res => {
+            if (res['Error']) {
+              //this.openSnackBar('ERROR', res['Error']);
+              swal({
+                type: 'error',
+                title: 'ERROR',
+                text: res['Error'],
+                timer: 5000
+              });
+            }
+            else if (res['ErrorToken']) {
+              swal({
+                type: 'error',
+                title: 'ERROR DE SESIÓN',
+                text: 'Vuelve a iniciar sesión',
+                timer: 5000
+              });
+              //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+              setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+            }
+            else {
+              swal({
+                type: 'success',
+                title: 'ÉXITO',
+                text: res['Exito'],
+                timer: 5000
+              });
+              //this.openSnackBar('ÉXITO', res['Exito']);
+              this.cancelarEditar();
+            }
+          });
+      }
+      else
+        this.cancelarEditar();
+      this.dialogRef = null;
+    });
+  }
+
   guardaEditarUsuario(usuario) {
     this.usuario_editar.correo = this.email2.value;
     if (usuario.nombre && usuario.apellido && usuario.puesto &&
-      !this.getErrorMessage2() && usuario.id_departamento && usuario.id_rol) {
-      let httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
-      });
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/editaUsuario.php', JSON.stringify({
-        usuario_editar: this.usuario_editar, tkn: this.token
-      }), {
-        }).subscribe(res => {
-          if (res['Error']) {
-            //this.openSnackBar('ERROR', res['Error']);
-            swal({
-              type: 'error',
-              title: 'ERROR',
-              text: res['Error'],
-              timer: 5000
-            });
-          }
-          else if (res['ErrorToken']) {
-            swal({
-              type: 'error',
-              title: 'ERROR DE SESIÓN',
-              text: 'Vuelve a iniciar sesión',
-              timer: 5000
-            });
-            //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-            setTimeout(() => { this.router.navigate(['/login']); }, 3000);
-          }
-          else {
-            swal({
-              type: 'success',
-              title: 'ÉXITO',
-              text: res['Exito'],
-              timer: 5000
-            });
-            //this.openSnackBar('ÉXITO', res['Exito']);
-            this.cancelarEditar();
-          }
-        });
+      !this.getErrorMessage2() && usuario.id_departamento && usuario.id_rol
+    ) {
+      if (this.rol_actual != "1" && usuario.id_rol == "1") {
+        this.editaCoordinadorDialogo(usuario);
+      }
+      else {
+        this.http.post(this.servidor.nombre + '/apps/sicdoc/editaUsuario.php', JSON.stringify({
+          usuario_editar: this.usuario_editar, tkn: this.token
+        }), {
+          }).subscribe(res => {
+            if (res['Error']) {
+              //this.openSnackBar('ERROR', res['Error']);
+              swal({
+                type: 'error',
+                title: 'ERROR',
+                text: res['Error'],
+                timer: 5000
+              });
+            }
+            else if (res['ErrorToken']) {
+              swal({
+                type: 'error',
+                title: 'ERROR DE SESIÓN',
+                text: 'Vuelve a iniciar sesión',
+                timer: 5000
+              });
+              //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+              setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+            }
+            else {
+              swal({
+                type: 'success',
+                title: 'ÉXITO',
+                text: res['Exito'],
+                timer: 5000
+              });
+              //this.openSnackBar('ÉXITO', res['Exito']);
+              this.cancelarEditar();
+            }
+          });
+      }
     }
     else {
       swal({
@@ -247,8 +300,10 @@ export class AdminUsuariosComponent implements OnInit {
 
   nuevoUsuario(nuevo_usuario) {
     this.nuevo_usuario.correo = this.email.value;
+    //this.nuevo_usuario.rol = "3";
     if (nuevo_usuario.nombre && nuevo_usuario.apellido && nuevo_usuario.puesto &&
-      !this.getErrorMessage() && nuevo_usuario.departamento && nuevo_usuario.rol) {
+      !this.getErrorMessage() && nuevo_usuario.departamento && nuevo_usuario.rol
+    ) {
       let httpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache'

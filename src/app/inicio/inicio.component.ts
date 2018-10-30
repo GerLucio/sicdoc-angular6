@@ -35,6 +35,7 @@ export class InicioComponent implements OnInit {
       this.usuario.puesto = this.setUsuario.PUESTO;
       this.usuario.correo = this.setUsuario.CORREO;
       this.usuario.departamento = this.setUsuario.DEPARTAMENTO;
+      this.usuario.id_departamento = this.setUsuario.ID_DEPARTAMENTO;
       this.usuario.rol = this.setUsuario.ROL;
       this.usuario.id_rol = this.setUsuario.ID_ROL;
       this.usuario.id_estado = this.setUsuario.ID_ESTADO;
@@ -74,7 +75,7 @@ export class InicioComponent implements OnInit {
       return;
     }
     this.http.post(this.servidor.nombre + '/apps/sicdoc/buscaDocumento.php', JSON.stringify({
-      tkn: this.token, nombre: this.nombre
+      tkn: this.token, nombre: this.nombre, departamento: this.usuario.id_departamento
     }), {
       }).subscribe(res => {
         if (res['Error']) {
