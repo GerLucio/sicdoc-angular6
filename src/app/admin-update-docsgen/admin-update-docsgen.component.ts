@@ -259,6 +259,10 @@ export class AdminUpdateDocsgenComponent implements OnInit {
 
   nuevaRevision(nombre_generado) {
     this.nueva_revision.id_responsable = this.usuario.id_usuario;
+    for(let documento of this.documentossgc){
+      if(this.nueva_revision.id_documento == documento.ID_DOCUMENTO)
+        this.nueva_revision.documento = documento.NOMBRE;
+    }
     this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevaRevision.php', JSON.stringify({
       revision: this.nueva_revision, tkn: this.token, nombre_archivo: nombre_generado,
       ubicacion: this.nueva_ubicacion

@@ -26,6 +26,7 @@ export class RegistroCambiosComponent implements OnInit {
   columnsToDisplay: string[] = ['CODIGO', 'TIPO', 'NOMBRE', 'REVISIONES'];
   columnas_revision: string[] = ['NO_REVISION', 'FECHA_REVISION', 'RESPONSABLE', 'DESCARGA', 'ADMINISTRA'];
   ver_revisiones: boolean;
+  total_revisiones: number;
   documento_actual = new Documento();
   dialogRef: MatDialogRef<ConfirmationDialog>;
 
@@ -38,6 +39,7 @@ export class RegistroCambiosComponent implements OnInit {
 
   ngOnInit() {
     this.obtenDocumentos();
+    this.total_revisiones = 0;
   }
 
   validaPermisos() {
@@ -98,6 +100,7 @@ export class RegistroCambiosComponent implements OnInit {
       }).subscribe(res => {
         if (!res) {
           this.revisiones = null;
+          this.total_revisiones = 0;
         }
         else if (res['ErrorToken']) {
           swal({
@@ -109,6 +112,7 @@ export class RegistroCambiosComponent implements OnInit {
         }
         else {
           this.revisiones = res;
+          this.total_revisiones = this.revisiones.length;
         }
       });
   }
@@ -150,7 +154,7 @@ export class RegistroCambiosComponent implements OnInit {
 
   revisa(revision) {
     this.http.post(this.servidor.nombre + '/apps/sicdoc/cambiaRevisionVigente.php', JSON.stringify({
-      revision: revision, tkn: this.token
+      revision: revision, tkn: this.token, documento: this.documento_actual
     }), {
       }).subscribe(res => {
         if (res['Error']) {

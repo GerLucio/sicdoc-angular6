@@ -84,46 +84,48 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <mat-table [dataSource]="revisiones" class="mat-elevation-z8" style="color: #6d6d6d;">
-            <ng-container matColumnDef="NO_REVISION">
-              <mat-header-cell *matHeaderCellDef> REVISIÓN </mat-header-cell>
-              <mat-cell *matCellDef="let revision">
-                {{revision.NO_REVISION - 1}}
-              </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="FECHA_REVISION">
-              <mat-header-cell *matHeaderCellDef> FECHA REVISION </mat-header-cell>
-              <mat-cell *matCellDef="let revision">
-                {{revision.FECHA_REVISION}}
-              </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="RESPONSABLE">
-              <mat-header-cell *matHeaderCellDef> RESPONSABLE </mat-header-cell>
-              <mat-cell *matCellDef="let revision">
-                {{revision.RESPONSABLE}}
-              </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="DESCARGA">
-              <mat-header-cell *matHeaderCellDef> DESCARGA </mat-header-cell>
-              <mat-cell *matCellDef="let revision">
-                <button id="btn_archivo" mat-icon-button color="accent" (click)="ver_documento(revision)">
-                  <mat-icon>remove_red_eye</mat-icon>
-                </button>
-              </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="ADMINISTRA">
-              <mat-header-cell *matHeaderCellDef> VIGENTE </mat-header-cell>
-              <mat-cell *matCellDef="let revision">
-                <mat-chip *ngIf="revision.VIGENTE" color="warn" selected>Revisión Vigente</mat-chip>
-                <mat-slide-toggle *ngIf="!revision.VIGENTE" color="warn" (change)="onChange($event, revision)" class="example-margin"
-                  color="warn" checked="false" [checked]="revision.VIGENTE">
-                  Hacer vigente
-                </mat-slide-toggle>
-              </mat-cell>
-            </ng-container>
-            <mat-header-row *matHeaderRowDef="columnas_revision;  sticky: true"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: columnas_revision;"></mat-row>
-          </mat-table>
+          <div [class]="total_revisiones > 11 ? 'scroll-docs': ''">
+            <mat-table [dataSource]="revisiones" class="mat-elevation-z8" style="color: #6d6d6d;">
+              <ng-container matColumnDef="NO_REVISION">
+                <mat-header-cell *matHeaderCellDef> REVISIÓN </mat-header-cell>
+                <mat-cell *matCellDef="let revision">
+                  {{revision.NO_REVISION - 1}}
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="FECHA_REVISION">
+                <mat-header-cell *matHeaderCellDef> FECHA REVISION </mat-header-cell>
+                <mat-cell *matCellDef="let revision">
+                  {{revision.FECHA_REVISION}}
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="RESPONSABLE">
+                <mat-header-cell *matHeaderCellDef> RESPONSABLE </mat-header-cell>
+                <mat-cell *matCellDef="let revision">
+                  {{revision.RESPONSABLE}}
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="DESCARGA">
+                <mat-header-cell *matHeaderCellDef> DESCARGA </mat-header-cell>
+                <mat-cell *matCellDef="let revision">
+                  <button id="btn_archivo" mat-icon-button color="accent" (click)="ver_documento(revision)">
+                    <mat-icon>remove_red_eye</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="ADMINISTRA">
+                <mat-header-cell *matHeaderCellDef> VIGENTE </mat-header-cell>
+                <mat-cell *matCellDef="let revision">
+                  <mat-chip *ngIf="revision.VIGENTE" color="warn" selected>Revisión Vigente</mat-chip>
+                  <mat-slide-toggle *ngIf="!revision.VIGENTE" color="warn" (change)="onChange($event, revision)" class="example-margin"
+                    color="warn" checked="false" [checked]="revision.VIGENTE">
+                    Hacer vigente
+                  </mat-slide-toggle>
+                </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="columnas_revision;  sticky: true"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: columnas_revision;"></mat-row>
+            </mat-table>
+          </div>
           <div class="derecha">
             <button mat-raised-button color="primary" (click)="cancelarGestionar()">TERMINAR</button>
           </div>

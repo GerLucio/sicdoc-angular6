@@ -139,3 +139,7 @@ table {
 .mat-card{
   background-color: #f0f0f0;
 }
+
+.sticky{
+  overflow: auto;
+}

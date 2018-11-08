@@ -40,7 +40,9 @@
               <ng-container matColumnDef="VER">
                 <mat-header-cell *matHeaderCellDef> VER ARCHIVO </mat-header-cell>
                 <mat-cell *matCellDef="let documento">
-                  <mat-icon color="accent"  (click)="ver_documento(documento)">remove_red_eye</mat-icon>
+                  <button mat-button (click)="ver_documento(documento)">
+                      <mat-icon color="accent">remove_red_eye</mat-icon>
+                  </button>
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="ACCIONES">
