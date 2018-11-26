@@ -1,72 +1,58 @@
 <div class="padre">
-
     <mat-grid-list cols="6" gutterSize="1rem" rowHeight="80rem">
         <mat-grid-tile class="caja" colspan="6">
-            <mat-card class="card-formulario">
+            <mat-card class="card-inicio">
                 <mat-card-header>
                     <mat-card-title>
-                        <h1>BIENVENIDO</h1>
+                        <h2>BIENVENIDO</h2>
                     </mat-card-title>
                     <mat-card-subtitle>
-                        <h3>al Sistema Interno de Control de Documentos</h3>
+                        <h4>Sistema Interno de Control de Documentos</h4>
                     </mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
-                    <h3>Introduce el Nombre o Código del documento que deseas consultar</h3>
-                    <p>
-                        <mat-form-field appearance="fill" color="primary">
-                            <mat-label>Nombre o código del documento</mat-label>
-                            <input matInput required maxlength="128" [(ngModel)]="nombre" (keyup.enter)="buscaDocumento()"
-                                placeholder="Nombre o código">
-                            <button mat-button *ngIf="nombre" (click)="nombre = null" matSuffix mat-icon-button>
-                                <mat-icon>backspace</mat-icon>
-                            </button>
-                            <mat-hint>Campo obligatorio</mat-hint>
-                        </mat-form-field>
-                        <button mat-fab (click)="buscaDocumento()" color="primary">
-                            <mat-icon>search</mat-icon>
+                    <mat-form-field appearance="fill" color="primary">
+                        <mat-label>Nombre o código del documento</mat-label>
+                        <input matInput required maxlength="128" [(ngModel)]="nombre" (keyup.enter)="buscaDocumento()"
+                            placeholder="Nombre o código">
+                        <button mat-button *ngIf="nombre" (click)="nombre = null" matSuffix mat-icon-button>
+                            <mat-icon>backspace</mat-icon>
                         </button>
-                    </p>
-                    <p>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Nombre</mat-label>
-                            <input disabled matInput [(ngModel)]="documento.nombre" placeholder="Nombre">
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Código</mat-label>
-                            <input disabled matInput [(ngModel)]="documento.codigo" placeholder="Código">
-                        </mat-form-field>
-                    </p>
-                    <p>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Proceso</mat-label>
-                            <input disabled matInput [(ngModel)]="documento.proceso" placeholder="Proceso">
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Departamento</mat-label>
-                            <input disabled matInput [(ngModel)]="documento.departamento" placeholder="Departamento">
-                        </mat-form-field>
-                    </p>
-                    <p>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Tipo</mat-label>
-                            <input disabled matInput [(ngModel)]="documento.tipo" placeholder="Tipo">
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Revisión</mat-label>
-                            <input disabled matInput [(ngModel)]="documento.revision" placeholder="Revisión">
-                        </mat-form-field>
-                    </p>
-                    <p>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Ubicación</mat-label>
-                            <textarea disabled matInput [(ngModel)]="documento.ubicacion" placeholder="Ubicación"></textarea>
-                        </mat-form-field>
-                    </p>
-                    <p *ngIf="documento.ruta">
-                        <button mat-raised-button (click)="ver_documento(documento.ruta)" color="accent">DESCARGAR
-                            DOCUMENTO</button>
-                    </p>
+                        <mat-hint>Campo obligatorio</mat-hint>
+                    </mat-form-field>
+                    <button mat-fab (click)="buscaDocumento()" color="primary">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Nombre</mat-label>
+                        <input disabled matInput [(ngModel)]="documento.nombre" placeholder="Nombre">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Código</mat-label>
+                        <input disabled matInput [(ngModel)]="documento.codigo" placeholder="Código">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Proceso</mat-label>
+                        <input disabled matInput [(ngModel)]="documento.proceso" placeholder="Proceso">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Departamento</mat-label>
+                        <input disabled matInput [(ngModel)]="documento.departamento" placeholder="Departamento">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Tipo</mat-label>
+                        <input disabled matInput [(ngModel)]="documento.tipo" placeholder="Tipo">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Revisión</mat-label>
+                        <input disabled matInput [(ngModel)]="documento.revision" placeholder="Revisión">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Ubicación</mat-label>
+                        <input disabled matInput [(ngModel)]="documento.ubicacion" placeholder="Ubicación">
+                    </mat-form-field>
+                    <button *ngIf="documento.ruta" mat-raised-button (click)="ver_documento(documento.ruta)" color="accent">DESCARGAR
+                        DOCUMENTO</button>
                 </mat-card-content>
             </mat-card>
         </mat-grid-tile>

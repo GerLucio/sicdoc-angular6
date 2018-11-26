@@ -2,13 +2,13 @@
     overflow: auto;
   }
 .mat-column-CODIGO{
-    flex: 0 0 25%;
+    flex: 0 0 20%;
 }
 .mat-column-TIPO{
     flex: 0 0 25%;
 }
 .mat-column-NOMBRE{
-    flex: 0 0 40%;
+    flex: 0 0 45%;
 }
 .mat-column-REVISIONES{
     flex: 0 0 10%;

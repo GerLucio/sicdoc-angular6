@@ -107,15 +107,15 @@ table {
 }
 
 .scroll{
-  overflow-y: 
-  scroll;
+  overflow-y: scroll;
   height: 60rem;
 }
 
 .scrollv{
-  overflow-y: 
-  scroll;
-  height: 43rem;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  overflow: auto;
+  height: 66rem;
 }
 
 .scroll-docs{
@@ -132,14 +132,15 @@ table {
   width: 50%;
 }
 
-.form_edita_60{
-  width: 60%;
+.card-busca{
+  width: 100%;
 }
 
 .mat-card{
   background-color: #f0f0f0;
 }
 
-.sticky{
-  overflow: auto;
+.cuadro-busqueda{
+  display: flex;
+  flex-direction: column;
 }

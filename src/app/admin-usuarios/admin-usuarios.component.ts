@@ -34,7 +34,7 @@ export class AdminUsuariosComponent implements OnInit {
   total_usuarios: number;
   dataSource = new MatTableDataSource();
   servidor = new Servidor();
-  displayedColumns: string[] = ['NOMBRE', 'CORREO', 'DEPARTAMENTO', 'ROL', 'ESTADO', 'ADMINISTRACIÓN'];
+  displayedColumns: string[] = ['NOMBRE', 'CORREO', 'ROL', 'DEPARTAMENTO', 'ESTADO', 'ADMINISTRACIÓN'];
   token: string;
   rol_actual: string;
 

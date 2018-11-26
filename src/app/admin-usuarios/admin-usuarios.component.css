@@ -1,0 +1,30 @@
+.mat-table {
+    overflow: auto;
+    width:  100%;
+  }
+
+.mat-column-NOMBRE{
+    flex: 0 0 30%;
+}
+
+.mat-column-CORREO{
+    flex: 0 0 15%;
+}
+
+.mat-column-ROL{
+    flex: 0 0 15%;
+}
+
+.mat-column-DEPARTAMENTO{
+    flex: 0 0 25%;
+}
+
+.mat-column-ESTADO{
+    flex: 0 0 10%;
+}
+
+.mat-column-ADMINISTRACIÓN{
+    flex: 0 0 5%;
+}
+
+

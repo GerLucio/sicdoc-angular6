@@ -25,6 +25,7 @@ export class AdminPcPoComponent implements OnInit {
   setUsuario: any;
   usuario = new Usuario();
   nuevo_documento = new Documento();
+  edita_documento = new Documento();
   tipos: any;
   procesos: any;
   documentos: any;
@@ -34,6 +35,7 @@ export class AdminPcPoComponent implements OnInit {
   displayedColumns: string[] = ['CODIGO', 'NOMBRE', 'PROCESO', 'DEPARTAMENTO', 'TIPO', 'ADMINISTRACIÓN'];
   token: string;
   ver_nuevo: boolean;
+  ver_edita: boolean;
   archivo: File = null;
   doc_mostrar = new Documento();
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
@@ -41,6 +43,7 @@ export class AdminPcPoComponent implements OnInit {
     this.validaPermisos();
     this.total_documentos = 0;
     this.ver_nuevo = false;
+    this.ver_edita = false;
   }
 
   ngOnInit() {
@@ -154,13 +157,81 @@ export class AdminPcPoComponent implements OnInit {
     }
   }
 
+  upload2() {
+    if (this.archivo) {
+      const data = new FormData();
+      data.append('archivo', this.archivo, this.archivo.name);
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+        .subscribe(res => {
+          if (res['Error']) {
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
+          }
+          else if (res['Exito']) {
+            this.reemplazaDocumento(res['nombre_generado'], this.edita_documento.ruta);
+          }
+        });
+    }
+    else {
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
+    }
+  }
+
+  reemplazaDocumento(nuevo_archivo, viejo_archivo) {
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/reemplazaArchivo.php', JSON.stringify({
+      tkn: this.token, nuevo: nuevo_archivo, anterior: viejo_archivo
+    }), {
+      }).subscribe(res => {
+        if (res['Error']) {
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
+        }
+        else if (res['ErrorToken']) {
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+        }
+        else {
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', res['Exito']);
+          this.cancelarEdita();
+        }
+      });
+  }
+
   obtenProcesos() {
     this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenProcesosDepto.php', JSON.stringify({
       tkn: this.token, departamento: this.usuario.id_departamento, depto: this.usuario.departamento, rol: this.usuario.id_rol
     }), {
       }).subscribe(res => {
         this.procesos = res;
-        if(!res){
+        if (!res) {
           this.procesos = null;
         }
         else if (res['ErrorToken']) {
@@ -182,7 +253,7 @@ export class AdminPcPoComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.tipos = res;
-        if(!res){
+        if (!res) {
           this.tipos = null;
         }
         else if (res['ErrorToken']) {
@@ -212,6 +283,14 @@ export class AdminPcPoComponent implements OnInit {
     this.nuevo_documento.id_proceso = null;
     this.nuevo_documento.id_tipo = null;
     this.nuevo_documento.ubicacion = null;
+  }
+
+  cancelarEdita() {
+    this.ver_edita = false;
+    this.resetInputFile();
+    this.edita_documento.id_documento = null;
+    this.edita_documento.ruta = null;
+    this.edita_documento.nombre = null;
   }
 
   resetInputFile() {
@@ -256,6 +335,13 @@ export class AdminPcPoComponent implements OnInit {
           this.obtenDocumentos();
         }
       });
+  }
+
+  editaDocumento(documento) {
+    this.edita_documento.id_documento = documento.ID_DOCUMENTO;
+    this.edita_documento.ruta = documento.RUTA;
+    this.edita_documento.nombre = documento.NOMBRE;
+    this.ver_edita = true;
   }
 
   eliminarDialogo(documento) {
