@@ -1,17 +1,26 @@
 <div class="fondo_login">
   <div class="main-div">
-    <mat-card class="example-card z-depth center">
+    <mat-card class="example-card z-depth center animated bounceIn delay-1s">
       <mat-card-content>
-        <h2>BIENVENIDO</h2>
-        <mat-form-field appearance="outline">
+        <h1>BIENVENIDO</h1>
+        <h3>
+          Sistema Interno de Control de Documentos
+        </h3>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="example-card z-depth center animated bounceIn delay-1s">
+      <mat-card-content>
+        <h2>LOGIN</h2>
+        <mat-form-field>
           <input matInput placeholder="Correo" [formControl]="email" autofocus="" required>
-          <mat-icon matPrefix>alternate_email</mat-icon>
+          <mat-icon matSuffix>alternate_email</mat-icon>
           <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <input matInput placeholder="Contraseña" [type]="hide ? 'password' : 'text'" [(ngModel)]="usuario.password"
             minlength="8" required>
-          <mat-icon matPrefix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions>

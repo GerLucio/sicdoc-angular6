@@ -1,19 +1,15 @@
 
   .fondo_login{
-   background-image: url("../../assets/img/fondo.jpg");
+   background-image: url("../../assets/img/fondo2.jpg");
    background-size: cover;
    /*background-color: gainsboro;*/
   }
 
   .main-div{
-    height: 100vh;
+    height: 98vh;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  img{
-    height: 28vh;
-    width: 54vh;
   }
 
   .center{
@@ -21,4 +17,8 @@
     height: auto;
     text-align: center;
     margin: auto;
+  }
+
+  h1{
+    color: #3f51b5;
   }

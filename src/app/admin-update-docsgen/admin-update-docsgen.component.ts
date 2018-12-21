@@ -29,6 +29,8 @@ export class AdminUpdateDocsgenComponent implements OnInit {
   servidor = new Servidor();
   documentos: any;
   documentossgc: any;
+  documento_aprobar: any;
+  ver_edita: boolean;
   total_documentos: number;
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['NOMBRE', 'PROCESO', 'TIPO', 'FECHA_INICIO', 'VER', 'ACCIONES'];
@@ -45,6 +47,7 @@ export class AdminUpdateDocsgenComponent implements OnInit {
     this.validaPermisos();
     this.total_documentos = 0;
     this.ver_nuevo = false;
+    this.ver_edita = false;
     this.input_ubicacion = true;
   }
 
@@ -57,11 +60,11 @@ export class AdminUpdateDocsgenComponent implements OnInit {
   onChange(event) {
     if (event.checked)
       this.input_ubicacion = false;
-    else{
+    else {
       this.input_ubicacion = true;
       this.nueva_ubicacion = null;
     }
-      
+
   }
 
   validaLogin() {
@@ -120,7 +123,7 @@ export class AdminUpdateDocsgenComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.documentossgc = res;
-        if(!res){
+        if (!res) {
           this.documentossgc = null;
         }
         else if (res['ErrorToken']) {
@@ -198,6 +201,7 @@ export class AdminUpdateDocsgenComponent implements OnInit {
           });
           //this.openSnackBar('ÉXITO', res['Exito']);
           this.obtenDocumentos();
+          this.cancelarAprueba();
         }
       });
   }
@@ -259,8 +263,8 @@ export class AdminUpdateDocsgenComponent implements OnInit {
 
   nuevaRevision(nombre_generado) {
     this.nueva_revision.id_responsable = this.usuario.id_usuario;
-    for(let documento of this.documentossgc){
-      if(this.nueva_revision.id_documento == documento.ID_DOCUMENTO)
+    for (let documento of this.documentossgc) {
+      if (this.nueva_revision.id_documento == documento.ID_DOCUMENTO)
         this.nueva_revision.documento = documento.NOMBRE;
     }
     this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevaRevision.php', JSON.stringify({
@@ -322,6 +326,87 @@ export class AdminUpdateDocsgenComponent implements OnInit {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  upload2() {
+    if (this.archivo) {
+      const data = new FormData();
+      data.append('archivo', this.archivo, this.archivo.name);
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+        .subscribe(res => {
+          if (res['Error']) {
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
+          }
+          else if (res['Exito']) {
+            this.reemplazaDocumento(res['nombre_generado'], this.documento_aprobar.RUTA);
+            this.revisa(this.documento_aprobar, 'aprobar');
+          }
+        });
+    }
+    else {
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
+    }
+  }
+
+  reemplazaDocumento(nuevo_archivo, viejo_archivo) {
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/reemplazaArchivo.php', JSON.stringify({
+      tkn: this.token, nuevo: nuevo_archivo, anterior: viejo_archivo
+    }), {
+      }).subscribe(res => {
+        if (res['Error']) {
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
+        }
+        else if (res['ErrorToken']) {
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+        }
+        else {
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', res['Exito']);
+          //this.cancelarAprueba();
+        }
+      });
+  }
+
+  cancelarAprueba() {
+    this.ver_edita = false;
+    this.resetInputFile();
+    this.documento_aprobar.ruta = null;
+    this.documento_aprobar.codigo = null;
+  }
+
+  aprueba_doc(documento) {
+    this.documento_aprobar = documento;
+    this.ver_edita = true;
   }
 
 }

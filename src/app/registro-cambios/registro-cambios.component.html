@@ -87,7 +87,7 @@
           <div [class]="total_revisiones > 11 ? 'scroll-docs': ''">
             <mat-table [dataSource]="revisiones" class="mat-elevation-z8" style="color: #6d6d6d;">
               <ng-container matColumnDef="NO_REVISION">
-                <mat-header-cell *matHeaderCellDef> REVISIÓN </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef> NÚMERO CAMBIO </mat-header-cell>
                 <mat-cell *matCellDef="let revision">
                   {{revision.NO_REVISION - 1}}
                 </mat-cell>

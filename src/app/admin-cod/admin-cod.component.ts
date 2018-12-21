@@ -16,16 +16,22 @@ import swal from 'sweetalert2';
   styleUrls: ['./admin-cod.component.css']
 })
 export class AdminCodComponent implements OnInit {
+
+  @ViewChild('inputArchivo')
+  inputArchivo: ElementRef;
   login: boolean = false;
   setUsuario: any;
   usuario = new Usuario();
   token: string;
   servidor = new Servidor();
   documentos: any;
+  documento_aprobar = new Documento();
+  ver_edita: boolean;
   total_documentos: number;
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['NOMBRE', 'PROCESO', 'TIPO', 'FECHA_INICIO', 'VER', 'ACCIONES'];
   dialogRef: MatDialogRef<InputDialogComponent>;
+  archivo: File = null;
 
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
     this.validaLogin();
@@ -59,6 +65,7 @@ export class AdminCodComponent implements OnInit {
 
   ngOnInit() {
     this.obtenDocumentos();
+    this.ver_edita = false;
   }
 
   obtenDocumentos() {
@@ -115,6 +122,111 @@ export class AdminCodComponent implements OnInit {
     });
   }
 
+  upload2() {
+    if (this.archivo && this.documento_aprobar.codigo) {
+      const data = new FormData();
+      data.append('archivo', this.archivo, this.archivo.name);
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+        .subscribe(res => {
+          if (res['Error']) {
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
+          }
+          else if (res['Exito']) {
+            this.reemplazaDocumento(res['nombre_generado'], this.documento_aprobar.ruta);
+            this.codifica(this.documento_aprobar, 'aprobar');
+          }
+        });
+    }
+    else {
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Debes llenar todos los campos',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
+    }
+  }
+
+  reemplazaDocumento(nuevo_archivo, viejo_archivo) {
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/reemplazaArchivo.php', JSON.stringify({
+      tkn: this.token, nuevo: nuevo_archivo, anterior: viejo_archivo
+    }), {
+      }).subscribe(res => {
+        if (res['Error']) {
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
+        }
+        else if (res['ErrorToken']) {
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+        }
+        else {
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', res['Exito']);
+          //this.cancelarAprueba();
+        }
+      });
+  }
+
+  cancelarAprueba() {
+    this.ver_edita = false;
+    this.resetInputFile();
+    this.documento_aprobar.ruta = null;
+    this.documento_aprobar.codigo = null;
+  }
+
+  resetInputFile() {
+    this.inputArchivo.nativeElement.value = "";
+    this.archivo = null;
+  }
+
+  onFileSelected(event) {
+    this.archivo = <File>event.target.files[0];
+    if (this.archivo.size > 2000000) {
+      this.inputArchivo.nativeElement.value = "";
+      this.resetInputFile();
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'El tamaño máximo de archivo son 2MB',
+        timer: 5000
+      });
+      //this.openSnackBar('ERROR', 'El tamaño máximo de archivo son 2MB');
+    }
+  }
+
+  aprueba_doc(documento){
+    this.documento_aprobar.id_documento = documento.ID_DOCUMENTO;
+    this.documento_aprobar.ruta = documento.RUTA;
+    this.documento_aprobar.nombre = documento.NOMBRE;
+    this.documento_aprobar.tipo = documento.TIPO;
+    this.documento_aprobar.id_proceso = documento.ID_PROCESO;
+    this.ver_edita = true;
+  }
+
   codifica(documento, accion) {
     this.http.post(this.servidor.nombre + '/apps/sicdoc/codificaDocumento.php', JSON.stringify({
       documento: documento, tkn: this.token, accion: accion
@@ -148,6 +260,7 @@ export class AdminCodComponent implements OnInit {
           });
           //this.openSnackBar('ÉXITO', res['Exito']);
           this.obtenDocumentos();
+          this.cancelarAprueba();
         }
       });
   }

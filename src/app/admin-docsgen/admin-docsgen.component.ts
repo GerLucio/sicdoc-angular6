@@ -28,10 +28,11 @@ export class AdminDocsgenComponent implements OnInit {
   tipos: any;
   procesos: any;
   documentos: any;
-  total_documentos: number;
+  procesos_docs: any;
+  //total_documentos: number;
   dataSource = new MatTableDataSource();
   servidor = new Servidor();
-  displayedColumns: string[] = ['CODIGO', 'NOMBRE', 'PROCESO', 'TIPO', 'REVISIONES', 'ADMINISTRACIÓN'];
+  displayedColumns: string[] = ['CODIGO', 'NOMBRE', 'TIPO', 'REVISIONES', 'FECHA', 'ADMINISTRACIÓN'];
   token: string;
   ver_nuevo: boolean;
   archivo: File = null;
@@ -39,7 +40,7 @@ export class AdminDocsgenComponent implements OnInit {
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
     this.validaLogin();
     this.validaPermisos();
-    this.total_documentos = 0;
+    //this.total_documentos = 0;
     this.ver_nuevo = false;
   }
 
@@ -165,14 +166,15 @@ export class AdminDocsgenComponent implements OnInit {
   }
 
   obtenDocumentos() {
-    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenDocumentosGenerales.php', JSON.stringify({
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenDocumentosGenerales2.php', JSON.stringify({
       tkn: this.token
     }), {
       }).subscribe(res => {
         this.documentos = res;
         if (!res) {
           this.dataSource = null;
-          this.total_documentos = 0;
+          this.procesos_docs = null;
+          //this.total_documentos = 0;
         }
         else if (res['ErrorToken']) {
           swal({
@@ -185,8 +187,9 @@ export class AdminDocsgenComponent implements OnInit {
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else if (res) {
-          this.total_documentos = this.documentos.length;
-          this.dataSource = new MatTableDataSource(this.documentos);
+          //this.total_documentos = this.documentos.length;
+          this.dataSource = res['documentos'];
+          this.procesos_docs = res['procesos'];
         }
       });
   }

@@ -130,7 +130,6 @@ export class AdminSubdireccionComponent implements OnInit {
     }
   }
    
-
   obtenSubdirecciones() {
     let httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',

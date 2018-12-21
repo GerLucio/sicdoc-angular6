@@ -3,30 +3,43 @@
   }
 
 .mat-column-CODIGO{
-    flex: 0 0 10%;
+    flex: 0 0 15%;
 }
 
 .mat-column-NOMBRE{
-    flex: 0 0 30%;
-}
-
-.mat-column-PROCESO{
-    flex: 0 0 30%;
+    flex: 0 0 37%;
 }
 
 .mat-column-TIPO{
-    flex: 0 0 10%;
+    flex: 0 0 20%;
 }
 
 .mat-column-REVISIONES{
     flex: 0 0 10%;
 }
 
-.mat-column-ADMINISTRACIÓN{
+.mat-column-FECHA{
     flex: 0 0 10%;
+}
+
+.mat-column-ADMINISTRACIÓN{
+    flex: 0 0 8%;
 }
 
 mat-header-cell, mat-cell {
     display:flex;
     justify-content: center;
    }
+
+   .example-card {
+    background-color: #ffffff;
+  }
+
+  ul{
+    list-style-position: none;
+    padding-left: 0;
+}
+
+li{
+    margin: 1rem;
+}

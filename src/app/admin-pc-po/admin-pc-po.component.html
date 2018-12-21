@@ -89,17 +89,84 @@
           <button mat-raised-button (click)="ver_nuevo = true" color="primary">NUEVO DOCUMENTO</button>
         </div>
         <mat-card-content>
-          <mat-form-field *ngIf="total_documentos">
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Busca un documento entre los {{ total_documentos }} registrados">
-          </mat-form-field>
-          <div class="scrollv mat-elevation-z8">
-            <mat-table [dataSource]="dataSource">
+          <div class="scroll-docs ">
+
+            <ul>
+              <li *ngFor="let proceso of procesos_docs; let i = index">
+                <mat-card *ngIf="dataSource[i]" class="example-card">
+                  <mat-card-header>
+                    <mat-card-title>
+                      <h3 style="color: #ff4081;">{{proceso.DEPARTAMENTO}}</h3>
+                      <h4>{{proceso.PROCESO}}</h4>
+                    </mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <mat-table *ngIf="dataSource[i]" [dataSource]="dataSource[i]" class="mat-elevation-z8">
+                      <ng-container matColumnDef="CODIGO">
+                        <mat-header-cell *matHeaderCellDef>
+                          CÓDIGO
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let documento">
+                          {{documento.CODIGO}}/R{{documento.NO_REVISION - 1}}
+                        </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="NOMBRE">
+                        <mat-header-cell *matHeaderCellDef> NOMBRE </mat-header-cell>
+                        <mat-cell *matCellDef="let documento">
+                          {{documento.NOMBRE}}<mat-chip *ngIf="documento.FECHA_FIN" color="warn" selected>Pendiente
+                            baja</mat-chip>
+                        </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="TIPO">
+                        <mat-header-cell *matHeaderCellDef> TIPO </mat-header-cell>
+                        <mat-cell *matCellDef="let documento">
+                          {{documento.TIPO}}
+                        </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="FECHA">
+                          <mat-header-cell *matHeaderCellDef> FECHA_ALTA </mat-header-cell>
+                          <mat-cell *matCellDef="let documento">
+                            {{documento.FECHA_INICIO}}
+                          </mat-cell>
+                        </ng-container>
+                      <ng-container matColumnDef="ADMINISTRACIÓN">
+                        <mat-header-cell *matHeaderCellDef>
+                          <mat-icon>settings</mat-icon>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let documento">
+                          <button mat-icon-button color="accent" [matMenuTriggerFor]="menuadmin">
+                            <mat-icon>settings</mat-icon>
+                          </button>
+                          <mat-menu #menuadmin="matMenu">
+                            <button id="btn_archivo" mat-menu-item (click)="ver_documento(documento)">
+                              <mat-icon>remove_red_eye</mat-icon>
+                              <span>Ver</span>
+                            </button>
+                            <!--<button mat-menu-item (click)="editaDocumento(documento)">
+                              <mat-icon>brush</mat-icon><span>Firmar Código</span>
+                            </button>-->
+                            <button mat-menu-item (click)="eliminarDialogo(documento)">
+                              <mat-icon>delete</mat-icon>
+                              <span>Eliminar</span>
+                            </button>
+                          </mat-menu>
+                        </mat-cell>
+                      </ng-container>
+                      <mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                  </mat-card-content>
+                </mat-card>
+              </li>
+            </ul>
+
+            <!--<mat-table class="mat-elevation-z8" [dataSource]="dataSource">
               <ng-container matColumnDef="CODIGO">
                 <mat-header-cell *matHeaderCellDef>
                   CÓDIGO
                 </mat-header-cell>
                 <mat-cell *matCellDef="let documento">
-                  {{documento.CODIGO}}/{{documento.NO_REVISION - 1}}
+                  {{documento.CODIGO}}/R{{documento.NO_REVISION - 1}}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="NOMBRE">
@@ -151,7 +218,7 @@
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
+            </mat-table>-->
           </div>
         </mat-card-content>
       </mat-card>

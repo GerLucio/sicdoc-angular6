@@ -22,9 +22,8 @@
               ¿Cambió la ubicación del archivo?
             </mat-slide-toggle>
             <mat-form-field>
-              <input matInput [disabled]="input_ubicacion" placeholder="Ubicación, ejemplo: Directorio de archivos de la computadora / Carpeta 3 del cajón 4 del archivero de la oficina...." 
-               [(ngModel)]="nueva_ubicacion"
-                name="nueva_ubicacion" maxlength="512">
+              <input matInput [disabled]="input_ubicacion" placeholder="Ubicación, ejemplo: Directorio de archivos de la computadora / Carpeta 3 del cajón 4 del archivero de la oficina...."
+                [(ngModel)]="nueva_ubicacion" name="nueva_ubicacion" maxlength="512">
             </mat-form-field>
             <br><br><br>
             <label for="archivo">Archivo </label>
@@ -41,8 +40,32 @@
       </mat-card>
     </mat-grid-tile>
 
+    <mat-grid-tile *ngIf="ver_edita" class="caja" colspan="6">
+      <mat-card class="card-formulario">
+        <mat-card-header>
+          <mat-card-title>
+            <h2>Codifica el archivo del documento</h2>
+          </mat-card-title>
+          <mat-card-subtitle>Documento seleccionado: {{documento_aprobar.nombre}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <form>
+            <label for="archivo">Archivo ya codificado</label>
+            <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)" accept=".xlsx,.xls,.doc,.docx,.pdf"
+              required>
+            <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
+            <mat-icon *ngIf="archivo" color="accent" (click)="resetInputFile()">clear</mat-icon>
+            <div class="derecha">
+              <button mat-button (click)="cancelarAprueba()">CANCELAR</button>
+              <button mat-raised-button (click)="upload2()" color="primary">REGISTRAR</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
 
-    <mat-grid-tile *ngIf="!ver_nuevo" class="caja" colspan="6">
+
+    <mat-grid-tile *ngIf="!ver_nuevo && !ver_edita" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -93,7 +116,7 @@
                 <mat-header-cell *matHeaderCellDef> ACCIONES </mat-header-cell>
                 <mat-cell *matCellDef="let documento">
                   <button mat-button (click)="inputDialogo(documento, 'declinar')">DECLINAR</button>
-                  <button mat-raised-button (click)="inputDialogo(documento, 'aprobar')" color="primary">APROBAR</button>
+                  <button mat-raised-button (click)="aprueba_doc(documento)" color="primary">APROBAR</button>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></mat-header-row>

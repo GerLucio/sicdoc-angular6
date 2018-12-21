@@ -18,16 +18,17 @@ export class ConsultaPcPoComponent implements OnInit {
   token: string;
   servidor = new Servidor();
   documentos: any;
-  total_documentos: number;
+  procesos: any;
+  //total_documentos: number;
   dataSource = new MatTableDataSource();
   ver_nuevo: boolean;
-  displayedColumns: string[] = ['CODIGO', 'NOMBRE', 'PROCESO', 'DEPARTAMENTO', 'TIPO', 'FECHA', 'VER'];
+  displayedColumns: string[] = ['CODIGO', 'NOMBRE', 'TIPO', 'FECHA', 'VER'];
 
   constructor(private router: Router, private http: HttpClient) {
     this.validaLogin();
     this.validaPermisos();
     this.ver_nuevo = false;
-    this.total_documentos = 0;
+    //this.total_documentos = 0;
   }
 
   ngOnInit() {
@@ -66,14 +67,15 @@ export class ConsultaPcPoComponent implements OnInit {
   }
 
   obtenDocumentos() {
-    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenDocumentosPC_PO.php', JSON.stringify({
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenDocumentosPC_PO2.php', JSON.stringify({
       tkn: this.token, departamento: this.usuario.id_departamento, depto: this.usuario.departamento, rol: this.usuario.id_rol
     }), {
       }).subscribe(res => {
         this.documentos = res;
         if (!res) {
           this.dataSource = null;
-          this.total_documentos = 0;
+          this.procesos = null;
+          //this.total_documentos = 0;
         }
         else if (res['ErrorToken']) {
           swal({
@@ -86,8 +88,9 @@ export class ConsultaPcPoComponent implements OnInit {
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else if (res) {
-          this.total_documentos = this.documentos.length;
-          this.dataSource = new MatTableDataSource(this.documentos);
+          //this.total_documentos = this.documentos.length;
+          this.procesos = res['procesos'];
+          this.dataSource = res['documentos'];
         }
       });
   }

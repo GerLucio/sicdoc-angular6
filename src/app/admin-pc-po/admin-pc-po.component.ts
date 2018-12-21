@@ -28,11 +28,12 @@ export class AdminPcPoComponent implements OnInit {
   edita_documento = new Documento();
   tipos: any;
   procesos: any;
+  procesos_docs: any;
   documentos: any;
-  total_documentos: number;
+  //total_documentos: number;
   dataSource = new MatTableDataSource();
   servidor = new Servidor();
-  displayedColumns: string[] = ['CODIGO', 'NOMBRE', 'PROCESO', 'DEPARTAMENTO', 'TIPO', 'ADMINISTRACIÓN'];
+  displayedColumns: string[] = ['CODIGO', 'NOMBRE', 'TIPO', 'FECHA', 'ADMINISTRACIÓN'];
   token: string;
   ver_nuevo: boolean;
   ver_edita: boolean;
@@ -41,7 +42,7 @@ export class AdminPcPoComponent implements OnInit {
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
     this.validaLogin();
     this.validaPermisos();
-    this.total_documentos = 0;
+    //this.total_documentos = 0;
     this.ver_nuevo = false;
     this.ver_edita = false;
   }
@@ -99,14 +100,15 @@ export class AdminPcPoComponent implements OnInit {
   }
 
   obtenDocumentos() {
-    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenDocumentosDepto.php', JSON.stringify({
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenDocumentosDepto2.php', JSON.stringify({
       tkn: this.token, departamento: this.usuario.id_departamento, depto: this.usuario.departamento, rol: this.usuario.id_rol
     }), {
       }).subscribe(res => {
         this.documentos = res;
         if (!res) {
           this.dataSource = null;
-          this.total_documentos = 0;
+          this.procesos_docs = null;
+          //this.total_documentos = 0;
         }
         else if (res['ErrorToken']) {
           swal({
@@ -119,8 +121,9 @@ export class AdminPcPoComponent implements OnInit {
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else if (res) {
-          this.total_documentos = this.documentos.length;
-          this.dataSource = new MatTableDataSource(this.documentos);
+          //this.total_documentos = this.documentos.length;
+          this.dataSource = res['documentos'];
+          this.procesos_docs = res['procesos'];
         }
       });
   }
