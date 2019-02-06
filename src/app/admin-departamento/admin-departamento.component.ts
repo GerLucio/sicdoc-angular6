@@ -245,10 +245,10 @@ export class AdminDepartamentoComponent implements OnInit {
       swal({
         type: 'error',
         title: 'ERROR',
-        text: 'Debes llenar todos los campos',
+        text: 'Todos los campos deben ser llenados correctamente',
         timer: 5000
       });
-      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      //this.openSnackBar("ERROR", "Todos los campos deben ser llenados correctamente");
     }
   }
 
@@ -364,10 +364,10 @@ export class AdminDepartamentoComponent implements OnInit {
       swal({
         type: 'error',
         title: 'ERROR',
-        text: 'Debes llenar todos los campos',
+        text: 'Todos los campos deben ser llenados correctamente',
         timer: 5000
       });
-      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      //this.openSnackBar("ERROR", "Todos los campos deben ser llenados correctamente");
     }
   }
 

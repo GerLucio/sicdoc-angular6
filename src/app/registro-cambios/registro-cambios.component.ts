@@ -23,7 +23,7 @@ export class RegistroCambiosComponent implements OnInit {
   documentos: any;
   revisiones: any;
   dataSource: any[];
-  columnsToDisplay: string[] = ['CODIGO', 'TIPO', 'NOMBRE', 'REVISIONES'];
+  columnsToDisplay: string[] = ['CODIGO', 'TIPO', 'NOMBRE', 'NO_CAMBIOS'];
   columnas_revision: string[] = ['NO_REVISION', 'FECHA_REVISION', 'RESPONSABLE', 'DESCARGA', 'ADMINISTRA'];
   ver_revisiones: boolean;
   total_revisiones: number;

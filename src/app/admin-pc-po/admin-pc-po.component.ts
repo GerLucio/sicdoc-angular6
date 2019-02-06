@@ -9,6 +9,8 @@ import { MatTableDataSource } from '@angular/material';
 import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
 import swal from 'sweetalert2';
+import { Revision } from "../templates/revision";
+import { InputDialogComponent } from "../input-dialog/input-dialog.component";
 
 @Component({
   selector: 'app-admin-pc-po',
@@ -20,7 +22,8 @@ export class AdminPcPoComponent implements OnInit {
   @ViewChild('inputArchivo')
   inputArchivo: ElementRef;
 
-  dialogRef: MatDialogRef<ConfirmationDialog>;
+  //dialogRef: MatDialogRef<ConfirmationDialog>;
+  dialogRef: MatDialogRef<InputDialogComponent>;
   login: boolean = false;
   setUsuario: any;
   usuario = new Usuario();
@@ -36,15 +39,22 @@ export class AdminPcPoComponent implements OnInit {
   displayedColumns: string[] = ['CODIGO', 'NOMBRE', 'TIPO', 'FECHA', 'ADMINISTRACIÓN'];
   token: string;
   ver_nuevo: boolean;
-  ver_edita: boolean;
+  ver_revision: boolean;
   archivo: File = null;
   doc_mostrar = new Documento();
+  nueva_revision = new Revision();
+  nueva_ubicacion: string;
+  input_ubicacion: boolean;
+  motivo_baja: string;
+
+
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
     this.validaLogin();
     this.validaPermisos();
     //this.total_documentos = 0;
     this.ver_nuevo = false;
-    this.ver_edita = false;
+    this.ver_revision = false;
+    this.input_ubicacion = true;
   }
 
   ngOnInit() {
@@ -153,15 +163,16 @@ export class AdminPcPoComponent implements OnInit {
       swal({
         type: 'error',
         title: 'ERROR',
-        text: 'Debes llenar todos los campos',
+        text: 'Todos los campos deben ser llenados correctamente',
         timer: 5000
       });
-      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      //this.openSnackBar("ERROR", "Todos los campos deben ser llenados correctamente");
     }
   }
 
   upload2() {
-    if (this.archivo) {
+    if (this.nueva_revision.id_documento && this.archivo &&
+      ((!this.input_ubicacion && this.nueva_ubicacion) || this.input_ubicacion)) {
       const data = new FormData();
       data.append('archivo', this.archivo, this.archivo.name);
       this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
@@ -176,7 +187,7 @@ export class AdminPcPoComponent implements OnInit {
             //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['Exito']) {
-            this.reemplazaDocumento(res['nombre_generado'], this.edita_documento.ruta);
+            this.nuevaRevision(res['nombre_generado']);
           }
         });
     }
@@ -184,16 +195,23 @@ export class AdminPcPoComponent implements OnInit {
       swal({
         type: 'error',
         title: 'ERROR',
-        text: 'Debes llenar todos los campos',
+        text: 'Todos los campos deben ser llenados correctamente',
         timer: 5000
       });
-      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      //this.openSnackBar("ERROR", "Todos los campos deben ser llenados correctamente");
     }
   }
 
-  reemplazaDocumento(nuevo_archivo, viejo_archivo) {
-    this.http.post(this.servidor.nombre + '/apps/sicdoc/reemplazaArchivo.php', JSON.stringify({
-      tkn: this.token, nuevo: nuevo_archivo, anterior: viejo_archivo
+  nuevaRevision(nombre_generado) {
+    this.nueva_revision.id_responsable = this.usuario.id_usuario;
+    var script = null;
+    if(this.usuario.id_rol == 1)
+      script = '/apps/sicdoc/nuevaRevision.php';
+    else 
+      script = '/apps/sicdoc/nuevaRevisionDepto.php';
+    this.http.post(this.servidor.nombre + script, JSON.stringify({
+      revision: this.nueva_revision, tkn: this.token, nombre_archivo: nombre_generado,
+      ubicacion: this.nueva_ubicacion
     }), {
       }).subscribe(res => {
         if (res['Error']) {
@@ -223,10 +241,21 @@ export class AdminPcPoComponent implements OnInit {
             timer: 5000
           });
           //this.openSnackBar('ÉXITO', res['Exito']);
-          this.cancelarEdita();
+          this.cancelarRevision();
+          this.obtenDocumentos();
         }
       });
   }
+
+  onChange(event) {
+    if (event.checked)
+      this.input_ubicacion = false;
+    else {
+      this.input_ubicacion = true;
+      this.nueva_ubicacion = null;
+    }
+  }
+
 
   obtenProcesos() {
     this.http.post(this.servidor.nombre + '/apps/sicdoc/obtenProcesosDepto.php', JSON.stringify({
@@ -288,12 +317,12 @@ export class AdminPcPoComponent implements OnInit {
     this.nuevo_documento.ubicacion = null;
   }
 
-  cancelarEdita() {
-    this.ver_edita = false;
+  cancelarRevision() {
+    this.ver_revision = false;
     this.resetInputFile();
-    this.edita_documento.id_documento = null;
-    this.edita_documento.ruta = null;
-    this.edita_documento.nombre = null;
+    this.nueva_revision.id_documento = null;
+    this.nueva_ubicacion = null;
+    this.input_ubicacion = true;
   }
 
   resetInputFile() {
@@ -340,15 +369,14 @@ export class AdminPcPoComponent implements OnInit {
       });
   }
 
-  editaDocumento(documento) {
-    this.edita_documento.id_documento = documento.ID_DOCUMENTO;
-    this.edita_documento.ruta = documento.RUTA;
-    this.edita_documento.nombre = documento.NOMBRE;
-    this.ver_edita = true;
+  verRevision(documento) {
+    this.nueva_revision.id_documento = documento.ID_DOCUMENTO;
+    this.nueva_revision.documento = documento.NOMBRE;
+    this.ver_revision = true;
   }
 
   eliminarDialogo(documento) {
-    this.dialogRef = this.dialog.open(ConfirmationDialog, {
+    /*this.dialogRef = this.dialog.open(ConfirmationDialog, {
       disableClose: false
     });
     this.dialogRef.componentInstance.confirmMessage = "¿Deseas eliminar el documento " + documento.NOMBRE + "?";
@@ -358,12 +386,25 @@ export class AdminPcPoComponent implements OnInit {
         this.eliminaDocumento(documento);
       }
       this.dialogRef = null;
+    });*/
+    this.dialogRef = this.dialog.open(InputDialogComponent, {
+      disableClose: false
+    });
+    this.dialogRef.componentInstance.confirmMessage = "¿Cuál es el motivo para la baja del documento?";
+    this.dialogRef.componentInstance.tipo = "Escribe porqué motivo se debe de dar de baja el documento seleccionado";
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.motivo_baja = result;
+        this.eliminaDocumento(documento, this.motivo_baja);
+      }
+      this.dialogRef = null;
     });
   }
 
-  eliminaDocumento(documento) {
+  eliminaDocumento(documento, motivo_baja) {
     this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaDocumento.php', JSON.stringify({
-      documento: documento, tkn: this.token, depto: this.usuario.departamento, rol: this.usuario.id_rol
+      documento: documento, tkn: this.token, depto: this.usuario.departamento, rol: this.usuario.id_rol, motivo_baja: motivo_baja
     }), {
       }).subscribe(res => {
         if (res['Error']) {
@@ -401,5 +442,22 @@ export class AdminPcPoComponent implements OnInit {
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  /*filtrar() {
+    var input, filter, ul, li, card, i, txtValue;
+    input = document.getElementById("filtro");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("procesos");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+      card = li[i].getElementsByTagName("mat-card")[0];
+      txtValue = a.textContent || a.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "";
+      } else {
+        li[i].style.display = "none";
+      }
+    }
+  }*/
 
 }

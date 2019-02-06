@@ -2,6 +2,7 @@
 
   <mat-grid-list cols="6" gutterSize="1rem" rowHeight="80rem">
 
+    <!--Nuevo Documento-->
     <mat-grid-tile *ngIf="ver_nuevo" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
@@ -48,23 +49,32 @@
       </mat-card>
     </mat-grid-tile>
 
-    <mat-grid-tile *ngIf="ver_edita" class="caja" colspan="6">
+    <!--Nueva Revisión de documento-->
+    <mat-grid-tile *ngIf="ver_revision" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
-            <h2>Codifica el archivo del documento</h2>
+            <h2>Nueva revisión de Documentos</h2>
           </mat-card-title>
-          <mat-card-subtitle>Documento seleccionado: {{edita_documento.nombre}}</mat-card-subtitle>
+          <mat-card-subtitle>Documento seleccioando: {{ nueva_revision.documento }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <form>
+            <mat-slide-toggle (change)="onChange($event)" class="example-margin" color="warn" checked="false">
+              ¿Cambió la ubicación del archivo?
+            </mat-slide-toggle>
+            <mat-form-field>
+              <input matInput [disabled]="input_ubicacion" placeholder="Ubicación, ejemplo: Directorio de archivos de la computadora / Carpeta 3 del cajón 4 del archivero de la oficina...."
+                [(ngModel)]="nueva_ubicacion" name="nueva_ubicacion" maxlength="512">
+            </mat-form-field>
+            <br><br><br>
             <label for="archivo">Archivo </label>
             <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)" accept=".xlsx,.xls,.doc,.docx,.pdf"
               required>
             <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
             <mat-icon *ngIf="archivo" color="accent" (click)="resetInputFile()">clear</mat-icon>
             <div class="derecha">
-              <button mat-button (click)="cancelarEdita()">CANCELAR</button>
+              <button mat-button (click)="cancelarRevision()">CANCELAR</button>
               <button mat-raised-button (click)="upload2()" color="primary">REGISTRAR</button>
             </div>
           </form>
@@ -72,8 +82,8 @@
       </mat-card>
     </mat-grid-tile>
 
-
-    <mat-grid-tile *ngIf="!ver_nuevo && !ver_edita" class="caja" colspan="6">
+    <!--Vista inicial-->
+    <mat-grid-tile *ngIf="!ver_nuevo && !ver_revision" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -89,9 +99,11 @@
           <button mat-raised-button (click)="ver_nuevo = true" color="primary">NUEVO DOCUMENTO</button>
         </div>
         <mat-card-content>
+          <mat-form-field>
+            <input matInput id="filtro" (keyup)="filtrar()" placeholder="Buscar documentos">
+          </mat-form-field>
           <div class="scroll-docs ">
-
-            <ul>
+            <ul id="procesos">
               <li *ngFor="let proceso of procesos_docs; let i = index">
                 <mat-card *ngIf="dataSource[i]" class="example-card">
                   <mat-card-header>
@@ -124,11 +136,11 @@
                         </mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="FECHA">
-                          <mat-header-cell *matHeaderCellDef> FECHA_ALTA </mat-header-cell>
-                          <mat-cell *matCellDef="let documento">
-                            {{documento.FECHA_INICIO}}
-                          </mat-cell>
-                        </ng-container>
+                        <mat-header-cell *matHeaderCellDef> FECHA_ALTA </mat-header-cell>
+                        <mat-cell *matCellDef="let documento">
+                          {{documento.FECHA_INICIO}}
+                        </mat-cell>
+                      </ng-container>
                       <ng-container matColumnDef="ADMINISTRACIÓN">
                         <mat-header-cell *matHeaderCellDef>
                           <mat-icon>settings</mat-icon>
@@ -145,6 +157,10 @@
                             <!--<button mat-menu-item (click)="editaDocumento(documento)">
                               <mat-icon>brush</mat-icon><span>Firmar Código</span>
                             </button>-->
+                            <button mat-menu-item (click)="verRevision(documento)">
+                              <mat-icon>description</mat-icon>
+                              <span>Nueva Revisión</span>
+                            </button>
                             <button mat-menu-item (click)="eliminarDialogo(documento)">
                               <mat-icon>delete</mat-icon>
                               <span>Eliminar</span>

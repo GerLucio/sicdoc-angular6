@@ -50,9 +50,9 @@
             <h2>Revisiones pendientes por aprobar</h2>
           </mat-card-title>
         </mat-card-header>
-        <div class="flotante">
+        <!--<div class="flotante">
           <button mat-raised-button (click)="ver_nuevo = true" color="primary">NUEVA REVISION</button>
-        </div>
+        </div>-->
         <mat-card-content>
           <mat-form-field *ngIf="total_documentos">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Busca un documento entre los {{ total_documentos }} documentos">

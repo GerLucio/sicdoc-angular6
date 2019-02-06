@@ -33,7 +33,7 @@ export class AdminUpdateDocsgenComponent implements OnInit {
   ver_edita: boolean;
   total_documentos: number;
   dataSource = new MatTableDataSource();
-  displayedColumns: string[] = ['NOMBRE', 'PROCESO', 'TIPO', 'FECHA_INICIO', 'VER', 'ACCIONES'];
+  displayedColumns: string[] = ['NOMBRE', 'PROCESO', 'TIPO', 'FECHA_REVISION', 'VER', 'ACCIONES'];
   dialogRef: MatDialogRef<InputDialogComponent>;
   dialogRef2: MatDialogRef<ConfirmationDialog>;
   ver_nuevo: boolean;
@@ -64,7 +64,6 @@ export class AdminUpdateDocsgenComponent implements OnInit {
       this.input_ubicacion = true;
       this.nueva_ubicacion = null;
     }
-
   }
 
   validaLogin() {
@@ -253,10 +252,10 @@ export class AdminUpdateDocsgenComponent implements OnInit {
       swal({
         type: 'error',
         title: 'ERROR',
-        text: 'Debes llenar todos los campos',
+        text: 'Todos los campos deben ser llenados correctamente',
         timer: 5000
       });
-      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      //this.openSnackBar("ERROR", "Todos los campos deben ser llenados correctamente");
     }
 
   }
@@ -353,10 +352,10 @@ export class AdminUpdateDocsgenComponent implements OnInit {
       swal({
         type: 'error',
         title: 'ERROR',
-        text: 'Debes llenar todos los campos',
+        text: 'Todos los campos deben ser llenados correctamente',
         timer: 5000
       });
-      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      //this.openSnackBar("ERROR", "Todos los campos deben ser llenados correctamente");
     }
   }
 

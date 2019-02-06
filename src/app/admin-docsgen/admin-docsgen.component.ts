@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material';
 import { ConfirmationDialog } from "../confirmation-dialog/confirmation-dialog";
 import { MatDialog, MatDialogRef } from '@angular/material';
 import swal from 'sweetalert2';
+import { Revision } from "../templates/revision";
 
 @Component({
   selector: 'app-admin-docsgen',
@@ -37,11 +38,18 @@ export class AdminDocsgenComponent implements OnInit {
   ver_nuevo: boolean;
   archivo: File = null;
   doc_mostrar = new Documento();
+  nueva_revision = new Revision();
+  ver_revision: boolean;
+  nueva_ubicacion: string;
+  input_ubicacion: boolean;
+
   constructor(private router: Router, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
     this.validaLogin();
     this.validaPermisos();
     //this.total_documentos = 0;
     this.ver_nuevo = false;
+    this.ver_revision = false;
+    this.input_ubicacion = true;
   }
 
   ngOnInit() {
@@ -114,10 +122,10 @@ export class AdminDocsgenComponent implements OnInit {
       swal({
         type: 'error',
         title: 'ERROR',
-        text: 'Debes llenar todos los campos',
+        text: 'Todos los campos deben ser llenados correctamente',
         timer: 5000
       });
-      //this.openSnackBar("ERROR", "Debes llenar todos los campos");
+      //this.openSnackBar("ERROR", "Todos los campos deben ser llenados correctamente");
     }
   }
 
@@ -307,6 +315,101 @@ export class AdminDocsgenComponent implements OnInit {
     this.nuevo_documento.id_proceso = null;
     this.nuevo_documento.id_tipo = null;
     this.nuevo_documento.ubicacion = null;
+  }
+
+  verRevision(documento) {
+    this.nueva_revision.id_documento = documento.ID_DOCUMENTO;
+    this.nueva_revision.documento = documento.NOMBRE;
+    this.ver_revision = true;
+  }
+
+  cancelarRevision() {
+    this.ver_revision = false;
+    this.resetInputFile();
+    this.nueva_revision.id_documento = null;
+    this.nueva_ubicacion = null;
+    this.input_ubicacion = true;
+  }
+
+  onChange(event) {
+    if (event.checked)
+      this.input_ubicacion = false;
+    else {
+      this.input_ubicacion = true;
+      this.nueva_ubicacion = null;
+    }
+  }
+
+  upload2() {
+    if (this.nueva_revision.id_documento && this.archivo &&
+      ((!this.input_ubicacion && this.nueva_ubicacion) || this.input_ubicacion)) {
+      const data = new FormData();
+      data.append('archivo', this.archivo, this.archivo.name);
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+        .subscribe(res => {
+          if (res['Error']) {
+            swal({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            //this.openSnackBar('ERROR', res['Error']);
+          }
+          else if (res['Exito']) {
+            this.nuevaRevision(res['nombre_generado']);
+          }
+        });
+    }
+    else {
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Todos los campos deben ser llenados correctamente',
+        timer: 5000
+      });
+      //this.openSnackBar("ERROR", "Todos los campos deben ser llenados correctamente");
+    }
+  }
+
+  nuevaRevision(nombre_generado) {
+    this.nueva_revision.id_responsable = this.usuario.id_usuario;
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevaRevisionSGC.php', JSON.stringify({
+      revision: this.nueva_revision, tkn: this.token, nombre_archivo: nombre_generado,
+      ubicacion: this.nueva_ubicacion
+    }), {
+      }).subscribe(res => {
+        if (res['Error']) {
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR', res['Error']);
+        }
+        else if (res['ErrorToken']) {
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+        }
+        else {
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', res['Exito']);
+          this.cancelarRevision();
+          this.obtenDocumentos();
+        }
+      });
   }
 
   applyFilter(filterValue: string) {
