@@ -107,7 +107,7 @@ export class AdminDocsPendientesComponent implements OnInit {
       this.documento_editar.id_tipo && this.documento_editar.ubicacion && this.archivo) {
       const data = new FormData();
       data.append('archivo', this.archivo, this.archivo.name);
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoOriginal.php', data)
         .subscribe(res => {
           if (res['Error']) {
             swal({
@@ -135,6 +135,13 @@ export class AdminDocsPendientesComponent implements OnInit {
   }
 
   EditaDocumento(nombre_generado) {
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/editaDocumento.php', JSON.stringify({
       documento: this.documento_editar, url: this.servidor.url, tkn: this.token, nombre_archivo: nombre_generado
     }), {
@@ -215,7 +222,7 @@ export class AdminDocsPendientesComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.procesos = res;
-        if(!res){
+        if (!res) {
           this.procesos = null;
         }
         else if (res['ErrorToken']) {
@@ -237,7 +244,7 @@ export class AdminDocsPendientesComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.tipos = res;
-        if(!res){
+        if (!res) {
           this.tipos = null;
         }
         else if (res['ErrorToken']) {

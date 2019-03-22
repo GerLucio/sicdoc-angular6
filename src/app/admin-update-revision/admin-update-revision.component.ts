@@ -193,7 +193,7 @@ export class AdminUpdateRevisionComponent implements OnInit {
       ((!this.input_ubicacion && this.nueva_ubicacion) || this.input_ubicacion)) {
       const data = new FormData();
       data.append('archivo', this.archivo, this.archivo.name);
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoOriginal.php', data)
         .subscribe(res => {
           if (res['Error']) {
             swal({
@@ -228,6 +228,13 @@ export class AdminUpdateRevisionComponent implements OnInit {
   }
 
   EditaRevision(nombre_generado) {
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
     this.editar_revision.id_responsable = this.usuario.id_usuario;
     this.http.post(this.servidor.nombre + '/apps/sicdoc/EditaRevisionDepto.php', JSON.stringify({
       revision: this.editar_revision, tkn: this.token, nombre_archivo: nombre_generado,

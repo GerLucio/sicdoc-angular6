@@ -75,9 +75,12 @@ export class AdminRolesComponent implements OnInit {
 
   guardaEditarRol(rol_editar) {
     if (rol_editar.rol) {
-      let httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/editaRol.php', JSON.stringify({
         rol: this.rol_editar, tkn: this.token
@@ -184,9 +187,12 @@ export class AdminRolesComponent implements OnInit {
   }
 
   eliminaRol(id) {
-    let httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache'
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
     });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaRol.php', JSON.stringify({
       id_rol: id, tkn: this.token
@@ -226,9 +232,12 @@ export class AdminRolesComponent implements OnInit {
 
   nuevoRol() {
     if (this.nuevo_rol.rol) {
-      let httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoRol.php', JSON.stringify({
         rol: this.nuevo_rol, tkn: this.token

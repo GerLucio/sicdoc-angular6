@@ -110,9 +110,12 @@ export class AdminProcesosComponent implements OnInit {
 
   guardaEditarProceso(proceso_editar) {
     if (proceso_editar.nombre && proceso_editar.id_departamento) {
-      let httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/editaProceso.php', JSON.stringify({
         proceso: this.proceso_editar, tkn: this.token
@@ -214,9 +217,12 @@ export class AdminProcesosComponent implements OnInit {
   }
 
   eliminaProceso(id) {
-    let httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache'
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
     });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaProceso.php', JSON.stringify({
       id_proceso: id, tkn: this.token
@@ -256,9 +262,12 @@ export class AdminProcesosComponent implements OnInit {
 
   nuevoProceso() {
     if (this.nuevo_proceso.nombre && this.nuevo_proceso.id_departamento) {
-      let httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoProceso.php', JSON.stringify({
         proceso: this.nuevo_proceso, tkn: this.token
@@ -291,7 +300,7 @@ export class AdminProcesosComponent implements OnInit {
               timer: 5000
             });
             //this.openSnackBar('ÉXITO', res['Exito']);
-            this.cancelarNuevo(); 
+            this.cancelarNuevo();
           }
         });
     }

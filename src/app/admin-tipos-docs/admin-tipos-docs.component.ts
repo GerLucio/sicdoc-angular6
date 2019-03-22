@@ -59,13 +59,13 @@ export class AdminTiposDocsComponent implements OnInit {
     }
   }
 
-  editarTipo(tipo){
+  editarTipo(tipo) {
     this.tipo_editar.id_tipo = tipo.ID_TIPO;
     this.tipo_editar.tipo = tipo.TIPO;
     this.ver_editar = true;
   }
 
-  cancelarEditar(){
+  cancelarEditar() {
     this.tipo_editar.id_tipo = null;
     this.tipo_editar.tipo = null;
     this.obtenTipos();
@@ -74,9 +74,12 @@ export class AdminTiposDocsComponent implements OnInit {
 
   guardaEditarTipo(tipo_editar) {
     if (tipo_editar.tipo) {
-      let httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/editaTipo.php', JSON.stringify({
         tipo: this.tipo_editar, tkn: this.token
@@ -99,7 +102,7 @@ export class AdminTiposDocsComponent implements OnInit {
               timer: 5000
             });
             //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-            setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+            setTimeout(() => { this.router.navigate(['/login']); }, 3000);
           }
           else {
             swal({
@@ -140,7 +143,7 @@ export class AdminTiposDocsComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.tipos = res;
-        if(!res){
+        if (!res) {
           this.dataSource = null;
           this.total_tipos = 0;
         }
@@ -183,9 +186,12 @@ export class AdminTiposDocsComponent implements OnInit {
   }
 
   eliminaTipo(id) {
-    let httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache'
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
     });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaTipo.php', JSON.stringify({
       id_tipo: id, tkn: this.token
@@ -208,7 +214,7 @@ export class AdminTiposDocsComponent implements OnInit {
             timer: 5000
           });
           //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else {
           swal({
@@ -225,9 +231,12 @@ export class AdminTiposDocsComponent implements OnInit {
 
   nuevoTipo() {
     if (this.nuevo_tipo.tipo) {
-      let httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoTipo.php', JSON.stringify({
         tipo: this.nuevo_tipo, tkn: this.token
@@ -250,7 +259,7 @@ export class AdminTiposDocsComponent implements OnInit {
               timer: 5000
             });
             //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-            setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+            setTimeout(() => { this.router.navigate(['/login']); }, 3000);
           }
           else {
             swal({

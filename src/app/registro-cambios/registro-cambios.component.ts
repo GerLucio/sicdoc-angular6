@@ -153,6 +153,13 @@ export class RegistroCambiosComponent implements OnInit {
   }
 
   revisa(revision) {
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/cambiaRevisionVigente.php', JSON.stringify({
       revision: revision, tkn: this.token, documento: this.documento_actual
     }), {

@@ -1,6 +1,6 @@
 <div class="fondo_login">
   <div class="main-div">
-    <mat-card class="example-card z-depth center animated bounceIn delay-1s">
+    <mat-card class="example-card z-depth center">
       <mat-card-content>
         <h1>BIENVENIDO</h1>
         <h3>
@@ -9,12 +9,12 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="example-card z-depth center animated bounceIn delay-1s">
+    <mat-card class="example-card z-depth center">
       <mat-card-content>
         <h2>LOGIN</h2>
         <mat-form-field>
           <input matInput placeholder="Correo" [formControl]="email" autofocus="" required>
-          <mat-icon matSuffix>alternate_email</mat-icon>
+          <mat-icon matSuffix>email</mat-icon>
           <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
         </mat-form-field>
         <mat-form-field>
@@ -30,15 +30,4 @@
       </mat-card-actions>
     </mat-card>
   </div>
-</div>
-
-<div class="padre">
-  <mat-grid-list cols="6" gutterSize="1rem" rowHeight="80rem">
-    <mat-grid-tile class="caja" colspan="3">
-
-    </mat-grid-tile>
-    <mat-grid-tile class="caja" colspan="3">
-
-    </mat-grid-tile>
-  </mat-grid-list>
 </div>

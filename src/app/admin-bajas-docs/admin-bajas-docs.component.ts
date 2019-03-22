@@ -121,6 +121,13 @@ export class AdminBajasDocsComponent implements OnInit {
   }
 
   baja(documento, accion) {
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/apruebaBajaDocumento.php', JSON.stringify({
       documento: documento, tkn: this.token, accion: accion
     }), {

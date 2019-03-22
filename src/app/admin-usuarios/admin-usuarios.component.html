@@ -69,7 +69,7 @@
           <mat-form-field *ngIf="total_usuarios">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Busca un usuario entre los {{ total_usuarios }} registrados">
           </mat-form-field>
-          <div [class]="total_usuarios > 11 ? 'scroll': ''">
+          <div [class]="total_usuarios > 10 ? 'scroll': ''">
             <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <ng-container matColumnDef="NOMBRE">
                 <mat-header-cell *matHeaderCellDef> NOMBRE </mat-header-cell>

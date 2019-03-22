@@ -202,9 +202,12 @@ export class AdminDepartamentoComponent implements OnInit {
 
   guardaEditarDepartamento(departamento_editar) {
     if (departamento_editar.nombre && departamento_editar.id_lider && departamento_editar.id_subdireccion) {
-      let httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/editaDepartamento.php', JSON.stringify({
         departamento: this.departamento_editar, tkn: this.token
@@ -275,9 +278,12 @@ export class AdminDepartamentoComponent implements OnInit {
   }
 
   eliminaDepartamento(id) {
-    let httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache'
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
     });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaDepartamento.php', JSON.stringify({
       id_departamento: id, tkn: this.token
@@ -317,9 +323,12 @@ export class AdminDepartamentoComponent implements OnInit {
 
   nuevoDepartamento() {
     if (this.nuevo_departamento.nombre && this.nuevo_departamento.id_subdireccion && this.nuevo_departamento.id_lider) {
-      let httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoDepartamento.php', JSON.stringify({
         departamento: this.nuevo_departamento, tkn: this.token

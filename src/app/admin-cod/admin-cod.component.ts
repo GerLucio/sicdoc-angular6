@@ -125,8 +125,15 @@ export class AdminCodComponent implements OnInit {
   upload2() {
     if (this.archivo && this.documento_aprobar.codigo) {
       const data = new FormData();
-      data.append('archivo', this.archivo, this.archivo.name);
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+
+      var split_name = this.archivo.name.split('.');
+      var extencion = split_name[split_name.length - 1];
+      var file_name = this.documento_aprobar.codigo + '_' + this.documento_aprobar.nombre
+        + '_R0'+ '.' + extencion;
+      data.append('archivo', this.archivo, file_name.replace(/\//g, '_'));
+      //data.append('archivo', this.archivo, this.archivo.name);
+
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoOriginal.php', data)
         .subscribe(res => {
           if (res['Error']) {
             swal({
@@ -139,6 +146,7 @@ export class AdminCodComponent implements OnInit {
           }
           else if (res['Exito']) {
             this.reemplazaDocumento(res['nombre_generado'], this.documento_aprobar.ruta);
+            this.documento_aprobar.ruta = res['nombre_generado'];
             this.codifica(this.documento_aprobar, 'aprobar');
           }
         });
@@ -178,7 +186,7 @@ export class AdminCodComponent implements OnInit {
           //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
-        else {
+        /*else {
           swal({
             type: 'success',
             title: 'ÉXITO',
@@ -187,7 +195,7 @@ export class AdminCodComponent implements OnInit {
           });
           //this.openSnackBar('ÉXITO', res['Exito']);
           //this.cancelarAprueba();
-        }
+        }*/
       });
   }
 
@@ -218,16 +226,24 @@ export class AdminCodComponent implements OnInit {
     }
   }
 
-  aprueba_doc(documento){
+  aprueba_doc(documento) {
     this.documento_aprobar.id_documento = documento.ID_DOCUMENTO;
     this.documento_aprobar.ruta = documento.RUTA;
     this.documento_aprobar.nombre = documento.NOMBRE;
+    this.documento_aprobar.num_revisiones = documento.NUM_REVISIONES;
     this.documento_aprobar.tipo = documento.TIPO;
     this.documento_aprobar.id_proceso = documento.ID_PROCESO;
     this.ver_edita = true;
   }
 
   codifica(documento, accion) {
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/codificaDocumento.php', JSON.stringify({
       documento: documento, tkn: this.token, accion: accion
     }), {
@@ -260,7 +276,8 @@ export class AdminCodComponent implements OnInit {
           });
           //this.openSnackBar('ÉXITO', res['Exito']);
           this.obtenDocumentos();
-          this.cancelarAprueba();
+          if (accion == 'aprobar')
+            this.cancelarAprueba();
         }
       });
   }

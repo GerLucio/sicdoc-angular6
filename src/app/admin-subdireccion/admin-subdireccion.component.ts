@@ -65,13 +65,13 @@ export class AdminSubdireccionComponent implements OnInit {
     }
   }
 
-  editarSubdireccion(subdireccion){
+  editarSubdireccion(subdireccion) {
     this.sub_editar.id_subdireccion = subdireccion.ID_SUBDIRECCION;
     this.sub_editar.nombre = subdireccion.NOMBRE;
     this.ver_editar = true;
   }
 
-  cancelarEditar(){
+  cancelarEditar() {
     this.sub_editar.id_subdireccion = null;
     this.sub_editar.nombre = null;
     this.obtenSubdirecciones();
@@ -80,9 +80,12 @@ export class AdminSubdireccionComponent implements OnInit {
 
   guardaEditarSubdireccion(sub_editar) {
     if (sub_editar.nombre) {
-      let httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/editaSubdireccion.php', JSON.stringify({
         subdireccion: this.sub_editar, tkn: this.token
@@ -105,7 +108,7 @@ export class AdminSubdireccionComponent implements OnInit {
               timer: 5000
             });
             //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-            setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+            setTimeout(() => { this.router.navigate(['/login']); }, 3000);
           }
           else {
             swal({
@@ -129,7 +132,7 @@ export class AdminSubdireccionComponent implements OnInit {
       //this.openSnackBar("ERROR", "Todos los campos deben ser llenados correctamente");
     }
   }
-   
+
   obtenSubdirecciones() {
     let httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -140,7 +143,7 @@ export class AdminSubdireccionComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.subdirecciones = res;
-        if(!res){
+        if (!res) {
           this.dataSource = null;
           this.total_sub = 0;
         }
@@ -183,9 +186,12 @@ export class AdminSubdireccionComponent implements OnInit {
   }
 
   eliminaSubdireccion(id) {
-    let httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache'
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
     });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaSubdireccion.php', JSON.stringify({
       id_subdireccion: id, tkn: this.token
@@ -208,7 +214,7 @@ export class AdminSubdireccionComponent implements OnInit {
             timer: 5000
           });
           //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-          setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
         else {
           swal({
@@ -231,9 +237,12 @@ export class AdminSubdireccionComponent implements OnInit {
 
   nuevaSubdireccion() {
     if (this.nueva_sub.nombre) {
-      let httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevaSubdireccion.php', JSON.stringify({
         subdireccion: this.nueva_sub, tkn: this.token
@@ -256,7 +265,7 @@ export class AdminSubdireccionComponent implements OnInit {
               timer: 5000
             });
             //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
-            setTimeout( () => { this.router.navigate(['/login']); }, 3000 );
+            setTimeout(() => { this.router.navigate(['/login']); }, 3000);
           }
           else {
             swal({
@@ -265,7 +274,7 @@ export class AdminSubdireccionComponent implements OnInit {
               text: res['Exito'],
               timer: 5000
             });
-           // this.openSnackBar('ÉXITO', res['Exito']);
+            // this.openSnackBar('ÉXITO', res['Exito']);
             this.nueva_sub.nombre = null;
             this.obtenSubdirecciones();
           }

@@ -168,6 +168,13 @@ export class AdminUpdateDocsgenComponent implements OnInit {
   }
 
   revisa(documento, accion) {
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/revisaDocumento.php', JSON.stringify({
       documento: documento, tkn: this.token, accion: accion
     }), {
@@ -200,7 +207,8 @@ export class AdminUpdateDocsgenComponent implements OnInit {
           });
           //this.openSnackBar('ÉXITO', res['Exito']);
           this.obtenDocumentos();
-          this.cancelarAprueba();
+          if (accion == 'aprobar')
+            this.cancelarAprueba();
         }
       });
   }
@@ -330,8 +338,15 @@ export class AdminUpdateDocsgenComponent implements OnInit {
   upload2() {
     if (this.archivo) {
       const data = new FormData();
-      data.append('archivo', this.archivo, this.archivo.name);
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+
+      var split_name = this.archivo.name.split('.');
+      var extencion = split_name[split_name.length - 1];
+      var file_name = this.documento_aprobar.CODIGO + '_' + this.documento_aprobar.NOMBRE
+        + '_R' + (this.documento_aprobar.NO_REVISION - 1) + '.' + extencion;
+      data.append('archivo', this.archivo, file_name.replace(/\//g, '_'));
+      //data.append('archivo', this.archivo, this.archivo.name);
+      
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoOriginal.php', data)
         .subscribe(res => {
           if (res['Error']) {
             swal({
@@ -344,6 +359,7 @@ export class AdminUpdateDocsgenComponent implements OnInit {
           }
           else if (res['Exito']) {
             this.reemplazaDocumento(res['nombre_generado'], this.documento_aprobar.RUTA);
+            this.documento_aprobar.RUTA = res['nombre_generado'];
             this.revisa(this.documento_aprobar, 'aprobar');
           }
         });
@@ -383,7 +399,7 @@ export class AdminUpdateDocsgenComponent implements OnInit {
           //this.openSnackBar('ERROR DE SESIÓN', 'Vuelve a iniciar sesión');
           setTimeout(() => { this.router.navigate(['/login']); }, 3000);
         }
-        else {
+        /*else {
           swal({
             type: 'success',
             title: 'ÉXITO',
@@ -392,7 +408,7 @@ export class AdminUpdateDocsgenComponent implements OnInit {
           });
           //this.openSnackBar('ÉXITO', res['Exito']);
           //this.cancelarAprueba();
-        }
+        }*/
       });
   }
 

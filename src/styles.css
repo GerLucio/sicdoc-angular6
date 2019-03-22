@@ -8,10 +8,6 @@
 */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
-* {
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 500;
-}
 
 h2{
   font-size: 2em;

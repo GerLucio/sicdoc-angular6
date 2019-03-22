@@ -149,6 +149,13 @@ export class AdminUsuariosComponent implements OnInit {
     if (usuario.nombre && usuario.apellido && usuario.puesto &&
       !this.getErrorMessage2() && usuario.id_departamento && usuario.id_rol
     ) {
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
+      });
       if (this.rol_actual != "1" && usuario.id_rol == "1") {
         this.editaCoordinadorDialogo(usuario);
       }
@@ -262,6 +269,13 @@ export class AdminUsuariosComponent implements OnInit {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
     });
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/restablecePassword.php', JSON.stringify({
       usuario: usuario, tkn: this.token
     }), {
@@ -307,6 +321,13 @@ export class AdminUsuariosComponent implements OnInit {
       let httpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache'
+      });
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
       });
       this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoUsuario.php', JSON.stringify({
         usuario: this.nuevo_usuario, url: this.servidor.url, tkn: this.token
@@ -444,6 +465,13 @@ export class AdminUsuariosComponent implements OnInit {
     let httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
+    });
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
     });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaUsuario.php', JSON.stringify({
       id_usuario: id, tkn: this.token

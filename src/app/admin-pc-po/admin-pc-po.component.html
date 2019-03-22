@@ -14,8 +14,8 @@
         <mat-card-content>
           <form>
             <mat-form-field>
-              <input matInput placeholder="Nombre del documento" required [(ngModel)]="nuevo_documento.nombre" name="nombre"
-                maxlength="128">
+              <input matInput placeholder="Nombre del documento" required [(ngModel)]="nuevo_documento.nombre"
+                name="nombre" maxlength="128">
             </mat-form-field>
             <mat-form-field>
               <mat-select placeholder="Proceso" [(ngModel)]="nuevo_documento.id_proceso" name="id_proceso" required>
@@ -32,12 +32,13 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Ubicación, ejemplo: Directorio de archivos de la computadora / Carpeta 3 del cajón 4 del archivero de la oficina...."
+              <input matInput
+                placeholder="Ubicación, ejemplo: Directorio de archivos de la computadora / Carpeta 3 del cajón 4 del archivero de la oficina...."
                 required [(ngModel)]="nuevo_documento.ubicacion" name="ubicacion" maxlength="512">
             </mat-form-field>
             <label for="archivo">Archivo </label>
-            <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)" accept=".xlsx,.xls,.doc,.docx,.pdf"
-              required>
+            <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)"
+              accept=".xlsx,.xls,.doc,.docx,.pdf" required>
             <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
             <mat-icon *ngIf="archivo" color="accent" (click)="resetInputFile()">clear</mat-icon>
             <div class="derecha">
@@ -64,13 +65,14 @@
               ¿Cambió la ubicación del archivo?
             </mat-slide-toggle>
             <mat-form-field>
-              <input matInput [disabled]="input_ubicacion" placeholder="Ubicación, ejemplo: Directorio de archivos de la computadora / Carpeta 3 del cajón 4 del archivero de la oficina...."
+              <input matInput [disabled]="input_ubicacion"
+                placeholder="Ubicación, ejemplo: Directorio de archivos de la computadora / Carpeta 3 del cajón 4 del archivero de la oficina...."
                 [(ngModel)]="nueva_ubicacion" name="nueva_ubicacion" maxlength="512">
             </mat-form-field>
             <br><br><br>
             <label for="archivo">Archivo </label>
-            <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)" accept=".xlsx,.xls,.doc,.docx,.pdf"
-              required>
+            <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)"
+              accept=".xlsx,.xls,.doc,.docx,.pdf" required>
             <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
             <mat-icon *ngIf="archivo" color="accent" (click)="resetInputFile()">clear</mat-icon>
             <div class="derecha">
@@ -99,83 +101,82 @@
           <button mat-raised-button (click)="ver_nuevo = true" color="primary">NUEVO DOCUMENTO</button>
         </div>
         <mat-card-content>
-          <mat-form-field>
-            <input matInput id="filtro" (keyup)="filtrar()" placeholder="Buscar documentos">
-          </mat-form-field>
-          <div class="scroll-docs ">
-            <ul id="procesos">
-              <li *ngFor="let proceso of procesos_docs; let i = index">
-                <mat-card *ngIf="dataSource[i]" class="example-card">
-                  <mat-card-header>
-                    <mat-card-title>
-                      <h3 style="color: #ff4081;">{{proceso.DEPARTAMENTO}}</h3>
-                      <h4>{{proceso.PROCESO}}</h4>
-                    </mat-card-title>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <mat-table *ngIf="dataSource[i]" [dataSource]="dataSource[i]" class="mat-elevation-z8">
-                      <ng-container matColumnDef="CODIGO">
-                        <mat-header-cell *matHeaderCellDef>
-                          CÓDIGO
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let documento">
-                          {{documento.CODIGO}}/R{{documento.NO_REVISION - 1}}
-                        </mat-cell>
-                      </ng-container>
-                      <ng-container matColumnDef="NOMBRE">
-                        <mat-header-cell *matHeaderCellDef> NOMBRE </mat-header-cell>
-                        <mat-cell *matCellDef="let documento">
-                          {{documento.NOMBRE}}<mat-chip *ngIf="documento.FECHA_FIN" color="warn" selected>Pendiente
-                            baja</mat-chip>
-                        </mat-cell>
-                      </ng-container>
-                      <ng-container matColumnDef="TIPO">
-                        <mat-header-cell *matHeaderCellDef> TIPO </mat-header-cell>
-                        <mat-cell *matCellDef="let documento">
-                          {{documento.TIPO}}
-                        </mat-cell>
-                      </ng-container>
-                      <ng-container matColumnDef="FECHA">
-                        <mat-header-cell *matHeaderCellDef> FECHA_ALTA </mat-header-cell>
-                        <mat-cell *matCellDef="let documento">
-                          {{documento.FECHA_INICIO}}
-                        </mat-cell>
-                      </ng-container>
-                      <ng-container matColumnDef="ADMINISTRACIÓN">
-                        <mat-header-cell *matHeaderCellDef>
-                          <mat-icon>settings</mat-icon>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let documento">
-                          <button mat-icon-button color="accent" [matMenuTriggerFor]="menuadmin">
+          <div class="scroll-docs">
+            <div *ngIf="dataSource; else sinDocumentos">
+              <ul id="procesos">
+                <li *ngFor="let proceso of procesos_docs; let i = index">
+                  <mat-card *ngIf="dataSource[i]" class="example-card">
+                    <mat-card-header>
+                      <mat-card-title>
+                        <h3 style="color: #ff4081;">{{proceso.DEPARTAMENTO}}</h3>
+                        <h4>{{proceso.PROCESO}}</h4>
+                      </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                      <mat-table *ngIf="dataSource[i]" [dataSource]="dataSource[i]" class="mat-elevation-z8">
+                        <ng-container matColumnDef="CODIGO">
+                          <mat-header-cell *matHeaderCellDef>
+                            CÓDIGO
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let documento">
+                            {{documento.CODIGO}}/R{{documento.NO_REVISION - 1}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="NOMBRE">
+                          <mat-header-cell *matHeaderCellDef> NOMBRE </mat-header-cell>
+                          <mat-cell *matCellDef="let documento">
+                            {{documento.NOMBRE}}<mat-chip *ngIf="documento.FECHA_FIN" color="warn" selected>Pendiente
+                              baja</mat-chip>
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="TIPO">
+                          <mat-header-cell *matHeaderCellDef> TIPO </mat-header-cell>
+                          <mat-cell *matCellDef="let documento">
+                            {{documento.TIPO}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="FECHA">
+                          <mat-header-cell *matHeaderCellDef> FECHA_ALTA </mat-header-cell>
+                          <mat-cell *matCellDef="let documento">
+                            {{documento.FECHA_INICIO}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="ADMINISTRACIÓN">
+                          <mat-header-cell *matHeaderCellDef>
                             <mat-icon>settings</mat-icon>
-                          </button>
-                          <mat-menu #menuadmin="matMenu">
-                            <button id="btn_archivo" mat-menu-item (click)="ver_documento(documento)">
-                              <mat-icon>remove_red_eye</mat-icon>
-                              <span>Ver</span>
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let documento">
+                            <button mat-icon-button color="accent" [matMenuTriggerFor]="menuadmin">
+                              <mat-icon>settings</mat-icon>
                             </button>
-                            <!--<button mat-menu-item (click)="editaDocumento(documento)">
-                              <mat-icon>brush</mat-icon><span>Firmar Código</span>
-                            </button>-->
-                            <button mat-menu-item (click)="verRevision(documento)">
-                              <mat-icon>description</mat-icon>
-                              <span>Nueva Revisión</span>
-                            </button>
-                            <button mat-menu-item (click)="eliminarDialogo(documento)">
-                              <mat-icon>delete</mat-icon>
-                              <span>Eliminar</span>
-                            </button>
-                          </mat-menu>
-                        </mat-cell>
-                      </ng-container>
-                      <mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></mat-header-row>
-                      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                    </mat-table>
-                  </mat-card-content>
-                </mat-card>
-              </li>
-            </ul>
+                            <mat-menu #menuadmin="matMenu">
+                              <button id="btn_archivo" mat-menu-item (click)="ver_documento(documento)">
+                                <mat-icon>remove_red_eye</mat-icon>
+                                <span>Ver</span>
+                              </button>
+                              <button mat-menu-item (click)="verRevision(documento)">
+                                <mat-icon>description</mat-icon>
+                                <span>Nueva Revisión</span>
+                              </button>
+                              <button mat-menu-item (click)="eliminarDialogo(documento)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Eliminar</span>
+                              </button>
+                            </mat-menu>
+                          </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                      </mat-table>
+                    </mat-card-content>
+                  </mat-card>
 
+                </li>
+              </ul>
+            </div>
+            <ng-template #sinDocumentos>
+              <h3>Sin documentos registrados</h3>
+            </ng-template>
             <!--<mat-table class="mat-elevation-z8" [dataSource]="dataSource">
               <ng-container matColumnDef="CODIGO">
                 <mat-header-cell *matHeaderCellDef>

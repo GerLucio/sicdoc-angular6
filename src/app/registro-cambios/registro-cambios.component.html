@@ -12,39 +12,39 @@
         </mat-card-header>
         <mat-card-content>
           <div class="scroll-docs">
-            <ul>
-              <li *ngFor="let proceso of procesos; let i = index">
+            <div *ngIf="dataSource; else sinDocumentos">
+              <ul>
+                <li *ngFor="let proceso of procesos; let i = index">
+                  <mat-card *ngIf="dataSource[i]" class="example-card">
+                    <mat-card-header>
+                      <mat-card-title>
+                        <h3 style="color: #ff4081;">{{proceso.DEPARTAMENTO}}</h3>
+                        <h4>{{proceso.PROCESO}}</h4>
+                      </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                      <mat-table *ngIf="dataSource[i]" [dataSource]="dataSource[i]" class="mat-elevation-z8">
+                        <ng-container matColumnDef="{{columna}}" *ngFor="let columna of columnsToDisplay">
+                          <mat-header-cell *matHeaderCellDef>
+                            <h4>{{columna}}</h4>
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let documento; let i = index" [matMenuTriggerFor]="menudoc">
+                            {{documento[columna]}}
+                            <mat-menu #menudoc="matMenu">
+                              <button id="btn_archivo" mat-menu-item (click)="verRevisiones(documento)">
+                                <mat-icon>edit</mat-icon>
+                                <span>Gestionar Revisiones</span>
+                              </button>
+                            </mat-menu>
+                          </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="columnsToDisplay;  sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+                      </mat-table>
+                    </mat-card-content>
+                  </mat-card>
 
-                <mat-card *ngIf="dataSource[i]" class="example-card">
-                  <mat-card-header>
-                    <mat-card-title>
-                      <h3 style="color: #ff4081;">{{proceso.DEPARTAMENTO}}</h3>
-                      <h4>{{proceso.PROCESO}}</h4>
-                    </mat-card-title>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <mat-table *ngIf="dataSource[i]" [dataSource]="dataSource[i]" class="mat-elevation-z8">
-                      <ng-container matColumnDef="{{columna}}" *ngFor="let columna of columnsToDisplay">
-                        <mat-header-cell *matHeaderCellDef>
-                          <h4>{{columna}}</h4>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let documento; let i = index" [matMenuTriggerFor]="menudoc">
-                          {{documento[columna]}}
-                          <mat-menu #menudoc="matMenu">
-                            <button id="btn_archivo" mat-menu-item (click)="verRevisiones(documento)">
-                              <mat-icon>edit</mat-icon>
-                              <span>Gestionar Revisiones</span>
-                            </button>
-                          </mat-menu>
-                        </mat-cell>
-                      </ng-container>
-                      <mat-header-row *matHeaderRowDef="columnsToDisplay;  sticky: true"></mat-header-row>
-                      <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
-                    </mat-table>
-                  </mat-card-content>
-                </mat-card>
-
-                <!--<mat-chip-list *ngIf="dataSource[i]" >
+                  <!--<mat-chip-list *ngIf="dataSource[i]" >
                   <mat-chip selected [color]="proceso.ID_DEPTO % 2 == 0 ? 'warn' :  'accent'">
                     {{proceso.DEPARTAMENTO | uppercase}} / {{proceso.PROCESO}}
                   </mat-chip>
@@ -66,8 +66,12 @@
                   <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
                 </mat-table>-->
 
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </div>
+            <ng-template #sinDocumentos>
+              <h3>Sin documentos registrados</h3>
+            </ng-template>
           </div>
         </mat-card-content>
       </mat-card>
@@ -116,8 +120,8 @@
                 <mat-header-cell *matHeaderCellDef> VIGENTE </mat-header-cell>
                 <mat-cell *matCellDef="let revision">
                   <mat-chip *ngIf="revision.VIGENTE" color="warn" selected>Revisión Vigente</mat-chip>
-                  <mat-slide-toggle *ngIf="!revision.VIGENTE" color="warn" (change)="onChange($event, revision)" class="example-margin"
-                    color="warn" checked="false" [checked]="revision.VIGENTE">
+                  <mat-slide-toggle *ngIf="!revision.VIGENTE" color="warn" (change)="onChange($event, revision)"
+                    class="example-margin" color="warn" checked="false" [checked]="revision.VIGENTE">
                     Hacer vigente
                   </mat-slide-toggle>
                 </mat-cell>

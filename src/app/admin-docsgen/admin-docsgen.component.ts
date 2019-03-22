@@ -101,8 +101,15 @@ export class AdminDocsgenComponent implements OnInit {
     if (this.nuevo_documento.nombre && this.nuevo_documento.codigo && this.nuevo_documento.id_proceso &&
       this.nuevo_documento.id_tipo && this.nuevo_documento.ubicacion && this.archivo) {
       const data = new FormData();
-      data.append('archivo', this.archivo, this.archivo.name);
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+
+      var split_name = this.archivo.name.split('.');
+      var extencion = split_name[split_name.length - 1];
+      var file_name = this.nuevo_documento.codigo + '_' + this.nuevo_documento.nombre + '_R0' + '.' + extencion;
+      data.append('archivo', this.archivo, file_name.replace(/\//g, '_'));
+      console.log(file_name.replace(/\//g, '_'));
+      //data.append('archivo', this.archivo, this.archivo.name);
+
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoOriginal.php', data)
         .subscribe(res => {
           if (res['Error']) {
             swal({
@@ -135,6 +142,13 @@ export class AdminDocsgenComponent implements OnInit {
   }
 
   nuevoDocumento(nombre_generado) {
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoDocumentoSGC.php', JSON.stringify({
       documento: this.nuevo_documento, url: this.servidor.url, tkn: this.token, nombre_archivo: nombre_generado,
       responsable: this.usuario.id_usuario
@@ -214,7 +228,7 @@ export class AdminDocsgenComponent implements OnInit {
     }), {
       }).subscribe(res => {
         this.procesos = res;
-        if(!res){
+        if (!res) {
           this.procesos = res;
         }
         else if (res['ErrorToken']) {
@@ -264,6 +278,13 @@ export class AdminDocsgenComponent implements OnInit {
   }
 
   eliminaDocumento(documento) {
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaDocumento.php', JSON.stringify({
       documento: documento, tkn: this.token, depto: this.usuario.departamento, rol: this.usuario.id_rol
     }), {
@@ -320,6 +341,8 @@ export class AdminDocsgenComponent implements OnInit {
   verRevision(documento) {
     this.nueva_revision.id_documento = documento.ID_DOCUMENTO;
     this.nueva_revision.documento = documento.NOMBRE;
+    this.nueva_revision.codigo = documento.CODIGO;
+    this.nueva_revision.no_revision = documento.NO_REVISION;
     this.ver_revision = true;
   }
 
@@ -343,9 +366,23 @@ export class AdminDocsgenComponent implements OnInit {
   upload2() {
     if (this.nueva_revision.id_documento && this.archivo &&
       ((!this.input_ubicacion && this.nueva_ubicacion) || this.input_ubicacion)) {
+      swal({
+        type: 'info',
+        title: 'Enviando petición',
+        text: 'Espere un momento por favor',
+        showConfirmButton: false,
+        allowOutsideClick: false
+      });
       const data = new FormData();
-      data.append('archivo', this.archivo, this.archivo.name);
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+
+      var split_name = this.archivo.name.split('.');
+      var extencion = split_name[split_name.length - 1];
+      var file_name = this.nueva_revision.codigo + '_' + this.nueva_revision.documento
+        + '_R' + this.nueva_revision.no_revision + '.' + extencion;
+      data.append('archivo', this.archivo, file_name.replace(/\//g, '_'));
+      //data.append('archivo', this.archivo, this.archivo.name);
+
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoOriginal.php', data)
         .subscribe(res => {
           if (res['Error']) {
             swal({

@@ -143,7 +143,7 @@ export class AdminPcPoComponent implements OnInit {
       this.nuevo_documento.id_tipo && this.nuevo_documento.ubicacion && this.archivo) {
       const data = new FormData();
       data.append('archivo', this.archivo, this.archivo.name);
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoOriginal.php', data)
         .subscribe(res => {
           if (res['Error']) {
             swal({
@@ -175,7 +175,12 @@ export class AdminPcPoComponent implements OnInit {
       ((!this.input_ubicacion && this.nueva_ubicacion) || this.input_ubicacion)) {
       const data = new FormData();
       data.append('archivo', this.archivo, this.archivo.name);
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivo.php', data)
+      var script = null;
+      if (this.usuario.id_rol == 1)
+        script = '/apps/sicdoc/subirArchivo.php';
+      else
+        script = '/apps/sicdoc/subirArchivoOriginal.php';
+      this.http.post(this.servidor.nombre + script, data)
         .subscribe(res => {
           if (res['Error']) {
             swal({
@@ -203,11 +208,18 @@ export class AdminPcPoComponent implements OnInit {
   }
 
   nuevaRevision(nombre_generado) {
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
     this.nueva_revision.id_responsable = this.usuario.id_usuario;
     var script = null;
-    if(this.usuario.id_rol == 1)
+    if (this.usuario.id_rol == 1)
       script = '/apps/sicdoc/nuevaRevision.php';
-    else 
+    else
       script = '/apps/sicdoc/nuevaRevisionDepto.php';
     this.http.post(this.servidor.nombre + script, JSON.stringify({
       revision: this.nueva_revision, tkn: this.token, nombre_archivo: nombre_generado,
@@ -315,6 +327,9 @@ export class AdminPcPoComponent implements OnInit {
     this.nuevo_documento.id_proceso = null;
     this.nuevo_documento.id_tipo = null;
     this.nuevo_documento.ubicacion = null;
+    this.obtenDocumentos();
+    this.obtenProcesos();
+    this.obtenTipos();
   }
 
   cancelarRevision() {
@@ -331,6 +346,13 @@ export class AdminPcPoComponent implements OnInit {
   }
 
   nuevoDocumento(nombre_generado) {
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/nuevoDocumento.php', JSON.stringify({
       documento: this.nuevo_documento, url: this.servidor.url, tkn: this.token, nombre_archivo: nombre_generado,
       responsable: this.usuario.id_usuario
@@ -365,6 +387,8 @@ export class AdminPcPoComponent implements OnInit {
           //this.openSnackBar('ÉXITO', res['Exito']);
           this.cancelarNuevo();
           this.obtenDocumentos();
+          this.obtenProcesos();
+          this.obtenTipos();
         }
       });
   }
@@ -403,6 +427,13 @@ export class AdminPcPoComponent implements OnInit {
   }
 
   eliminaDocumento(documento, motivo_baja) {
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
     this.http.post(this.servidor.nombre + '/apps/sicdoc/bajaDocumento.php', JSON.stringify({
       documento: documento, tkn: this.token, depto: this.usuario.departamento, rol: this.usuario.id_rol, motivo_baja: motivo_baja
     }), {

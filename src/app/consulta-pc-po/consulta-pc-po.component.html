@@ -14,61 +14,62 @@
         <div class="flotante">
         </div>
         <mat-card-content>
-          <mat-form-field *ngIf="total_documentos">
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Busca un documento entre los {{ total_documentos }} registrados">
-          </mat-form-field>
           <div class="scroll-docs">
-            <ul>
-              <li *ngFor="let proceso of procesos; let i = index">
-                <mat-card *ngIf="dataSource[i]" class="example-card">
-                  <mat-card-header>
-                    <mat-card-title>
-                      <h4 style="color: #ff4081;">{{proceso.DEPARTAMENTO}} / {{proceso.PROCESO}}</h4>
-                    </mat-card-title>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <mat-table *ngIf="dataSource[i]" [dataSource]="dataSource[i]" class="mat-elevation-z8">
-                      <ng-container matColumnDef="CODIGO">
-                        <mat-header-cell *matHeaderCellDef> CÓDIGO </mat-header-cell>
-                        <mat-cell *matCellDef="let documento">
-                          {{documento.CODIGO}}/R{{documento.NO_REVISION - 1}}
-                        </mat-cell>
-                      </ng-container>
-                      <ng-container matColumnDef="NOMBRE">
-                        <mat-header-cell *matHeaderCellDef> NOMBRE </mat-header-cell>
-                        <mat-cell *matCellDef="let documento">
-                          {{documento.NOMBRE}}<mat-chip *ngIf="documento.FECHA_FIN" color="warn" selected>Pendiente
-                            baja</mat-chip>
-                        </mat-cell>
-                      </ng-container>
-                      <ng-container matColumnDef="TIPO">
-                        <mat-header-cell *matHeaderCellDef> TIPO </mat-header-cell>
-                        <mat-cell *matCellDef="let documento">
-                          {{documento.TIPO}}
-                        </mat-cell>
-                      </ng-container>
-                      <ng-container matColumnDef="FECHA">
-                        <mat-header-cell *matHeaderCellDef> FECHA </mat-header-cell>
-                        <mat-cell *matCellDef="let documento">
-                          {{documento.FECHA_INICIO}}
-                        </mat-cell>
-                      </ng-container>
-                      <ng-container matColumnDef="VER">
-                        <mat-header-cell *matHeaderCellDef>VER</mat-header-cell>
-                        <mat-cell *matCellDef="let documento">
-                          <button mat-icon-button (click)="ver_documento(documento)" color="accent">
-                            <mat-icon>remove_red_eye</mat-icon>
-                          </button>
-                        </mat-cell>
-                      </ng-container>
-                      <mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></mat-header-row>
-                      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                    </mat-table>
-                  </mat-card-content>
-                </mat-card>
-              </li>
-            </ul>
-
+            <div *ngIf="dataSource; else sinDocumentos">
+              <ul>
+                <li *ngFor="let proceso of procesos; let i = index">
+                  <mat-card *ngIf="dataSource[i]" class="example-card">
+                    <mat-card-header>
+                      <mat-card-title>
+                        <h4 style="color: #ff4081;">{{proceso.DEPARTAMENTO}} / {{proceso.PROCESO}}</h4>
+                      </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                      <mat-table *ngIf="dataSource[i]" [dataSource]="dataSource[i]" class="mat-elevation-z8">
+                        <ng-container matColumnDef="CODIGO">
+                          <mat-header-cell *matHeaderCellDef> CÓDIGO </mat-header-cell>
+                          <mat-cell *matCellDef="let documento">
+                            {{documento.CODIGO}}/R{{documento.NO_REVISION - 1}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="NOMBRE">
+                          <mat-header-cell *matHeaderCellDef> NOMBRE </mat-header-cell>
+                          <mat-cell *matCellDef="let documento">
+                            {{documento.NOMBRE}}<mat-chip *ngIf="documento.FECHA_FIN" color="warn" selected>Pendiente
+                              baja</mat-chip>
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="TIPO">
+                          <mat-header-cell *matHeaderCellDef> TIPO </mat-header-cell>
+                          <mat-cell *matCellDef="let documento">
+                            {{documento.TIPO}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="FECHA">
+                          <mat-header-cell *matHeaderCellDef> FECHA </mat-header-cell>
+                          <mat-cell *matCellDef="let documento">
+                            {{documento.FECHA_INICIO}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="VER">
+                          <mat-header-cell *matHeaderCellDef>VER</mat-header-cell>
+                          <mat-cell *matCellDef="let documento">
+                            <button mat-icon-button (click)="ver_documento(documento)" color="accent">
+                              <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                          </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                      </mat-table>
+                    </mat-card-content>
+                  </mat-card>
+                </li>
+              </ul>
+            </div>
+            <ng-template #sinDocumentos>
+              <h3>Sin documentos registrados</h3>
+            </ng-template>
             <!--<mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <ng-container matColumnDef="CODIGO">
                 <mat-header-cell *matHeaderCellDef> CÓDIGO </mat-header-cell>

@@ -12,5 +12,5 @@ export class InputDialogComponent {
 
   public confirmMessage:string;
   public tipo: string;
-  public text: string;
+  public texto: string;
 }
