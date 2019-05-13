@@ -2,7 +2,7 @@
 <mat-dialog-content>
   <p>{{confirmMessage}}</p>
   <mat-form-field>
-    <textarea matInput minlength="1" [maxlength]="tipo=='Observación' ? 512: 64" [(ngModel)]="texto" required placeholder="{{ tipo }}" ></textarea>
+    <textarea matInput minlength="1" maxlength="512" [(ngModel)]="texto" required placeholder="{{ tipo }}" ></textarea>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>

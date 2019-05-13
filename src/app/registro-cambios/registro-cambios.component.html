@@ -88,7 +88,7 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <div [class]="total_revisiones > 11 ? 'scroll-docs': ''">
+          <div [class]="total_revisiones > 10 ? 'scroll-docs-revision': ''">
             <mat-table [dataSource]="revisiones" class="mat-elevation-z8" style="color: #6d6d6d;">
               <ng-container matColumnDef="NO_REVISION">
                 <mat-header-cell *matHeaderCellDef> REVISIÓN </mat-header-cell>

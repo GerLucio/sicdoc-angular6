@@ -71,16 +71,16 @@ export class AdminPcPoComponent implements OnInit {
 
   onFileSelected(event) {
     this.archivo = <File>event.target.files[0];
-    if (this.archivo.size > 2000000) {
+    if (this.archivo.size > 20000000) {
       this.inputArchivo.nativeElement.value = "";
       this.resetInputFile();
       swal({
         type: 'error',
         title: 'ERROR',
-        text: 'El tamaño máximo de archivo son 2MB',
+        text: 'El tamaño máximo de archivo son 20MB',
         timer: 5000
       });
-      //this.openSnackBar('ERROR', 'El tamaño máximo de archivo son 2MB');
+      //this.openSnackBar('ERROR', 'El tamaño máximo de archivo son 20MB');
     }
   }
 

@@ -103,6 +103,13 @@ export class AdminUsuariosComponent implements OnInit {
 
     this.dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        swal({
+          type: 'info',
+          title: 'Enviando petición',
+          text: 'Espere un momento por favor',
+          showConfirmButton: false,
+          allowOutsideClick: false
+        });
         this.http.post(this.servidor.nombre + '/apps/sicdoc/editaUsuarioSGC.php', JSON.stringify({
           usuario_editar: this.usuario_editar, tkn: this.token
         }), {
@@ -149,13 +156,6 @@ export class AdminUsuariosComponent implements OnInit {
     if (usuario.nombre && usuario.apellido && usuario.puesto &&
       !this.getErrorMessage2() && usuario.id_departamento && usuario.id_rol
     ) {
-      swal({
-        type: 'info',
-        title: 'Enviando petición',
-        text: 'Espere un momento por favor',
-        showConfirmButton: false,
-        allowOutsideClick: false
-      });
       if (this.rol_actual != "1" && usuario.id_rol == "1") {
         this.editaCoordinadorDialogo(usuario);
       }

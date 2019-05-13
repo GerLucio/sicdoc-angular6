@@ -120,6 +120,12 @@ table {
   height: 66rem;
 }
 
+.scroll-docs-revision{
+  overflow-y: 
+  scroll;
+  height: 59rem;
+}
+
 .caja{
   border: 1px solid #ccc;
 }
