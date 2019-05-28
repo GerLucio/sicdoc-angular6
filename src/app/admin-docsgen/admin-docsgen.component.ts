@@ -103,10 +103,9 @@ export class AdminDocsgenComponent implements OnInit {
       const data = new FormData();
 
       var split_name = this.archivo.name.split('.');
-      var extencion = split_name[split_name.length - 1];
-      var file_name = this.nuevo_documento.codigo + '_' + this.nuevo_documento.nombre + '_R0' + '.' + extencion;
+      var extension = split_name[split_name.length - 1];
+      var file_name = this.nuevo_documento.codigo + '_' + this.nuevo_documento.nombre + '_R0' + '.' + extension;
       data.append('archivo', this.archivo, file_name.replace(/\//g, '_'));
-      console.log(file_name.replace(/\//g, '_'));
       //data.append('archivo', this.archivo, this.archivo.name);
 
       this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoOriginal.php', data)
@@ -376,9 +375,9 @@ export class AdminDocsgenComponent implements OnInit {
       const data = new FormData();
 
       var split_name = this.archivo.name.split('.');
-      var extencion = split_name[split_name.length - 1];
+      var extension = split_name[split_name.length - 1];
       var file_name = this.nueva_revision.codigo + '_' + this.nueva_revision.documento
-        + '_R' + this.nueva_revision.no_revision + '.' + extencion;
+        + '_R' + this.nueva_revision.no_revision + '.' + extension;
       data.append('archivo', this.archivo, file_name.replace(/\//g, '_'));
       //data.append('archivo', this.archivo, this.archivo.name);
 

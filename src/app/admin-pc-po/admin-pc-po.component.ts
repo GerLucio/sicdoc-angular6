@@ -143,7 +143,7 @@ export class AdminPcPoComponent implements OnInit {
       this.nuevo_documento.id_tipo && this.nuevo_documento.ubicacion && this.archivo) {
       const data = new FormData();
       data.append('archivo', this.archivo, this.archivo.name);
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoOriginal.php', data)
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoHash.php', data)
         .subscribe(res => {
           if (res['Error']) {
             swal({
@@ -174,12 +174,21 @@ export class AdminPcPoComponent implements OnInit {
     if (this.nueva_revision.id_documento && this.archivo &&
       ((!this.input_ubicacion && this.nueva_ubicacion) || this.input_ubicacion)) {
       const data = new FormData();
-      data.append('archivo', this.archivo, this.archivo.name);
+
       var script = null;
-      if (this.usuario.id_rol == 1)
-        script = '/apps/sicdoc/subirArchivo.php';
-      else
+      if (this.usuario.id_rol == 1) {
+        var split_name = this.archivo.name.split('.');
+        var extension = split_name[split_name.length - 1];
+        var file_name = this.nueva_revision.codigo + '_' + this.nueva_revision.documento
+          + '_R' + this.nueva_revision.no_revision + '.' + extension;
+        data.append('archivo', this.archivo, file_name.replace(/\//g, '_'));
+        //data.append('archivo', this.archivo, this.archivo.name);
         script = '/apps/sicdoc/subirArchivoOriginal.php';
+      }
+      else {
+        data.append('archivo', this.archivo, this.archivo.name);
+        script = '/apps/sicdoc/subirArchivoHash.php';
+      }
       this.http.post(this.servidor.nombre + script, data)
         .subscribe(res => {
           if (res['Error']) {
@@ -396,6 +405,9 @@ export class AdminPcPoComponent implements OnInit {
   verRevision(documento) {
     this.nueva_revision.id_documento = documento.ID_DOCUMENTO;
     this.nueva_revision.documento = documento.NOMBRE;
+    this.nueva_revision.codigo = documento.CODIGO;
+    this.nueva_revision.no_revision = documento.NO_REVISION;
+
     this.ver_revision = true;
   }
 

@@ -340,9 +340,9 @@ export class AdminUpdateDocsgenComponent implements OnInit {
       const data = new FormData();
 
       var split_name = this.archivo.name.split('.');
-      var extencion = split_name[split_name.length - 1];
+      var extension = split_name[split_name.length - 1];
       var file_name = this.documento_aprobar.CODIGO + '_' + this.documento_aprobar.NOMBRE
-        + '_R' + (this.documento_aprobar.NO_REVISION - 1) + '.' + extencion;
+        + '_R' + (this.documento_aprobar.NO_REVISION - 1) + '.' + extension;
       data.append('archivo', this.archivo, file_name.replace(/\//g, '_'));
       //data.append('archivo', this.archivo, this.archivo.name);
       
@@ -358,7 +358,7 @@ export class AdminUpdateDocsgenComponent implements OnInit {
             //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['Exito']) {
-            this.reemplazaDocumento(res['nombre_generado'], this.documento_aprobar.RUTA);
+            //this.reemplazaDocumento(res['nombre_generado'], this.documento_aprobar.RUTA);
             this.documento_aprobar.RUTA = res['nombre_generado'];
             this.revisa(this.documento_aprobar, 'aprobar');
           }

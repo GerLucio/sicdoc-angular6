@@ -55,7 +55,7 @@
                 <mat-expansion-panel>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <mat-icon>folder</mat-icon>Administración de documentos
+                            <mat-icon>folder</mat-icon>Gestión de documentos
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <mat-list>
@@ -92,7 +92,7 @@
                                 <mat-divider></mat-divider>
                         </mat-list-item>
                         <mat-list-item *ngIf="usuario.id_rol >= 1 && usuario.id_rol <= 3">
-                            <a mat-button routerLink="/consulta_pc_po" (click)="snav.close()">Consulta PC y PO</a>
+                            <a mat-button routerLink="/consulta_pc_po" (click)="snav.close()">Consulta</a>
                             <mat-divider></mat-divider>
                         </mat-list-item>
                     </mat-list>

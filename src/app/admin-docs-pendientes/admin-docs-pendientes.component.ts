@@ -107,7 +107,7 @@ export class AdminDocsPendientesComponent implements OnInit {
       this.documento_editar.id_tipo && this.documento_editar.ubicacion && this.archivo) {
       const data = new FormData();
       data.append('archivo', this.archivo, this.archivo.name);
-      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoOriginal.php', data)
+      this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoHash.php', data)
         .subscribe(res => {
           if (res['Error']) {
             swal({

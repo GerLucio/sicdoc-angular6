@@ -127,9 +127,9 @@ export class AdminCodComponent implements OnInit {
       const data = new FormData();
 
       var split_name = this.archivo.name.split('.');
-      var extencion = split_name[split_name.length - 1];
+      var extension = split_name[split_name.length - 1];
       var file_name = this.documento_aprobar.codigo + '_' + this.documento_aprobar.nombre
-        + '_R0'+ '.' + extencion;
+        + '_R0'+ '.' + extension;
       data.append('archivo', this.archivo, file_name.replace(/\//g, '_'));
       //data.append('archivo', this.archivo, this.archivo.name);
 
@@ -145,7 +145,7 @@ export class AdminCodComponent implements OnInit {
             //this.openSnackBar('ERROR', res['Error']);
           }
           else if (res['Exito']) {
-            this.reemplazaDocumento(res['nombre_generado'], this.documento_aprobar.ruta);
+            //this.reemplazaDocumento(res['nombre_generado'], this.documento_aprobar.ruta);
             this.documento_aprobar.ruta = res['nombre_generado'];
             this.codifica(this.documento_aprobar, 'aprobar');
           }
