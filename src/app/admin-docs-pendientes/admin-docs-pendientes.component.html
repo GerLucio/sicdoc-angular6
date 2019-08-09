@@ -97,7 +97,7 @@
             <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)" accept=".xlsx,.xls,.doc,.docx,.pdf"
               required>
             <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
-            <mat-icon *ngIf="archivo" color="accent" (click)="resetInputFile()">clear</mat-icon>
+            <mat-icon *ngIf="archivo" class="cierra" color="accent" (click)="resetInputFile()">clear</mat-icon>
             <div class="derecha">
               <button mat-button (click)="cancelarEditar()">CANCELAR</button>
               <button mat-raised-button (click)="upload()" color="primary">GUARDAR</button>

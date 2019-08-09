@@ -40,10 +40,65 @@
             <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)"
               accept=".xlsx,.xls,.doc,.docx,.pdf" required>
             <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
-            <mat-icon *ngIf="archivo" color="accent" (click)="resetInputFile()">clear</mat-icon>
+            <mat-icon *ngIf="archivo" class="cierra" color="accent" (click)="resetInputFile()">clear</mat-icon>
             <div class="derecha">
               <button mat-button (click)="cancelarNuevo()">CANCELAR</button>
               <button mat-raised-button (click)="upload()" color="primary">REGISTRAR</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <!--Editar Documento-->
+    <mat-grid-tile *ngIf="ver_edita" class="caja" colspan="6">
+      <mat-card class="card-formulario">
+        <mat-card-header>
+          <mat-card-title>
+            <h2>Editar documento</h2>
+          </mat-card-title>
+          <mat-card-subtitle>Modifica todos los datos necesarios del documento</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <form class="example-form form_edita">
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre del documento</mat-label>
+              <input matInput placeholder="Nombre del documento" maxlength="128" [(ngModel)]="edita_documento.nombre"
+                name="nombre" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Código</mat-label>
+              <input matInput placeholder="Código" maxlength="64" [(ngModel)]="edita_documento.codigo" name="codigo"
+                required>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Proceso" [(ngModel)]="edita_documento.id_proceso" name="id_proceso" required>
+                <mat-option *ngFor="let p of procesos" [value]="p.ID_PROCESO">
+                  {{p.NOMBRE}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Tipo de Documento" [(ngModel)]="edita_documento.id_tipo" name="id_tipo" required>
+                <mat-option *ngFor="let t of tipos" [value]="t.ID_TIPO">
+                  {{t.TIPO}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput
+                placeholder="Ubicación, ejemplo: Directorio de archivos de la computadora / Carpeta 3 del cajón 4 del archivero de la oficina...."
+                required [(ngModel)]="edita_documento.ubicacion" name="ubicacion" maxlength="512">
+            </mat-form-field>
+            <label for="archivo">Archivo </label>
+            <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)"
+              accept=".xlsx,.xls,.doc,.docx,.pdf">
+            <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
+            <mat-icon *ngIf="archivo" class="cierra" color="accent" (click)="resetInputFile()">clear</mat-icon>
+            <div class="derecha">
+              <button mat-button (click)="cancelarEdita()">CANCELAR</button>
+              <button mat-raised-button (click)="editaDocumento()" color="primary">MODIFICAR</button>
             </div>
           </form>
         </mat-card-content>
@@ -74,7 +129,7 @@
             <input type="file" id="archivo" #inputArchivo (change)="onFileSelected($event)"
               accept=".xlsx,.xls,.doc,.docx,.pdf" required>
             <span *ngIf="archivo">{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
-            <mat-icon *ngIf="archivo" color="accent" (click)="resetInputFile()">clear</mat-icon>
+            <mat-icon *ngIf="archivo" class="cierra" color="accent" (click)="resetInputFile()">clear</mat-icon>
             <div class="derecha">
               <button mat-button (click)="cancelarRevision()">CANCELAR</button>
               <button mat-raised-button (click)="upload2()" color="primary">REGISTRAR</button>
@@ -85,7 +140,7 @@
     </mat-grid-tile>
 
     <!--Vista inicial-->
-    <mat-grid-tile *ngIf="!ver_nuevo && !ver_revision" class="caja" colspan="6">
+    <mat-grid-tile *ngIf="!ver_nuevo && !ver_revision && !ver_edita" class="caja" colspan="6">
       <mat-card class="card-formulario">
         <mat-card-header>
           <mat-card-title>
@@ -157,6 +212,11 @@
                               <button mat-menu-item (click)="verRevision(documento)">
                                 <mat-icon>description</mat-icon>
                                 <span>Nueva Revisión</span>
+                              </button>
+                              <button *ngIf="usuario.rol == 'Coordinación del SGC'" mat-menu-item
+                                (click)="editarDocumento(documento)">
+                                <mat-icon>edit</mat-icon>
+                                <span>Editar Documento</span>
                               </button>
                               <button mat-menu-item (click)="eliminarDialogo(documento)">
                                 <mat-icon>delete</mat-icon>

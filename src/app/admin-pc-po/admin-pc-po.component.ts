@@ -40,6 +40,7 @@ export class AdminPcPoComponent implements OnInit {
   token: string;
   ver_nuevo: boolean;
   ver_revision: boolean;
+  ver_edita: boolean;
   archivo: File = null;
   doc_mostrar = new Documento();
   nueva_revision = new Revision();
@@ -54,6 +55,7 @@ export class AdminPcPoComponent implements OnInit {
     //this.total_documentos = 0;
     this.ver_nuevo = false;
     this.ver_revision = false;
+    this.ver_edita = false;
     this.input_ubicacion = true;
   }
 
@@ -101,6 +103,116 @@ export class AdminPcPoComponent implements OnInit {
       this.usuario.estado = this.setUsuario.ESTADO;
       this.token = JSON.parse(localStorage.getItem('tkn'));
     }
+  }
+
+  editarDocumento(documento) {
+    this.edita_documento.id_documento = documento.ID_DOCUMENTO;
+    this.edita_documento.nombre = documento.NOMBRE;
+    this.edita_documento.codigo = documento.CODIGO;
+    this.edita_documento.id_proceso = documento.ID_PROCESO;
+    this.edita_documento.id_tipo = documento.ID_TIPO;
+    this.edita_documento.ubicacion = documento.UBICACION;
+    this.edita_documento.ruta = documento.RUTA;
+    this.edita_documento.no_revision = documento.NO_REVISION;
+    this.ver_edita = true;
+  }
+
+  cancelarEdita() {
+    this.edita_documento.id_documento = null;
+    this.edita_documento.nombre = null;
+    this.edita_documento.id_tipo = null;
+    this.edita_documento.id_proceso = null;
+    this.edita_documento.codigo = null;
+    this.edita_documento.ubicacion = null;
+    this.edita_documento.ruta = null;
+    this.edita_documento.no_revision = null;
+    this.ver_edita = false;
+  }
+
+  editaDocumento() {
+    if (this.edita_documento.nombre && this.edita_documento.codigo && this.edita_documento.id_proceso &&
+      this.edita_documento.id_tipo && this.edita_documento.ubicacion) {
+      if (this.archivo) {
+        const data = new FormData();
+        var split_name = this.archivo.name.split('.');
+        var extension = split_name[split_name.length - 1];
+        var file_name = this.edita_documento.codigo + '_' + this.edita_documento.nombre
+          + '_R' + (this.edita_documento.no_revision - 1) + '.' + extension;
+        data.append('archivo', this.archivo, file_name.replace(/\//g, '_'));
+        this.http.post(this.servidor.nombre + '/apps/sicdoc/subirArchivoOriginal.php', data)
+          .subscribe(res => {
+            if (res['Error']) {
+              swal({
+                type: 'error',
+                title: 'ERROR',
+                text: res['Error'],
+                timer: 5000
+              });
+            }
+            else if (res['Exito']) {
+              this.edita(res['nombre_generado'], true);
+            }
+          });
+      }
+      else {
+        var split_name =  this.edita_documento.ruta.split('.');
+        var extension = split_name[split_name.length - 1];
+        var file_name = this.edita_documento.codigo + '_' + this.edita_documento.nombre
+          + '_R' + (this.edita_documento.no_revision - 1) + '.' + extension;
+        this.edita(file_name.replace(/ /g, '_'), false);
+      }
+    }
+    else {
+      swal({
+        type: 'error',
+        title: 'ERROR',
+        text: 'Todos los campos deben ser llenados correctamente',
+        timer: 5000
+      });
+    }
+  }
+
+  edita(nombre_archivo, cambio) {
+    swal({
+      type: 'info',
+      title: 'Enviando petición',
+      text: 'Espere un momento por favor',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
+    this.http.post(this.servidor.nombre + '/apps/sicdoc/modificaDocumento.php', JSON.stringify({
+      tkn: this.token, documento: this.edita_documento, nombre_archivo: nombre_archivo, cambio: cambio
+    }), {
+      }).subscribe(res => {
+        if (res['Error']) {
+          swal({
+            type: 'error',
+            title: 'ERROR',
+            text: res['Error'],
+            timer: 5000
+          });
+        }
+        else if (res['ErrorToken']) {
+          swal({
+            type: 'error',
+            title: 'ERROR DE SESIÓN',
+            text: 'Vuelve a iniciar sesión',
+            timer: 5000
+          });
+          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+        }
+        else {
+          swal({
+            type: 'success',
+            title: 'ÉXITO',
+            text: res['Exito'],
+            timer: 5000
+          });
+          //this.openSnackBar('ÉXITO', res['Exito']);
+          this.cancelarEdita();
+          this.obtenDocumentos();
+        }
+      });
   }
 
   ver_documento(documento) {

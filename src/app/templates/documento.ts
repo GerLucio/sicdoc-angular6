@@ -12,6 +12,7 @@ export class Documento {
       public fecha_inicio?: string,
       public fecha_fin?: string,
       public num_revisiones?: number,
+      public no_revision?: number,
       public revision?: number,
       public id_estado?: number,
       public ubicacion?: string,
