@@ -1,8 +1,11 @@
 
   .fondo_login{
-   background-image: url("../../assets/img/fondo2.jpg");
-   background-size: cover;
-   /*background-color: gainsboro;*/
+    background-image: url("../../assets/img/back.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: 56px;
+    min-height: 100%;
   }
 
   .main-div{
@@ -13,16 +16,35 @@
   }
 
   .center{
-    width: auto;
-    height: auto;
+    width: 300px;
+    height: 300px;
+    margin-top: 326px;
     text-align: center;
-    margin: auto;
+    border-radius: 50%;
+  }
+  .contenido{
+    padding-top: 10%;
+  }
+
+  .circle{
+    background-image: url("../../assets/img/circle.png");
+    background-size: 600px;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-width: 900px;
+    min-height: 900px;
+    text-align: center;
+
+    position:relative;
+    display:inline-block;
+    top:50%;
+    transform:translateY(-50%);
   }
 
   h1{
     color: #3f51b5;
   }
 
-  .bienvenido{
-    opacity: 0.9;
+  .pad{
+    margin-top: 56px;
   }

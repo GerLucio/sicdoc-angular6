@@ -1,9 +1,47 @@
 <div class="example-container">
-    <mat-toolbar color="primary" class="example-toolbar">
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top frente">
+        <div class="container">
+            <a class="navbar-brand" href="https://www.gob.mx/">
+                <img src="./assets/img/logo_gob.svg" width="100" alt="">
+            </a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="https://www.gob.mx/tramites">Trámites<span class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="https://www.gob.mx/gobierno">Gobierno<span class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="https://www.gob.mx/participa/inicio">Participa<span
+                                class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="https://www.gob.mx/busqueda">Datos<span class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="https://www.gob.mx/tramites">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <mat-toolbar color="primary" class="example-toolbar fixed-top-2">
         <button mat-icon-button (click)="snav.toggle()" (mouseover)="validaLogin()">
             <mat-icon>menu</mat-icon>
         </button>
-        <img height="85%" src="./assets/img/sicdoclogo.jpg"><p></p>
+        SICDOC
+        <p></p>
         <span class="example-spacer"></span>
         <img height="85%" src="./assets/img/logo_upev_3.png">
     </mat-toolbar>
@@ -62,16 +100,17 @@
                         <mat-list-item *ngIf="usuario.id_rol == 1">
                             <a mat-button routerLink="/admin_docsgen" (click)="snav.close()">Administración Documentos
                                 SGC</a>
-                                <mat-divider></mat-divider>
+                            <mat-divider></mat-divider>
                         </mat-list-item>
                         <mat-list-item *ngIf="usuario.id_rol  == 1">
-                            <a mat-button routerLink="/admin_cod" (click)="snav.close()">Codificación Nuevos Documentos</a>
+                            <a mat-button routerLink="/admin_cod" (click)="snav.close()">Codificación Nuevos
+                                Documentos</a>
                             <mat-divider></mat-divider>
                         </mat-list-item>
                         <mat-list-item *ngIf="usuario.id_rol  == 1">
                             <a mat-button routerLink="/admin_update_docsgen" (click)="snav.close()">Revisión de
                                 Documentos</a>
-                                <mat-divider></mat-divider>
+                            <mat-divider></mat-divider>
                         </mat-list-item>
                         <mat-list-item *ngIf="usuario.id_rol  == 1">
                             <a mat-button routerLink="/admin_bajas_docs" (click)="snav.close()">Bajas Pendientes</a>
@@ -84,12 +123,12 @@
                         <mat-list-item *ngIf="usuario.id_rol == 1 || usuario.id_rol == 2">
                             <a mat-button routerLink="/admin_docs_pendientes" (click)="snav.close()">Documentos
                                 Pendientes Depto</a>
-                                <mat-divider></mat-divider>
+                            <mat-divider></mat-divider>
                         </mat-list-item>
                         <mat-list-item *ngIf="usuario.id_rol == 1 || usuario.id_rol == 2">
                             <a mat-button routerLink="/admin_update_revisiones" (click)="snav.close()">Revisión de
                                 Documentos Depto</a>
-                                <mat-divider></mat-divider>
+                            <mat-divider></mat-divider>
                         </mat-list-item>
                         <mat-list-item *ngIf="usuario.id_rol >= 1 && usuario.id_rol <= 3">
                             <a mat-button routerLink="/consulta_pc_po" (click)="snav.close()">Consulta</a>
@@ -167,5 +206,85 @@
             <router-outlet></router-outlet>
         </mat-sidenav-content>
     </mat-sidenav-container>
+
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Enlaces</h5>
+                    <ul>
+                        <li><a href="https://www.gob.mx/publicaciones" target="_blank">Publicaciones Oficiales</a></li>
+                        <li><a href="http://portaltransparencia.gob.mx/" target="_blank">Portal de Obligaciones de
+                                Transparencia</a>
+                        </li>
+                        <li><a href="https://www.infomex.org.mx/gobiernofederal/home.action" target="_blank">Sistema
+                                Infomex</a></li>
+                        <li><a href="http://inicio.ifai.org.mx/SitePages/ifai.aspx" target="_blank">INAI</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>¿Qué es gob.mx?</h5>
+                    <p>
+                        Es el portal único de trámites, información y participación ciudadana. <a
+                            href="https://www.gob.mx/que-es-gobmx"><ins>Leer más</ins></a>
+                    </p>
+                    <ul>
+                        <li><a href="https://www.gob.mx/en/index" target="_blank">English</a></li>
+                        <li><a href="https://www.gob.mx/temas" target="_blank">Temas</a></li>
+                        <li><a href="https://www.gob.mx/accesibilidad" target="_blank">Declaración de Accesibilidad</a>
+                        </li>
+                        <li><a href="https://www.gob.mx/privacidadintegral" target="_blank">Aviso de privacidad
+                                integral</a></li>
+                        <li><a href="https://www.gob.mx/privacidadsimplificado" target="_blank">Aviso de privacidad
+                                simplificado</a>
+                        </li>
+                        <li><a href="https://www.gob.mx/terminos" target="_blank">Términos y Condiciones</a></li>
+                        <li><a href="https://www.gob.mx/terminos#medidas-seguridad-informacion" target="_blank">Política
+                                de
+                                seguridad</a></li>
+                        <li><a href="http://www.ordenjuridico.gob.mx/" target="_blank">Marco Jurídico</a></li>
+                        <li><a href="https://www.gob.mx/sitemap" target="_blank">Mapa de sitio</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contacto</h5>
+                    <p>
+                        Mesa de ayuda: dudas e información
+                        gobmx@funcionpublica.gob.mx
+                    </p>
+                    <a href="https://www.gob.mx/tramites/ficha/presentacion-de-quejas-y-denuncias-en-la-sfp/SFP54"><ins>Denuncia
+                            contra servidores públicos</ins></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Mantente informado. Suscríbete.</h5>
+                    <form id="subscribe" action="https://www.gob.mx/subscribe" accept-charset="UTF-8" data-remote="true"
+                        method="post">
+                        <div class="input-group">
+                            <input id="email" type="text" name="email" class="form-control rounded"
+                                placeholder="Ingresa tu correo electrónico" maxlength="255">
+                            <span class="input-group-btn">
+                                <button class="btn btn-foo" type="submit" title="Suscribirse">
+                                    <i class="fa fa-angle-right fa-2x"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <h5>Síguenos en</h5>
+                    <a href="https://www.facebook.com/gobmexico/"><i class="fa fa-facebook fa-2x"></i></a>
+                    <a href="https://twitter.com/GobiernoMX"><i class="fa fa-twitter fa-2x"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="gob">
+        <div class="container">
+            <img class="gob-img" src="./assets/img/logo_gob.svg" width="126" alt="">
+        </div>
+    </div>
 
 </div>
